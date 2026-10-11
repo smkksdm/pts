@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Soal UTS 2026/2027 — SMKS Kesehatan SDM Sumedang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16151a;
+    --cream:#FFF4DC;
+    --pink:#FF6B9D;
+    --yellow:#FFD93D;
+    --green:#6BCB77;
+    --blue:#4D96FF;
+    --purple:#B983FF;
+    --lime:#C6F432;
+    --shadow:6px 6px 0 var(--ink);
+    --shadow-sm:4px 4px 0 var(--ink);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Space Grotesk',sans-serif;
+    background:var(--cream);
+    background-image:radial-gradient(rgba(22,21,26,.09) 1.4px, transparent 1.4px);
+    background-size:24px 24px;
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--lime)}
+
+  /* ===== TICKER ===== */
+  .ticker{background:var(--ink);color:var(--lime);overflow:hidden;white-space:nowrap;padding:7px 0;border-bottom:3px solid var(--ink)}
+  .ticker-track{display:inline-block;animation:marquee 26s linear infinite;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase}
+  .ticker-track span{margin:0 14px}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:90;background:var(--cream);
+    border-bottom:3px solid var(--ink);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 14px;gap:10px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+  .logo{
+    width:40px;height:40px;background:var(--pink);border:3px solid var(--ink);
+    border-radius:10px;display:grid;place-items:center;font-size:20px;
+    box-shadow:var(--shadow-sm);transform:rotate(-4deg);flex-shrink:0;
+  }
+  .brand h1{font-family:'Unbounded';font-size:12px;line-height:1.2;white-space:nowrap}
+  .brand small{display:block;font-family:'Space Grotesk';font-weight:500;font-size:9px;color:#5a5766;letter-spacing:.5px}
+  .sound-btn{
+    font-family:'Space Grotesk';font-weight:700;font-size:11px;
+    border:2.5px solid var(--ink);border-radius:999px;background:#fff;
+    padding:6px 10px;cursor:pointer;box-shadow:var(--shadow-sm);
+    transition:transform .12s, box-shadow .12s;flex-shrink:0;
+  }
+  .sound-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+  .sound-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .sound-btn.off{background:#eee;color:#999}
+
+  /* ===== HERO ===== */
+  .hero{max-width:1100px;margin:0 auto;padding:30px 14px 20px;text-align:center;position:relative}
+  .badge-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .sticker{
+    font-weight:700;font-size:10px;letter-spacing:.8px;border:2.5px solid var(--ink);
+    padding:5px 10px;border-radius:999px;box-shadow:var(--shadow-sm);text-transform:uppercase;
+  }
+  .st-1{background:var(--lime);transform:rotate(-3deg)}
+  .st-2{background:var(--pink);color:#fff;transform:rotate(2deg)}
+  .st-3{background:#fff;transform:rotate(-1deg)}
+  .hero h2{
+    font-family:'Unbounded';font-weight:900;
+    font-size:clamp(1.5rem,5.5vw,4.4rem);line-height:1.08;letter-spacing:-1px;
+  }
+  .hl{
+    display:inline-block;background:var(--yellow);border:3px solid var(--ink);
+    padding:.05em .2em;border-radius:12px;box-shadow:var(--shadow-sm);transform:rotate(-1.5deg);
+  }
+  .hl2{background:var(--blue);color:#fff;transform:rotate(1.5deg)}
+  .hero p.sub{max-width:620px;margin:14px auto 0;font-size:13px;color:#4a4757;font-weight:500;line-height:1.5}
+  .hero-stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .stat{
+    background:#fff;border:2.5px solid var(--ink);border-radius:14px;box-shadow:var(--shadow-sm);
+    padding:10px 14px;min-width:95px;
+  }
+  .stat b{font-family:'Unbounded';font-size:20px;display:block}
+  .stat span{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#6b6878}
+  .floaty{position:absolute;font-size:32px;animation:floaty 5s ease-in-out infinite;pointer-events:none;filter:drop-shadow(3px 3px 0 rgba(22,21,26,.15))}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+
+  /* ===== STEPS ===== */
+  .steps{max-width:1100px;margin:24px auto 10px;padding:0 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+  .step{
+    background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:14px;
+    box-shadow:var(--shadow-sm);position:relative;transition:transform .15s;
+  }
+  .step:hover{transform:translateY(-4px) rotate(-.6deg)}
+  .step .num{
+    width:32px;height:32px;border-radius:9px;border:2.5px solid var(--ink);
+    display:grid;place-items:center;font-family:'Unbounded';font-weight:900;font-size:14px;
+    margin-bottom:8px;box-shadow:3px 3px 0 var(--ink);
+  }
+  .step:nth-child(1) .num{background:var(--pink);color:#fff}
+  .step:nth-child(2) .num{background:var(--yellow)}
+  .step:nth-child(3) .num{background:var(--blue);color:#fff}
+  .step:nth-child(4) .num{background:var(--green);color:#fff}
+  .step h4{font-family:'Unbounded';font-size:12px;margin-bottom:4px}
+  .step p{font-size:11.5px;color:#575463;font-weight:500;line-height:1.4}
+
+  /* ===== PORTAL ===== */
+  .portal{max-width:1100px;margin:28px auto 50px;padding:0 14px}
+  .portal-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .portal-head h3{font-family:'Unbounded';font-weight:900;font-size:clamp(1.1rem,3vw,2rem)}
+  .portal-head .tagline{font-size:11px;font-weight:700;background:var(--lime);border:2.5px solid var(--ink);padding:4px 10px;border-radius:999px;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;max-width:100%}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    font-family:'Space Grotesk';font-weight:700;font-size:11px;cursor:pointer;
+    border:2.5px solid var(--ink);border-radius:999px;background:#fff;padding:7px 12px;
+    box-shadow:3px 3px 0 var(--ink);transition:all .13s;white-space:nowrap;flex-shrink:0;
+  }
+  .chip:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+  .chip:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .chip.active{background:var(--ink);color:var(--lime)}
+  .search-wrap{position:relative;width:100%}
+  .search-wrap input{
+    font-family:'Space Grotesk';font-weight:600;font-size:13px;
+    border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px 10px 36px;width:100%;
+    background:#fff;box-shadow:3px 3px 0 var(--ink);outline:none;
+  }
+  .search-wrap input:focus{box-shadow:4px 4px 0 var(--blue);border-color:var(--blue)}
+  .search-wrap::before{content:'🔍';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
+  .card{
+    background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:12px;
+    box-shadow:var(--shadow-sm);display:flex;flex-direction:column;
+    transition:transform .15s, box-shadow .15s;animation:popin .4s backwards;
+  }
+  @keyframes popin{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1}}
+  .card:hover{transform:translate(-3px,-3px) rotate(-.5deg);box-shadow:7px 7px 0 var(--ink)}
+  .card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .tag{
+    font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    background:var(--c,var(--yellow));border:2px solid var(--ink);border-radius:999px;
+    padding:3px 8px;box-shadow:2px 2px 0 var(--ink);
+  }
+  .ico{font-size:22px;filter:drop-shadow(2px 2px 0 rgba(22,21,26,.15))}
+  .code{font-family:'Unbounded';font-weight:900;font-size:clamp(1rem,1.8vw,1.3rem);letter-spacing:-.5px;word-break:break-word}
+  .full{font-size:11px;font-weight:600;color:#6b6878;margin-top:3px;min-height:15px;line-height:1.3}
+  .dash{border-top:2px dashed rgba(22,21,26,.28);margin:10px 0}
+  .btn-open{
+    font-family:'Unbounded';font-weight:700;font-size:10.5px;cursor:pointer;
+    background:var(--c,var(--yellow));border:2.5px solid var(--ink);border-radius:11px;
+    padding:10px;box-shadow:3px 3px 0 var(--ink);transition:all .12s;margin-top:auto;
+  }
+  .btn-open:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+  .btn-open:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .empty{
+    text-align:center;padding:40px 16px;border:2.5px dashed var(--ink);border-radius:18px;
+    background:#fff8;font-weight:600;font-size:14px;
+  }
+  .note-strip{
+    margin-top:24px;background:var(--ink);color:var(--cream);border-radius:16px;
+    padding:14px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+    font-weight:600;font-size:12px;box-shadow:var(--shadow);
+  }
+  .note-strip .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);flex:none}
+
+  /* ===== MODAL ===== */
+  .overlay{
+    position:fixed;inset:0;background:rgba(22,21,26,.55);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:150;padding:16px;
+  }
+  .overlay.show{display:flex;animation:fadein .2s}
+  @keyframes fadein{from{opacity:0}}
+  .modal{
+    background:#fff;border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);
+    max-width:400px;width:100%;padding:24px 20px;position:relative;animation:popmodal .3s cubic-bezier(.2,1.4,.4,1);
+  }
+  @keyframes popmodal{from{transform:scale(.8) rotate(-2deg);opacity:0}}
+  .modal.shake{animation:shake .45s}
+  @keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+  .modal .close{
+    position:absolute;top:-14px;right:-12px;width:38px;height:38px;border-radius:50%;
+    background:var(--pink);color:#fff;border:2.5px solid var(--ink);font-size:16px;font-weight:900;
+    cursor:pointer;box-shadow:3px 3px 0 var(--ink);font-family:'Space Grotesk';
+  }
+  .modal .m-emoji{font-size:36px;text-align:center}
+  .modal h3{font-family:'Unbounded';font-weight:900;font-size:18px;text-align:center;margin-top:6px}
+  .modal .m-sub{text-align:center;font-size:11.5px;font-weight:600;color:#6b6878;margin-top:3px}
+  .otp{display:flex;gap:6px;justify-content:center;margin:18px 0 6px}
+  .otp input{
+    width:42px;height:52px;text-align:center;font-family:'Unbounded';font-weight:900;font-size:20px;
+    border:2.5px solid var(--ink);border-radius:11px;outline:none;text-transform:uppercase;
+    background:#fff;transition:all .12s;
+  }
+  .otp input:focus{border-color:var(--blue);box-shadow:3px 3px 0 var(--blue);transform:translateY(-2px)}
+  .otp input.filled{background:var(--lime)}
+  .m-hint{text-align:center;font-size:10.5px;font-weight:600;color:#8a8794;margin-bottom:14px}
+  .m-msg{text-align:center;font-weight:700;font-size:12.5px;min-height:20px;margin-bottom:8px}
+  .m-msg.err{color:#e0356b}
+  .m-msg.ok{color:#1d9e4d}
+  .m-btn{
+    width:100%;font-family:'Unbounded';font-weight:900;font-size:13px;cursor:pointer;
+    background:var(--lime);border:2.5px solid var(--ink);border-radius:13px;padding:13px;
+    box-shadow:var(--shadow-sm);transition:all .12s;
+  }
+  .m-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+  .m-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .m-btn:disabled{opacity:.6;cursor:not-allowed}
+  .success-panel{display:none;text-align:center;padding:8px 0}
+  .success-panel .big{font-size:46px}
+  .success-panel h4{font-family:'Unbounded';font-size:17px;margin:6px 0 3px}
+  .success-panel p{font-size:12px;font-weight:600;color:#575463;margin-bottom:14px;line-height:1.4}
+
+  /* ===== CONFETTI & FOOTER ===== */
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:300;overflow:hidden}
+  #confetti i{position:absolute;top:-24px;border-radius:3px;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(108vh) rotate(760deg)}}
+  footer{
+    background:var(--ink);color:var(--cream);text-align:center;padding:28px 16px;margin-top:16px;
+    border-top:4px solid var(--lime);
+  }
+  footer b{font-family:'Unbounded';font-size:13px;display:block;margin-bottom:6px}
+  footer p{font-size:11.5px;font-weight:500;color:#b9b5c7;margin:2px 0;line-height:1.4}
+  footer .heart{color:var(--pink)}
+
+  @media(max-width:640px){
+    .floaty{display:none}
+    .steps{display:none}
+    .brand h1{font-size:10px}
+    .brand small{font-size:8px}
+    .logo{width:36px;height:36px;font-size:18px}
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="brand">
+    <div class="logo">🩺</div>
+    <h1>SMKS KESEHATAN SDM SUMEDANG
+      <small>Portal Soal UTS • 2026/2027</small>
+    </h1>
+  </div>
+  <button class="sound-btn" id="soundBtn">🔊 SFX</button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="floaty" style="top:30px;left:4%">📚</span>
+  <span class="floaty" style="top:100px;right:6%;animation-delay:1s">✏️</span>
+  <span class="floaty" style="bottom:20px;left:8%;animation-delay:2s">🧠</span>
+  <span class="floaty" style="bottom:50px;right:10%;animation-delay:.5s">💊</span>
+
+  <div class="badge-row">
+    <span class="sticker st-1">✨ UTS GENAP</span>
+    <span class="sticker st-2">🔑 Token 6 Digit</span>
+    <span class="sticker st-3">😤 Anti Nyontek</span>
+  </div>
+  <h2>PORTAL SOAL <span class="hl">UTS</span><br><span class="hl hl2">2026/2027</span></h2>
+  <p class="sub">Pilih kelasmu, masukin token dari pengawas, dan langsung gas kerjain. Jujur itu keren! 🤝</p>
+  <div class="hero-stats">
+    <div class="stat"><b id="statSoal">0</b><span>Soal</span></div>
+    <div class="stat"><b id="statKelas">0</b><span>Kelas</span></div>
+    <div class="stat"><b>6</b><span>Digit</span></div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps">
+  <div class="step"><div class="num">1</div><h4>Pilih Kelas 🏫</h4><p>Klik chip kelas sesuai jurusanmu.</p></div>
+  <div class="step"><div class="num">2</div><h4>Klik Mapel 📖</h4><p>Tekan "Buka Soal" pada mapel yang diujikan.</p></div>
+  <div class="step"><div class="num">3</div><h4>Masukin Token 🔑</h4><p>Ketik 6 huruf token dari pengawas.</p></div>
+  <div class="step"><div class="num">4</div><h4>Gas Kerjain 🚀</h4><p>Soal terbuka, kerjakan mandiri!</p></div>
+</section>
+
+<!-- PORTAL -->
+<section class="portal" id="portal">
+  <div class="portal-head">
+    <h3>Pilih Mapel 👇</h3>
+    <span class="tagline">klik!</span>
+  </div>
+  <div class="controls">
+    <div class="chips" id="chips"></div>
+    <div class="search-wrap"><input type="text" id="searchInput" placeholder="Cari mapel..."></div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="emptyState" style="display:none">Yahh, nggak ada soal 😭 Coba kata kunci lain!</div>
+  <div class="note-strip">
+    <span class="dot"></span> Token dari pengawas saat ujian.
+    <span class="dot"></span> Jangan share tokenmu! 🔐
+  </div>
+</section>
+
+<!-- MODAL TOKEN -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <button class="close" id="closeModal">✕</button>
+    <div id="formPanel">
+      <div class="m-emoji" id="mEmoji">📖</div>
+      <h3 id="mTitle">MAPEL</h3>
+      <p class="m-sub" id="mSub">Kelas</p>
+      <div class="otp" id="otp">
+        <input maxlength="1" autocomplete="off" aria-label="digit 1">
+        <input maxlength="1" autocomplete="off" aria-label="digit 2">
+        <input maxlength="1" autocomplete="off" aria-label="digit 3">
+        <input maxlength="1" autocomplete="off" aria-label="digit 4">
+        <input maxlength="1" autocomplete="off" aria-label="digit 5">
+        <input maxlength="1" autocomplete="off" aria-label="digit 6">
+      </div>
+      <p class="m-hint">Masukkan 6 HURUF token (contoh: ABCDEF)</p>
+      <p class="m-msg" id="mMsg"></p>
+      <button class="m-btn" id="submitToken">BUKA SOAL 🚀</button>
+    </div>
+    <div class="success-panel" id="successPanel">
+      <div class="big">🎉</div>
+      <h4>TOKEN BENAR!</h4>
+      <p id="successText">Semoga sukses, bestie! ✨</p>
+      <button class="m-btn" id="goSoal">GAS KE SOAL ▶</button>
+    </div>
+  </div>
+</div>
+
+<div id="confetti"></div>
+
+<footer>
+  <b>SMKS KESEHATAN SDM SUMEDANG</b>
+  <p>Portal Soal UTS • Tahun Pelajaran 2026/2027</p>
+  <p>Jujur = Keren. Selamat mengerjakan! <span class="heart">💚</span></p>
+  <p style="margin-top:10px;font-size:10px;opacity:.6">© 2027 SMKS Kesehatan SDM Sumedang</p>
+</footer>
+
+<script>
+/* ============================================================
+   DATABASE SOAL  —  Format: Kelas | Mapel | Link | Token
+   ============================================================ */
+const DB = [
+  // ===== X KEPERAWATAN =====
+  {kelas:"X Keperawatan", mapel:"ANFIS",   nama:"Anatomi & Fisiologi",            icon:"🫀", link:"https://forms.gle/1eEu4XfFTc8rZmiM8", token:"FSAVZS"},
+  {kelas:"X Keperawatan", mapel:"IKM",     nama:"Ilmu Kesehatan Masyarakat",      icon:"🏥", link:"https://forms.gle/jL2ksWeU6KrFctVg6", token:"QKZVMP"},
+  {kelas:"X Keperawatan", mapel:"INDO",    nama:"Bahasa Indonesia",               icon:"📖", link:"https://forms.gle/Sjcu9oBrKYPvGN7i7", token:"RXTWLA"},
+  {kelas:"X Keperawatan", mapel:"INGGRIS", nama:"Bahasa Inggris",                 icon:"🌍", link:"https://forms.gle/RvcwWfkCSD2tCyzu6", token:"BNDFQH"},
+  {kelas:"X Keperawatan", mapel:"KDK",     nama:"Kebutuhan Dasar Keperawatan",    icon:"🩺", link:"https://forms.gle/gvU8oQHYdmRvvATf7", token:"YCPMJS"},
+  {kelas:"X Keperawatan", mapel:"KDTK",    nama:"Kebutuhan Dasar Tindakan Kep.",  icon:"💉", link:"https://forms.gle/XzYSsihZy5VPf4Us7", token:"VHZKRN"},
+  {kelas:"X Keperawatan", mapel:"KOMTER",  nama:"Komunikasi Terapeutik",          icon:"💬", link:"https://forms.gle/DtKs6XDPQboej2zZ9", token:"LQAXTD"},
+  {kelas:"X Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",     icon:"🙏", link:"https://forms.gle/PSXCNzZmLrbhRkDZ8", token:"GMWEPU"},
+  // ===== XI KEPERAWATAN =====
+  {kelas:"XI Keperawatan", mapel:"FARKOL",  nama:"Farmakologi",                   icon:"💊", link:"https://forms.gle/QqECQAeHnkbwg1sj7", token:"HDPLYA"},
+  {kelas:"XI Keperawatan", mapel:"INDO",    nama:"Bahasa Indonesia",              icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"JVMWQK"},
+  {kelas:"XI Keperawatan", mapel:"INGGRIS", nama:"Bahasa Inggris",                icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"SZCXBN"},
+  {kelas:"XI Keperawatan", mapel:"IP",      nama:"Ilmu Penyakit",                 icon:"🦠", link:"https://forms.gle/cWutHJJWP7fk6Mme6", token:"PFYRTG"},
+  {kelas:"XI Keperawatan", mapel:"KDM",     nama:"Kebutuhan Dasar Manusia",       icon:"🛏️", link:"https://forms.gle/MfuJyuJd1LH1kZur7", token:"UAWLKD"},
+  {kelas:"XI Keperawatan", mapel:"KEPJIWA", nama:"Keperawatan Jiwa",              icon:"🧠", link:"https://forms.gle/fZGfxGe4nEPG24Ay5", token:"MQBXHE"},
+  {kelas:"XI Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",    icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"NRTZVP"},
+  // ===== XII KEPERAWATAN =====
+  {kelas:"XII Keperawatan", mapel:"FARKOL",  nama:"Farmakologi",                  icon:"💊", link:"https://forms.gle/uejNKvKPERek49BW7", token:"WPLQAX"},
+  {kelas:"XII Keperawatan", mapel:"IP",      nama:"Ilmu Penyakit",                icon:"🦠", link:"https://forms.gle/JdduFZSAP6nBae2E6", token:"ZHDKMN"},
+  {kelas:"XII Keperawatan", mapel:"KEPJIWA", nama:"Keperawatan Jiwa",             icon:"🧠", link:"https://forms.gle/zJzE1NaUSJqxZVQC6", token:"KRTYUP"},
+  {kelas:"XII Keperawatan", mapel:"MTK",     nama:"Matematika",                   icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"BVNQWE"},
+  {kelas:"XII Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",   icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"LMZXCV"},
+  // ===== X FARMASI =====
+  {kelas:"X Farmasi", mapel:"DASFAR",  nama:"Dasar-Dasar Farmasi",                icon:"⚗️", link:"https://forms.gle/nvS6DPpeD3Wjvipe9", token:"WQFHDK"},
+  {kelas:"X Farmasi", mapel:"INDO",    nama:"Bahasa Indonesia",                   icon:"📖", link:"https://forms.gle/VMSaNS7YzFFHpNpZA", token:"AXPLMQ"},
+  {kelas:"X Farmasi", mapel:"INGGRIS", nama:"Bahasa Inggris",                     icon:"🌍", link:"https://forms.gle/dmfPiB5kReojquii6", token:"RZVNBS"},
+  {kelas:"X Farmasi", mapel:"ISO",     nama:"Ilmu Sediaan Obat",                  icon:"🧪", link:"https://forms.gle/5bhxPkcxFZfZcKf59", token:"CKTWYE"},
+  {kelas:"X Farmasi", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",         icon:"🙏", link:"https://forms.gle/PSXCNzZmLrbhRkDZ8", token:"UJDHQP"},
+  {kelas:"X Farmasi", mapel:"UUK",     nama:"Undang-Undang Kesehatan",            icon:"⚖️", link:"https://forms.gle/RmQ6L61kvQpLPX1u7", token:"NMVXZL"},
+  // ===== XI FARMASI =====
+  {kelas:"XI Farmasi", mapel:"FARKOL",  nama:"Farmakologi",                       icon:"💊", link:"https://forms.gle/RhVrwhUb54UYiHbW7", token:"SLDKMX"},
+  {kelas:"XI Farmasi", mapel:"INGGRIS", nama:"Bahasa Inggris",                    icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"GHBNVC"},
+  {kelas:"XI Farmasi", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",        icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"FQAZWP"},
+  // ===== XII FARMASI =====
+  {kelas:"XII Farmasi", mapel:"FARKOL", nama:"Farmakologi",                       icon:"💊", link:"https://forms.gle/fHEEHokr7hdwddmC9", token:"ZQCVBN"},
+  {kelas:"XII Farmasi", mapel:"INDO",   nama:"Bahasa Indonesia",                  icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"AQSDGF"},
+  {kelas:"XII Farmasi", mapel:"ISO",    nama:"Ilmu Sediaan Obat",                 icon:"🧪", link:"https://forms.gle/yPq3FR31QmkxRxC29", token:"QWRTYX"},
+  {kelas:"XII Farmasi", mapel:"MTK",    nama:"Matematika",                        icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"PLMQKN"},
+  {kelas:"XII Farmasi", mapel:"PABP",   nama:"Pend. Agama & Budi Pekerti",        icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"IJKHGF"},
+  {kelas:"XII Farmasi", mapel:"PELFAR", nama:"Pengelolaan & Pelayanan Farmasi",   icon:"🏪", link:"https://forms.gle/7ezMaccNZ2knoUbv5", token:"MNBVXC"},
+  // ===== XI TLM =====
+  {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"HEMATOLOGI",   nama:"Hematologi",                     icon:"🩸", link:"https://forms.gle/DE3pLgJh3BKPi8pA6", token:"TREWQZ"},
+  {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"INGGRIS",      nama:"Bahasa Inggris",                 icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"YUIOPL"},
+  {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"KIMIAKLINIK",  nama:"Kimia Klinik",                   icon:"🧫", link:"https://forms.gle/bk3Hi3mUoEwRJaMb6", token:"KJHGFD"},
+  {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"PABP",         nama:"Pend. Agama & Budi Pekerti",     icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"VBNMAS"},
+  {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"MAN.PEL.LAB",  nama:"Manajemen Pelayanan Lab",        icon:"🔬", link:"https://forms.gle/mbFDq5wKtuNBBo3R9", token:"CXZLKP"},
+  // ===== XII TLM =====
+  {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"HEMATOLOGI",  nama:"Hematologi",                    icon:"🩸", link:"https://forms.gle/VSwrJZRPtuVxMny16", token:"ZXCVBN"},
+  {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"INDO",        nama:"Bahasa Indonesia",              icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"POIUYT"},
+  {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"K3LH LAB",    nama:"K3 & Lingkungan Hidup Lab",     icon:"🥽", link:"https://forms.gle/htC74RFUG2bNPKTQ9", token:"LKJHFG"},
+  {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"KIMIAKLINIK", nama:"Kimia Klinik",                  icon:"🧫", link:"https://forms.gle/oYXMjRhnU5g6mWU7A", token:"MNBVCX"},
+  {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"MTK",         nama:"Matematika",                    icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"QAZWSX"},
+  {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"PABP",        nama:"Pend. Agama & Budi Pekerti",    icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"EDCRFV"},
+  // ===== XI TATA KECANTIKAN =====
+  {kelas:"XI Tata Kecantikan", mapel:"INDO",    nama:"Bahasa Indonesia",          icon:"📖", link:"https://forms.gle/rf1hgze5EUz6ot3u5", token:"PLMOKN"},
+  {kelas:"XI Tata Kecantikan", mapel:"INGGRIS", nama:"Bahasa Inggris",            icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"IJNHBG"},
+  // ===== XII TATA KECANTIKAN =====
+  {kelas:"XII Tata Kecantikan", mapel:"INDO", nama:"Bahasa Indonesia",            icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"OKMPLM"},
+  {kelas:"XII Tata Kecantikan", mapel:"MTK",  nama:"Matematika",                  icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"QWASZX"},
+  {kelas:"XII Tata Kecantikan", mapel:"PABP", nama:"Pend. Agama & Budi Pekerti",  icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"EDCVFR"},
+];
+
+const MAJOR_COLOR = {
+  "Keperawatan":"var(--pink)", "Farmasi":"var(--green)",
+  "Teknologi Laboratorium Medik":"var(--blue)", "Tata Kecantikan":"var(--purple)"
+};
+const majorOf = k => Object.keys(MAJOR_COLOR).find(m => k.includes(m)) || "";
+const labelOf = item => item.short || item.kelas;
+
+/* ============================================================
+   SOUND EFFECTS  (Web Audio API — tanpa file eksternal)
+   ============================================================ */
+const SFX = {
+  ctx:null, on:true, lastHover:0,
+  ensure(){
+    if(!this.ctx){ try{ this.ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+    if(this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  tone(freq, dur=0.08, type='sine', vol=0.05, delay=0){
+    if(!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime + delay;
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(this.ctx.destination);
+    o.start(t); o.stop(t + dur + 0.05);
+  },
+  hover(){ const now=Date.now(); if(now-this.lastHover<70) return; this.lastHover=now; this.tone(620,0.05,'sine',0.025); },
+  click(){ this.tone(340,0.07,'square',0.05); this.tone(520,0.09,'square',0.04,0.05); },
+  type(){ this.tone(760 + Math.random()*120, 0.035, 'triangle', 0.04); },
+  success(){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>this.tone(f,0.16,'triangle',0.06,i*0.09)); },
+  error(){ this.tone(170,0.22,'sawtooth',0.06); this.tone(120,0.3,'sawtooth',0.06,0.12); }
+};
+document.addEventListener('pointerdown', ()=>SFX.ensure());
+document.addEventListener('mouseover', e=>{
+  if(e.target.closest('.chip,.btn-open,.m-btn,.sound-btn,.card')) SFX.hover();
+});
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+(function(){
+  const items = ["PORTAL SOAL UTS 2026/2027","SMKS KESEHATAN SDM SUMEDANG","GOOD LUCK BESTIE ✨",
+                 "TOKEN 6 DIGIT 🔑","JUJUR ITU KEREN 😤","NO NYONTEK-NO CRY 📝","SEMANGAT UJIAN! 🔥"];
+  const half = items.map(t=>`<span>★ ${t}</span>`).join('');
+  document.getElementById('tickerTrack').innerHTML = half + half;
+})();
+
+/* ============================================================
+   SOUND TOGGLE
+   ============================================================ */
+const soundBtn = document.getElementById('soundBtn');
+soundBtn.addEventListener('click', ()=>{
+  SFX.ensure();
+  SFX.on = !SFX.on;
+  soundBtn.textContent = SFX.on ? '🔊 SFX' : '🔇 SFX';
+  soundBtn.classList.toggle('off', !SFX.on);
+  if(SFX.on) SFX.click();
+});
+
+/* ============================================================
+   FILTER CHIPS + SEARCH + RENDER
+   ============================================================ */
+const kelasList = [...new Set(DB.map(d=>d.kelas))];
+let activeKelas = 'ALL', query = '';
+
+const chipsEl = document.getElementById('chips');
+function buildChips(){
+  const mk = (val,label,count)=>{
+    const b=document.createElement('button');
+    b.className='chip'+(val===activeKelas?' active':''); b.dataset.kelas=val;
+    b.innerHTML=`${label} <small style="opacity:.7">(${count})</small>`;
+    b.addEventListener('click',()=>{ SFX.ensure(); SFX.click(); activeKelas=val; buildChips(); render(); });
+    return b;
+  };
+  chipsEl.innerHTML='';
+  chipsEl.appendChild(mk('ALL','✨ Semua', DB.length));
+  kelasList.forEach(k=>{
+    const short = DB.find(d=>d.kelas===k).short || k;
+    chipsEl.appendChild(mk(k, short, DB.filter(d=>d.kelas===k).length));
+  });
+}
+
+const grid = document.getElementById('grid'), emptyState = document.getElementById('emptyState');
+function render(){
+  const list = DB.filter(d=>
+    (activeKelas==='ALL' || d.kelas===activeKelas) &&
+    (d.mapel+' '+d.nama+' '+d.kelas).toLowerCase().includes(query)
+  );
+  emptyState.style.display = list.length ? 'none':'block';
+  grid.innerHTML = list.map((d,i)=>{
+    const c = MAJOR_COLOR[majorOf(d.kelas)] || 'var(--yellow)';
+    return `<article class="card" style="--c:${c};animation-delay:${i*0.04}s">
+      <div class="card-top">
+        <span class="tag">${labelOf(d)}</span><span class="ico">${d.icon}</span>
+      </div>
+      <h3 class="code">${d.mapel}</h3>
+      <p class="full">${d.nama}</p>
+      <div class="dash"></div>
+      <button class="btn-open" data-i="${DB.indexOf(d)}">🔒 BUKA SOAL</button>
+    </article>`;
+  }).join('');
+  grid.querySelectorAll('.btn-open').forEach(b=>{
+    b.addEventListener('click',()=>{ SFX.click(); openModal(DB[+b.dataset.i]); });
+  });
+}
+document.getElementById('searchInput').addEventListener('input', e=>{
+  query = e.target.value.trim().toLowerCase(); render();
+});
+
+/* ============================================================
+   STATS
+   ============================================================ */
+function countUp(el, target){
+  let n=0; const step=Math.max(1, Math.round(target/40));
+  const iv=setInterval(()=>{ n+=step; if(n>=target){n=target;clearInterval(iv);} el.textContent=n; }, 30);
+}
+countUp(document.getElementById('statSoal'), DB.length);
+countUp(document.getElementById('statKelas'), kelasList.length);
+
+/* ============================================================
+   MODAL TOKEN (OTP 6 digit)
+   ============================================================ */
+const overlay=document.getElementById('overlay'), modal=document.getElementById('modal');
+const inputs=[...document.querySelectorAll('#otp input')];
+const mMsg=document.getElementById('mMsg');
+let current=null;
+
+function openModal(item){
+  current=item;
+  document.getElementById('mEmoji').textContent=item.icon;
+  document.getElementById('mTitle').textContent=item.mapel;
+  document.getElementById('mSub').textContent=item.kelas+' • '+item.nama;
+  mMsg.textContent=''; mMsg.className='m-msg';
+  inputs.forEach(i=>{i.value=''; i.classList.remove('filled');});
+  document.getElementById('formPanel').style.display='block';
+  document.getElementById('successPanel').style.display='none';
+  overlay.classList.add('show');
+  setTimeout(()=>inputs[0].focus(),120);
+}
+function closeModal(){ overlay.classList.remove('show'); current=null; }
+document.getElementById('closeModal').addEventListener('click',()=>{ SFX.click(); closeModal(); });
+overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+inputs.forEach((inp,idx)=>{
+  inp.addEventListener('input', ()=>{
+    inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
+    inp.classList.toggle('filled', !!inp.value);
+    if(inp.value){ SFX.ensure(); SFX.type(); if(inputs[idx+1]) inputs[idx+1].focus(); }
+    if(idx===5 && inputs.every(i=>i.value)) setTimeout(verify, 200);
+  });
+  inp.addEventListener('keydown', e=>{
+    if(e.key==='Backspace' && !inp.value && inputs[idx-1]) inputs[idx-1].focus();
+    if(e.key==='Enter') verify();
+  });
+  inp.addEventListener('paste', e=>{
+    e.preventDefault();
+    const txt=(e.clipboardData.getData('text').toUpperCase().match(/[A-Z]/g)||[]).slice(0,6);
+    txt.forEach((ch,i)=>{ if(inputs[i]){ inputs[i].value=ch; inputs[i].classList.add('filled'); }});
+    if(inputs[Math.min(txt.length,5)]) inputs[Math.min(txt.length,5)].focus();
+    if(txt.length===6) setTimeout(verify,200);
+  });
+});
+
+function verify(){
+  if(!current) return;
+  const code = inputs.map(i=>i.value).join('');
+  if(code.length<6){ mMsg.textContent='Token-nya masih kurang hurufnya 👀'; mMsg.className='m-msg err'; return; }
+  if(code === current.token){
+    SFX.success(); confetti();
+    mMsg.textContent='✅ Token benar!'; mMsg.className='m-msg ok';
+    document.getElementById('successText').textContent =
+      `Soal ${current.mapel} (${current.kelas}) siap dibuka. Semangat, bestie! ✨`;
+    setTimeout(()=>{
+      document.getElementById('formPanel').style.display='none';
+      document.getElementById('successPanel').style.display='block';
+    }, 650);
+  } else {
+    SFX.error();
+    mMsg.textContent='❌ Token salah, cek lagi bestie!'; mMsg.className='m-msg err';
+    modal.classList.remove('shake'); void modal.offsetWidth; modal.classList.add('shake');
+    inputs.forEach(i=>{ i.value=''; i.classList.remove('filled'); });
+    inputs[0].focus();
+  }
+}
+document.getElementById('submitToken').addEventListener('click', ()=>{ SFX.click(); verify(); });
+document.getElementById('goSoal').addEventListener('click', ()=>{
+  SFX.click();
+  if(current) window.open(current.link, '_blank');
+  closeModal();
+});
+
+/* ============================================================
+   CONFETTI 🎉
+   ============================================================ */
+function confetti(){
+  const wrap=document.getElementById('confetti');
+  const colors=['#FF6B9D','#FFD93D','#6BCB77','#4D96FF','#B983FF','#C6F432'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('i');
+    const s=6+Math.random()*9;
+    p.style.left=Math.random()*100+'vw';
+    p.style.width=s+'px'; p.style.height=(s*1.5)+'px';
+    p.style.background=colors[i%colors.length];
+    p.style.animationDuration=(1.4+Math.random()*1.6)+'s';
+    p.style.animationDelay=(Math.random()*0.35)+'s';
+    wrap.appendChild(p);
+    setTimeout(()=>p.remove(), 3400);
+  }
+}
+
+/* INIT */
+buildChips();
+render();
+</script>
+</body>
+</html>
