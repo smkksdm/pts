@@ -361,8 +361,8 @@
 
 <script>
 /* ============================================================
-   DATABASE SOAL V2  —  Format: Kelas | Mapel | Token | Link
-   Update: + PABP (XI Tata Kecantikan) → total 52 soal
+   DATABASE SOAL V3  —  Format: Kelas | Mapel | Token | Link
+   Update: + PJOK X & XI (semua jurusan) → total 60 soal
    ============================================================ */
 const DB = [
   // ===== X KEPERAWATAN =====
@@ -374,6 +374,7 @@ const DB = [
   {kelas:"X Keperawatan", mapel:"KDTK",    nama:"Kebutuhan Dasar Tindakan Kep.",  icon:"💉", link:"https://forms.gle/XzYSsihZy5VPf4Us7", token:"VHZKRN"},
   {kelas:"X Keperawatan", mapel:"KOMTER",  nama:"Komunikasi Terapeutik",          icon:"💬", link:"https://forms.gle/DtKs6XDPQboej2zZ9", token:"LQAXTD"},
   {kelas:"X Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",     icon:"🙏", link:"https://forms.gle/PSXCNzZmLrbhRkDZ8", token:"GMWEPU"},
+  {kelas:"X Keperawatan", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
   // ===== XI KEPERAWATAN =====
   {kelas:"XI Keperawatan", mapel:"FARKOL",  nama:"Farmakologi",                   icon:"💊", link:"https://forms.gle/QqECQAeHnkbwg1sj7", token:"HDPLYA"},
   {kelas:"XI Keperawatan", mapel:"INDO",    nama:"Bahasa Indonesia",              icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"JVMWQK"},
@@ -382,6 +383,7 @@ const DB = [
   {kelas:"XI Keperawatan", mapel:"KDM",     nama:"Kebutuhan Dasar Manusia",       icon:"🛏️", link:"https://forms.gle/MfuJyuJd1LH1kZur7", token:"UAWLKD"},
   {kelas:"XI Keperawatan", mapel:"KEPJIWA", nama:"Keperawatan Jiwa",              icon:"🧠", link:"https://forms.gle/fZGfxGe4nEPG24Ay5", token:"MQBXHE"},
   {kelas:"XI Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",    icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"NRTZVP"},
+  {kelas:"XI Keperawatan", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
   // ===== XII KEPERAWATAN =====
   {kelas:"XII Keperawatan", mapel:"FARKOL",  nama:"Farmakologi",                  icon:"💊", link:"https://forms.gle/uejNKvKPERek49BW7", token:"WPLQAX"},
   {kelas:"XII Keperawatan", mapel:"IP",      nama:"Ilmu Penyakit",                icon:"🦠", link:"https://forms.gle/JdduFZSAP6nBae2E6", token:"ZHDKMN"},
@@ -395,10 +397,12 @@ const DB = [
   {kelas:"X Farmasi", mapel:"ISO",     nama:"Ilmu Sediaan Obat",                  icon:"🧪", link:"https://forms.gle/5bhxPkcxFZfZcKf59", token:"CKTWYE"},
   {kelas:"X Farmasi", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",         icon:"🙏", link:"https://forms.gle/PSXCNzZmLrbhRkDZ8", token:"UJDHQP"},
   {kelas:"X Farmasi", mapel:"UUK",     nama:"Undang-Undang Kesehatan",            icon:"⚖️", link:"https://forms.gle/RmQ6L61kvQpLPX1u7", token:"NMVXZL"},
+  {kelas:"X Farmasi", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan",     icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
   // ===== XI FARMASI =====
   {kelas:"XI Farmasi", mapel:"FARKOL",  nama:"Farmakologi",                       icon:"💊", link:"https://forms.gle/RhVrwhUb54UYiHbW7", token:"SLDKMX"},
   {kelas:"XI Farmasi", mapel:"INGGRIS", nama:"Bahasa Inggris",                    icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"GHBNVC"},
   {kelas:"XI Farmasi", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",        icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"FQAZWP"},
+  {kelas:"XI Farmasi", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan",    icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
   // ===== XII FARMASI =====
   {kelas:"XII Farmasi", mapel:"FARKOL", nama:"Farmakologi",                       icon:"💊", link:"https://forms.gle/fHEEHokr7hdwddmC9", token:"ZQCVBN"},
   {kelas:"XII Farmasi", mapel:"INDO",   nama:"Bahasa Indonesia",                  icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"AQSDGF"},
@@ -412,6 +416,7 @@ const DB = [
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"KIMIAKLINIK",  nama:"Kimia Klinik",                   icon:"🧫", link:"https://forms.gle/bk3Hi3mUoEwRJaMb6", token:"KJHGFD"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"PABP",         nama:"Pend. Agama & Budi Pekerti",     icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"VBNMAS"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"MAN.PEL.LAB",  nama:"Manajemen Pelayanan Lab",        icon:"🔬", link:"https://forms.gle/mbFDq5wKtuNBBo3R9", token:"CXZLKP"},
+  {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"PJOK",         nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
   // ===== XII TLM =====
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"HEMATOLOGI",  nama:"Hematologi",                    icon:"🩸", link:"https://forms.gle/VSwrJZRPtuVxMny16", token:"ZXCVBN"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"INDO",        nama:"Bahasa Indonesia",              icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"POIUYT"},
@@ -419,14 +424,19 @@ const DB = [
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"KIMIAKLINIK", nama:"Kimia Klinik",                  icon:"🧫", link:"https://forms.gle/oYXMjRhnU5g6mWU7A", token:"MNBVCX"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"MTK",         nama:"Matematika",                    icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"QAZWSX"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"PABP",        nama:"Pend. Agama & Budi Pekerti",    icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"EDCRFV"},
-  // ===== XI TATA KECANTIKAN =====
+  // ===== X TLM =====
+  {kelas:"X Teknologi Laboratorium Medik", short:"X TLM", mapel:"PJOK",            nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
+  // ===== XI TKC =====
   {kelas:"XI Tata Kecantikan", mapel:"INDO",    nama:"Bahasa Indonesia",          icon:"📖", link:"https://forms.gle/rf1hgze5EUz6ot3u5", token:"PLMOKN"},
   {kelas:"XI Tata Kecantikan", mapel:"INGGRIS", nama:"Bahasa Inggris",            icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"IJNHBG"},
   {kelas:"XI Tata Kecantikan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"DJKASF"},
-  // ===== XII TATA KECANTIKAN =====
+  {kelas:"XI Tata Kecantikan", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
+  // ===== XII TKC =====
   {kelas:"XII Tata Kecantikan", mapel:"INDO", nama:"Bahasa Indonesia",            icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"OKMPLM"},
   {kelas:"XII Tata Kecantikan", mapel:"MTK",  nama:"Matematika",                  icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"QWASZX"},
   {kelas:"XII Tata Kecantikan", mapel:"PABP", nama:"Pend. Agama & Budi Pekerti",  icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"EDCVFR"},
+  // ===== X TKC =====
+  {kelas:"X Tata Kecantikan", mapel:"PJOK",  nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
 ];
 
 const MAJOR_COLOR = {
