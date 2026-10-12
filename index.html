@@ -33,13 +33,11 @@
   }
   ::selection{background:var(--lime)}
 
-  /* ===== TICKER ===== */
   .ticker{background:var(--ink);color:var(--lime);overflow:hidden;white-space:nowrap;padding:8px 0;border-bottom:3px solid var(--ink)}
   .ticker-track{display:inline-block;animation:marquee 26s linear infinite;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase}
   .ticker-track span{margin:0 14px}
   @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  /* ===== HEADER ===== */
   header{
     position:sticky;top:0;z-index:90;background:var(--cream);
     border-bottom:3px solid var(--ink);
@@ -74,7 +72,6 @@
   .eq i:nth-child(3){height:8px;animation-delay:.3s}
   @keyframes eq{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
 
-  /* ===== HERO ===== */
   .hero{max-width:1100px;margin:0 auto;padding:32px 14px 20px;text-align:center;position:relative}
   .badge-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
   .sticker{
@@ -104,7 +101,6 @@
   .floaty{position:absolute;font-size:32px;animation:floaty 5s ease-in-out infinite;pointer-events:none;filter:drop-shadow(3px 3px 0 rgba(22,21,26,.15))}
   @keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-18px) rotate(8deg)}}
 
-  /* ===== STEPS ===== */
   .steps{max-width:1100px;margin:24px auto 10px;padding:0 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
   .step{
     background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:14px;
@@ -123,7 +119,6 @@
   .step h4{font-family:'Unbounded';font-size:13px;margin-bottom:4px}
   .step p{font-size:13px;color:#575463;font-weight:500;line-height:1.45}
 
-  /* ===== PORTAL ===== */
   .portal{max-width:1100px;margin:28px auto 50px;padding:0 14px}
   .portal-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
   .portal-head h3{font-family:'Unbounded';font-weight:900;font-size:clamp(1.25rem,3vw,2rem)}
@@ -184,7 +179,6 @@
   }
   .note-strip .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);flex:none}
 
-  /* ===== MODAL ===== */
   .overlay{
     position:fixed;inset:0;background:rgba(22,21,26,.55);backdrop-filter:blur(3px);
     display:none;align-items:center;justify-content:center;z-index:150;padding:16px;
@@ -226,12 +220,149 @@
   .m-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
   .m-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
   .m-btn:disabled{opacity:.6;cursor:not-allowed}
-  .success-panel{display:none;text-align:center;padding:8px 0}
-  .success-panel .big{font-size:48px}
-  .success-panel h4{font-family:'Unbounded';font-size:18px;margin:6px 0 3px}
-  .success-panel p{font-size:13px;font-weight:600;color:#575463;margin-bottom:14px;line-height:1.45}
 
-  /* ===== CONFETTI & FOOTER ===== */
+  .iframe-overlay{
+    position:fixed;inset:0;background:rgba(22,21,26,.85);
+    display:none;flex-direction:column;z-index:200;padding:12px;
+  }
+  .iframe-overlay.show{display:flex;animation:fadein .25s}
+  .iframe-header{
+    background:var(--cream);border:3px solid var(--ink);border-radius:18px;
+    padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;
+    box-shadow:var(--shadow-sm);flex-wrap:wrap;
+  }
+  .iframe-title{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+  .iframe-title .emoji{font-size:22px}
+  .iframe-title b{font-family:'Unbounded';font-size:14px;line-height:1.2;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .iframe-title small{font-size:11px;color:#6b6878;font-weight:600;display:block}
+  .iframe-actions{display:flex;gap:6px;flex-shrink:0}
+  .iframe-btn{
+    font-family:'Space Grotesk';font-weight:700;font-size:11.5px;
+    border:2.5px solid var(--ink);border-radius:999px;background:#fff;
+    padding:8px 12px;cursor:pointer;box-shadow:var(--shadow-sm);
+    transition:all .12s;white-space:nowrap;display:flex;align-items:center;gap:5px;
+  }
+  .iframe-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+  .iframe-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .iframe-btn.primary{background:var(--pink);color:#fff}
+  .iframe-btn.alt{background:var(--blue);color:#fff}
+  .iframe-wrap{
+    flex:1;background:#fff;border:3px solid var(--ink);border-radius:18px;
+    overflow:hidden;position:relative;box-shadow:var(--shadow);min-height:300px;
+  }
+  .iframe-wrap iframe{width:100%;height:100%;border:none;display:block;background:#fff}
+  .iframe-loading{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:#fff;gap:14px;font-weight:700;font-size:14px;
+  }
+  .spinner{
+    width:42px;height:42px;border:4px solid #eee;border-top-color:var(--blue);
+    border-radius:50%;animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .iframe-fallback{
+    display:none;padding:30px 24px;text-align:center;background:#fff;
+  }
+  .iframe-fallback.show{display:block}
+  .iframe-fallback .emoji-big{font-size:50px}
+  .iframe-fallback h4{font-family:'Unbounded';font-size:17px;margin:10px 0 6px}
+  .iframe-fallback p{font-size:13px;color:#575463;font-weight:600;margin-bottom:16px;line-height:1.5}
+  .iframe-fallback .btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .live-badge{
+    display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;
+    background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:999px;
+    padding:3px 8px;letter-spacing:.5px;box-shadow:2px 2px 0 var(--ink);
+  }
+  .live-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:livePulse 1.2s infinite}
+  @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .confirm-overlay{
+    position:fixed;inset:0;
+    background:rgba(22,21,26,.88);
+    backdrop-filter:blur(8px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:16px;
+    animation:fadein .2s;
+  }
+  .confirm-overlay.show{display:flex}
+  .confirm-modal{
+    background:#fff;
+    border:4px solid var(--ink);
+    border-radius:24px;
+    box-shadow:12px 12px 0 var(--ink);
+    max-width:400px;
+    width:100%;
+    padding:32px 26px;
+    position:relative;
+    animation:popmodal .35s cubic-bezier(.2,1.6,.4,1);
+    text-align:center;
+    z-index:10000;
+  }
+  .confirm-modal .confirm-emoji{font-size:56px;margin-bottom:12px;animation:bounce 1s infinite}
+  @keyframes bounce{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+  }
+  .confirm-modal h3{
+    font-family:'Unbounded';font-weight:900;font-size:22px;margin-bottom:10px;
+    color:var(--ink);
+  }
+  .confirm-modal .confirm-sub{
+    font-size:14px;font-weight:600;color:#575463;margin-bottom:24px;line-height:1.55;
+  }
+  .confirm-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .confirm-btn{
+    font-family:'Unbounded';font-weight:800;font-size:14px;cursor:pointer;
+    border:3px solid var(--ink);border-radius:14px;padding:14px 28px;
+    box-shadow:4px 4px 0 var(--ink);transition:all .12s;min-width:120px;
+  }
+  .confirm-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+  .confirm-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .confirm-btn.yes{background:var(--pink);color:#fff}
+  .confirm-btn.no{background:var(--lime);color:var(--ink)}
+
+  .alarm-overlay{
+    position:fixed;inset:0;background:rgba(224,53,107,.95);z-index:999;
+    display:none;align-items:center;justify-content:center;
+    animation:alarmFlash 0.5s infinite;
+  }
+  .alarm-overlay.show{display:flex}
+  @keyframes alarmFlash{
+    0%,100%{background:rgba(224,53,107,.95)}
+    50%{background:rgba(255,217,61,.95)}
+  }
+  .alarm-content{
+    background:#fff;border:4px solid var(--ink);border-radius:24px;
+    padding:40px 30px;text-align:center;box-shadow:10px 10px 0 var(--ink);
+    max-width:420px;animation:alarmShake 0.3s infinite;
+  }
+  @keyframes alarmShake{
+    0%,100%{transform:rotate(-2deg)}
+    50%{transform:rotate(2deg)}
+  }
+  .alarm-emoji{font-size:64px;margin-bottom:16px;animation:alarmPulse 0.5s infinite}
+  @keyframes alarmPulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.2)}
+  }
+  .alarm-title{
+    font-family:'Unbounded';font-weight:900;font-size:28px;color:var(--ink);
+    margin-bottom:12px;letter-spacing:-1px;
+  }
+  .alarm-msg{
+    font-size:15px;font-weight:700;color:#575463;margin-bottom:24px;line-height:1.5;
+  }
+  .alarm-btn{
+    font-family:'Unbounded';font-weight:900;font-size:16px;cursor:pointer;
+    background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:14px;
+    padding:16px 36px;box-shadow:6px 6px 0 var(--ink);transition:all .12s;
+  }
+  .alarm-btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+  .alarm-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:300;overflow:hidden}
   #confetti i{position:absolute;top:-24px;border-radius:3px;animation:fall linear forwards}
   @keyframes fall{to{transform:translateY(108vh) rotate(760deg)}}
@@ -250,17 +381,26 @@
     .brand small{font-size:9px}
     .logo{width:36px;height:36px;font-size:18px}
     .sound-btn{padding:6px 9px;font-size:11px}
+    .iframe-overlay{padding:6px}
+    .iframe-header{padding:8px 10px;gap:8px}
+    .iframe-title b{font-size:12.5px}
+    .iframe-title small{font-size:10px}
+    .iframe-btn{padding:6px 10px;font-size:10.5px}
+    .iframe-actions{width:100%;justify-content:flex-end}
+    .alarm-title{font-size:22px}
+    .alarm-content{padding:30px 20px;margin:16px}
+    .confirm-modal{padding:28px 20px;margin:16px}
+    .confirm-modal h3{font-size:19px}
+    .confirm-btn{padding:12px 22px;font-size:12.5px;min-width:110px}
   }
 </style>
 </head>
 <body>
 
-<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
-<!-- HEADER -->
 <header>
   <div class="brand">
     <div class="logo">🩺</div>
@@ -274,7 +414,6 @@
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <span class="floaty" style="top:30px;left:4%">📚</span>
   <span class="floaty" style="top:100px;right:6%;animation-delay:1s">✏️</span>
@@ -295,15 +434,13 @@
   </div>
 </section>
 
-<!-- STEPS -->
 <section class="steps">
   <div class="step"><div class="num">1</div><h4>Pilih Kelas 🏫</h4><p>Klik chip kelas sesuai jurusanmu.</p></div>
   <div class="step"><div class="num">2</div><h4>Klik Mapel 📖</h4><p>Tekan "Buka Soal" pada mapel yang diujikan.</p></div>
   <div class="step"><div class="num">3</div><h4>Masukin Token 🔑</h4><p>Ketik 6 huruf token dari pengawas.</p></div>
-  <div class="step"><div class="num">4</div><h4>Gas Kerjain 🚀</h4><p>Soal terbuka, kerjakan mandiri!</p></div>
+  <div class="step"><div class="num">4</div><h4>Gas Kerjain 🚀</h4><p>Soal langsung muncul di dalam portal!</p></div>
 </section>
 
-<!-- PORTAL -->
 <section class="portal" id="portal">
   <div class="portal-head">
     <h3>Pilih Mapel 👇</h3>
@@ -321,7 +458,6 @@
   </div>
 </section>
 
-<!-- MODAL TOKEN -->
 <div class="overlay" id="overlay">
   <div class="modal" id="modal">
     <button class="close" id="closeModal">✕</button>
@@ -341,12 +477,58 @@
       <p class="m-msg" id="mMsg"></p>
       <button class="m-btn" id="submitToken">BUKA SOAL 🚀</button>
     </div>
-    <div class="success-panel" id="successPanel">
-      <div class="big">🎉</div>
-      <h4>TOKEN BENAR!</h4>
-      <p id="successText">Semoga sukses, bestie! ✨</p>
-      <button class="m-btn" id="goSoal">GAS KE SOAL ▶</button>
+  </div>
+</div>
+
+<div class="iframe-overlay" id="iframeOverlay">
+  <div class="iframe-header">
+    <div class="iframe-title">
+      <span class="emoji" id="ifEmoji">📖</span>
+      <div style="min-width:0">
+        <b id="ifTitle">MAPEL</b>
+        <small id="ifSub">Kelas • Nama</small>
+      </div>
+      <span class="live-badge"><span class="live-dot"></span>LIVE</span>
     </div>
+    <div class="iframe-actions">
+      <button class="iframe-btn primary" id="btnCloseIframe">✕ Selesai</button>
+    </div>
+  </div>
+  <div class="iframe-wrap">
+    <div class="iframe-loading" id="iframeLoading">
+      <div class="spinner"></div>
+      <div>Memuat soal...</div>
+    </div>
+    <iframe id="soalFrame" title="Soal UTS" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+    <div class="iframe-fallback" id="iframeFallback">
+      <div class="emoji-big">🔒</div>
+      <h4>Soal tidak bisa ditampilkan di sini</h4>
+      <p>Beberapa link Google Docs/Forms memiliki proteksi embed. Silakan hubungi pengawas untuk bantuan lebih lanjut.</p>
+      <div class="btn-row">
+        <button class="iframe-btn primary" id="fallbackClose">↩ Kembali ke Portal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-modal">
+    <div class="confirm-emoji">⚠️</div>
+    <h3>Yakin Selesai?</h3>
+    <p class="confirm-sub">Pastikan kamu sudah menjawab semua soal.<br>Jawaban tidak bisa diubah setelah selesai.</p>
+    <div class="confirm-buttons">
+      <button class="confirm-btn no" id="btnConfirmNo">Tidak</button>
+      <button class="confirm-btn yes" id="btnConfirmYes">Ya, Selesai</button>
+    </div>
+  </div>
+</div>
+
+<div class="alarm-overlay" id="alarmOverlay">
+  <div class="alarm-content">
+    <div class="alarm-emoji">🚨</div>
+    <h2 class="alarm-title">PELANGGARAN!</h2>
+    <p class="alarm-msg">Kamu keluar dari halaman ujian!<br>Kembali ke portal sekarang atau aktivitasmu akan tercatat.</p>
+    <button class="alarm-btn" id="alarmDismiss">KEMBALI KE UJIAN</button>
   </div>
 </div>
 
@@ -360,12 +542,10 @@
 </footer>
 
 <script>
-/* ============================================================
-   DATABASE SOAL V4  —  Format: Kelas | Mapel | Token | Link
-   Update: + INDO XII Keperawatan (AKHZMN) → total 61 soal
-   ============================================================ */
+/* ==========================================================
+   DATA SOAL
+   ========================================================== */
 const DB = [
-  // ===== X KEPERAWATAN =====
   {kelas:"X Keperawatan", mapel:"ANFIS",   nama:"Anatomi & Fisiologi",            icon:"🫀", link:"https://forms.gle/1eEu4XfFTc8rZmiM8", token:"FSAVZS"},
   {kelas:"X Keperawatan", mapel:"IKM",     nama:"Ilmu Kesehatan Masyarakat",      icon:"🏥", link:"https://forms.gle/jL2ksWeU6KrFctVg6", token:"QKZVMP"},
   {kelas:"X Keperawatan", mapel:"INDO",    nama:"Bahasa Indonesia",               icon:"📖", link:"https://forms.gle/Sjcu9oBrKYPvGN7i7", token:"RXTWLA"},
@@ -375,7 +555,6 @@ const DB = [
   {kelas:"X Keperawatan", mapel:"KOMTER",  nama:"Komunikasi Terapeutik",          icon:"💬", link:"https://forms.gle/DtKs6XDPQboej2zZ9", token:"LQAXTD"},
   {kelas:"X Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",     icon:"🙏", link:"https://forms.gle/PSXCNzZmLrbhRkDZ8", token:"GMWEPU"},
   {kelas:"X Keperawatan", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
-  // ===== XI KEPERAWATAN =====
   {kelas:"XI Keperawatan", mapel:"FARKOL",  nama:"Farmakologi",                   icon:"💊", link:"https://forms.gle/QqECQAeHnkbwg1sj7", token:"HDPLYA"},
   {kelas:"XI Keperawatan", mapel:"INDO",    nama:"Bahasa Indonesia",              icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"JVMWQK"},
   {kelas:"XI Keperawatan", mapel:"INGGRIS", nama:"Bahasa Inggris",                icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"SZCXBN"},
@@ -384,14 +563,12 @@ const DB = [
   {kelas:"XI Keperawatan", mapel:"KEPJIWA", nama:"Keperawatan Jiwa",              icon:"🧠", link:"https://forms.gle/fZGfxGe4nEPG24Ay5", token:"MQBXHE"},
   {kelas:"XI Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",    icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"NRTZVP"},
   {kelas:"XI Keperawatan", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
-  // ===== XII KEPERAWATAN =====
   {kelas:"XII Keperawatan", mapel:"FARKOL",  nama:"Farmakologi",                  icon:"💊", link:"https://forms.gle/uejNKvKPERek49BW7", token:"WPLQAX"},
   {kelas:"XII Keperawatan", mapel:"INDO",    nama:"Bahasa Indonesia",             icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"AKHZMN"},
   {kelas:"XII Keperawatan", mapel:"IP",      nama:"Ilmu Penyakit",                icon:"🦠", link:"https://forms.gle/JdduFZSAP6nBae2E6", token:"ZHDKMN"},
   {kelas:"XII Keperawatan", mapel:"KEPJIWA", nama:"Keperawatan Jiwa",             icon:"🧠", link:"https://forms.gle/zJzE1NaUSJqxZVQC6", token:"KRTYUP"},
   {kelas:"XII Keperawatan", mapel:"MTK",     nama:"Matematika",                   icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"BVNQWE"},
   {kelas:"XII Keperawatan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",   icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"LMZXCV"},
-  // ===== X FARMASI =====
   {kelas:"X Farmasi", mapel:"DASFAR",  nama:"Dasar-Dasar Farmasi",                icon:"⚗️", link:"https://forms.gle/nvS6DPpeD3Wjvipe9", token:"WQFHDK"},
   {kelas:"X Farmasi", mapel:"INDO",    nama:"Bahasa Indonesia",                   icon:"📖", link:"https://forms.gle/VMSaNS7YzFFHpNpZA", token:"AXPLMQ"},
   {kelas:"X Farmasi", mapel:"INGGRIS", nama:"Bahasa Inggris",                     icon:"🌍", link:"https://forms.gle/dmfPiB5kReojquii6", token:"RZVNBS"},
@@ -399,47 +576,42 @@ const DB = [
   {kelas:"X Farmasi", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",         icon:"🙏", link:"https://forms.gle/PSXCNzZmLrbhRkDZ8", token:"UJDHQP"},
   {kelas:"X Farmasi", mapel:"UUK",     nama:"Undang-Undang Kesehatan",            icon:"⚖️", link:"https://forms.gle/RmQ6L61kvQpLPX1u7", token:"NMVXZL"},
   {kelas:"X Farmasi", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan",     icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
-  // ===== XI FARMASI =====
   {kelas:"XI Farmasi", mapel:"FARKOL",  nama:"Farmakologi",                       icon:"💊", link:"https://forms.gle/RhVrwhUb54UYiHbW7", token:"SLDKMX"},
   {kelas:"XI Farmasi", mapel:"INGGRIS", nama:"Bahasa Inggris",                    icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"GHBNVC"},
   {kelas:"XI Farmasi", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",        icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"FQAZWP"},
   {kelas:"XI Farmasi", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan",    icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
-  // ===== XII FARMASI =====
   {kelas:"XII Farmasi", mapel:"FARKOL", nama:"Farmakologi",                       icon:"💊", link:"https://forms.gle/fHEEHokr7hdwddmC9", token:"ZQCVBN"},
   {kelas:"XII Farmasi", mapel:"INDO",   nama:"Bahasa Indonesia",                  icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"AQSDGF"},
   {kelas:"XII Farmasi", mapel:"ISO",    nama:"Ilmu Sediaan Obat",                 icon:"🧪", link:"https://forms.gle/yPq3FR31QmkxRxC29", token:"QWRTYX"},
   {kelas:"XII Farmasi", mapel:"MTK",    nama:"Matematika",                        icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"PLMQKN"},
   {kelas:"XII Farmasi", mapel:"PABP",   nama:"Pend. Agama & Budi Pekerti",        icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"IJKHGF"},
   {kelas:"XII Farmasi", mapel:"PELFAR", nama:"Pengelolaan & Pelayanan Farmasi",   icon:"🏪", link:"https://forms.gle/7ezMaccNZ2knoUbv5", token:"MNBVXC"},
-  // ===== XI TLM =====
+  {kelas:"X Teknologi Laboratorium Medik", short:"X TLM", mapel:"PJOK",           nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"HEMATOLOGI",   nama:"Hematologi",                     icon:"🩸", link:"https://forms.gle/DE3pLgJh3BKPi8pA6", token:"TREWQZ"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"INGGRIS",      nama:"Bahasa Inggris",                 icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"YUIOPL"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"KIMIAKLINIK",  nama:"Kimia Klinik",                   icon:"🧫", link:"https://forms.gle/bk3Hi3mUoEwRJaMb6", token:"KJHGFD"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"PABP",         nama:"Pend. Agama & Budi Pekerti",     icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"VBNMAS"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"MAN.PEL.LAB",  nama:"Manajemen Pelayanan Lab",        icon:"🔬", link:"https://forms.gle/mbFDq5wKtuNBBo3R9", token:"CXZLKP"},
   {kelas:"XI Teknologi Laboratorium Medik", short:"XI TLM", mapel:"PJOK",         nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
-  // ===== XII TLM =====
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"HEMATOLOGI",  nama:"Hematologi",                    icon:"🩸", link:"https://forms.gle/VSwrJZRPtuVxMny16", token:"ZXCVBN"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"INDO",        nama:"Bahasa Indonesia",              icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"POIUYT"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"K3LH LAB",    nama:"K3 & Lingkungan Hidup Lab",     icon:"🥽", link:"https://forms.gle/htC74RFUG2bNPKTQ9", token:"LKJHFG"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"KIMIAKLINIK", nama:"Kimia Klinik",                  icon:"🧫", link:"https://forms.gle/oYXMjRhnU5g6mWU7A", token:"MNBVCX"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"MTK",         nama:"Matematika",                    icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"QAZWSX"},
   {kelas:"XII Teknologi Laboratorium Medik", short:"XII TLM", mapel:"PABP",        nama:"Pend. Agama & Budi Pekerti",    icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"EDCRFV"},
-  // ===== X TLM =====
-  {kelas:"X Teknologi Laboratorium Medik", short:"X TLM", mapel:"PJOK",            nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
-  // ===== XI TKC =====
+  {kelas:"X Tata Kecantikan", mapel:"PJOK",  nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
   {kelas:"XI Tata Kecantikan", mapel:"INDO",    nama:"Bahasa Indonesia",          icon:"📖", link:"https://forms.gle/rf1hgze5EUz6ot3u5", token:"PLMOKN"},
   {kelas:"XI Tata Kecantikan", mapel:"INGGRIS", nama:"Bahasa Inggris",            icon:"🌍", link:"https://forms.gle/XKAGQrnSQzwXKN1N7", token:"IJNHBG"},
   {kelas:"XI Tata Kecantikan", mapel:"PABP",    nama:"Pend. Agama & Budi Pekerti",icon:"🙏", link:"https://forms.gle/pndQVg9oG21sxmFC8", token:"DJKASF"},
   {kelas:"XI Tata Kecantikan", mapel:"PJOK",    nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1_JbeqJCuMz8thLTuj-AOpR-O1_FHA2x_/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"SAPROT"},
-  // ===== XII TKC =====
   {kelas:"XII Tata Kecantikan", mapel:"INDO", nama:"Bahasa Indonesia",            icon:"📖", link:"https://forms.gle/uZZSRP6BjUyGhRLW9", token:"OKMPLM"},
   {kelas:"XII Tata Kecantikan", mapel:"MTK",  nama:"Matematika",                  icon:"➗", link:"https://forms.gle/9sWaak9teAFCMCS19", token:"QWASZX"},
   {kelas:"XII Tata Kecantikan", mapel:"PABP", nama:"Pend. Agama & Budi Pekerti",  icon:"🙏", link:"https://forms.gle/LscQkd32Xf4w1CdF6", token:"EDCVFR"},
-  // ===== X TKC =====
-  {kelas:"X Tata Kecantikan", mapel:"PJOK",  nama:"Pendidikan Jasmani & Kesehatan", icon:"⚽", link:"https://docs.google.com/document/d/1XXK2AAtu_9IrKW_kuI3V2RRV7j5WJLKZ/edit?usp=sharing&ouid=108447342355274203166&rtpof=true&sd=true", token:"AGHFAD"},
 ];
 
+/* ==========================================================
+   UTILITAS
+   ========================================================== */
 const MAJOR_COLOR = {
   "Keperawatan":"var(--pink)", "Farmasi":"var(--green)",
   "Teknologi Laboratorium Medik":"var(--blue)", "Tata Kecantikan":"var(--purple)"
@@ -447,9 +619,34 @@ const MAJOR_COLOR = {
 const majorOf = k => Object.keys(MAJOR_COLOR).find(m => k.includes(m)) || "";
 const labelOf = item => item.short || item.kelas;
 
-/* ============================================================
-   AUDIO CONTEXT BERSAMA (untuk SFX & BGM)
-   ============================================================ */
+function toEmbedUrl(url){
+  if(!url) return url;
+  if(url.includes('forms.gle/')){
+    return url + (url.includes('?') ? '&' : '?') + 'embedded=true';
+  }
+  if(url.includes('docs.google.com/forms/')){
+    return url + (url.includes('?') ? '&' : '?') + 'embedded=true';
+  }
+  if(url.includes('docs.google.com/document/')){
+    if(url.includes('/edit')){
+      const baseUrl = url.split('/edit')[0];
+      return baseUrl + '/preview';
+    }
+    if(!url.includes('/preview')){
+      return url.replace(/\/$/, '') + '/preview';
+    }
+  }
+  if(url.includes('docs.google.com/spreadsheets/')){
+    if(url.includes('/edit')){
+      return url.replace('/edit', '/htmlview');
+    }
+  }
+  return url;
+}
+
+/* ==========================================================
+   AUDIO ENGINE (SFX & BGM)
+   ========================================================== */
 let audioCtx = null;
 function getCtx(){
   if(!audioCtx){ try{ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
@@ -458,9 +655,6 @@ function getCtx(){
 }
 function midiHz(m){ return 440 * Math.pow(2, (m-69)/12); }
 
-/* ============================================================
-   SOUND EFFECTS — volume dinaikkan 🔊
-   ============================================================ */
 const SFX = {
   on:true, lastHover:0,
   tone(freq, dur=0.08, type='sine', vol=0.1, delay=0){
@@ -478,27 +672,70 @@ const SFX = {
   click(){ this.tone(340,0.07,'square',0.1); this.tone(520,0.09,'square',0.08,0.05); },
   type(){ this.tone(760 + Math.random()*120, 0.04, 'triangle', 0.08); },
   success(){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>this.tone(f,0.18,'triangle',0.13,i*0.09)); },
-  error(){ this.tone(170,0.22,'sawtooth',0.13); this.tone(120,0.3,'sawtooth',0.13,0.12); }
+  error(){ this.tone(170,0.22,'sawtooth',0.13); this.tone(120,0.3,'sawtooth',0.13,0.12); },
+  alarm(){
+    const ctx = getCtx();
+    if(!ctx) return;
+    const now = ctx.currentTime;
+    const alarmOsc1 = ctx.createOscillator();
+    const alarmOsc2 = ctx.createOscillator();
+    const alarmGain = ctx.createGain();
+    alarmOsc1.type = 'sawtooth';
+    alarmOsc1.frequency.setValueAtTime(880, now);
+    alarmOsc1.frequency.exponentialRampToValueAtTime(1760, now + 0.5);
+    alarmOsc2.type = 'square';
+    alarmOsc2.frequency.setValueAtTime(440, now);
+    alarmOsc2.frequency.exponentialRampToValueAtTime(880, now + 0.5);
+    alarmGain.gain.setValueAtTime(0.5, now);
+    alarmOsc1.connect(alarmGain);
+    alarmOsc2.connect(alarmGain);
+    alarmGain.connect(ctx.destination);
+    alarmOsc1.start(now);
+    alarmOsc2.start(now);
+    alarmOsc1.stop(now + 0.5);
+    alarmOsc2.stop(now + 0.5);
+    this.alarmInterval = setInterval(() => {
+      const t = ctx.currentTime;
+      const o1 = ctx.createOscillator();
+      const o2 = ctx.createOscillator();
+      const g = ctx.createGain();
+      o1.type = 'sawtooth';
+      o1.frequency.setValueAtTime(880, t);
+      o1.frequency.exponentialRampToValueAtTime(1760, t + 0.5);
+      o2.type = 'square';
+      o2.frequency.setValueAtTime(440, t);
+      o2.frequency.exponentialRampToValueAtTime(880, t + 0.5);
+      g.gain.setValueAtTime(0.5, t);
+      o1.connect(g);
+      o2.connect(g);
+      g.connect(ctx.destination);
+      o1.start(t);
+      o2.start(t);
+      o1.stop(t + 0.5);
+      o2.stop(t + 0.5);
+    }, 500);
+  },
+  stopAlarm(){
+    if(this.alarmInterval){
+      clearInterval(this.alarmInterval);
+      this.alarmInterval = null;
+    }
+  }
 };
 document.addEventListener('pointerdown', ()=>getCtx());
 document.addEventListener('mouseover', e=>{
-  if(e.target.closest('.chip,.btn-open,.m-btn,.sound-btn,.card')) SFX.hover();
+  if(e.target.closest('.chip,.btn-open,.m-btn,.sound-btn,.card,.iframe-btn,.confirm-btn')) SFX.hover();
 });
 
-/* ============================================================
-   BACKGROUND MUSIC — lo-fi chiptune loop 🎵 (Web Audio sequencer)
-   Chord: Cmaj7 → Am7 → Fmaj7 → G7
-   ============================================================ */
 const BGM = {
   playing:false, timer:null, step:0, nextTime:0, tempo:92,
   master:null, noiseBuf:null,
   chords:[
-    {bass:48, pad:[48,52,55,59]},  // Cmaj7
-    {bass:45, pad:[45,48,52,55]},  // Am7
-    {bass:41, pad:[41,45,48,52]},  // Fmaj7
-    {bass:43, pad:[43,47,50,53]}   // G7
+    {bass:48, pad:[48,52,55,59]},
+    {bass:45, pad:[45,48,52,55]},
+    {bass:41, pad:[41,45,48,52]},
+    {bass:43, pad:[43,47,50,53]}
   ],
-  // Melodi 64 langkah (4 bar x 16 step). 0 = jeda.
   melody:[
     72,0,76,79, 0,76,74,72, 69,0,72,0, 74,76,72,0,
     69,0,72,76, 79,76,0,72, 0,76,79,0, 81,0,79,76,
@@ -544,11 +781,11 @@ const BGM = {
   playStep(step, t){
     const bar = Math.floor(step/16), s = step%16, ch = this.chords[bar];
     const beat = 60/this.tempo;
-    if(s===0 || s===8) this.voice(ch.bass, t, beat*1.6, 'triangle', 0.34);          // bass
-    if(s===0) ch.pad.forEach(n=>this.voice(n, t, beat*4, 'sine', 0.07, 0.25));      // pad chord
-    const m = this.melody[step];                                                     // melodi
+    if(s===0 || s===8) this.voice(ch.bass, t, beat*1.6, 'triangle', 0.34);
+    if(s===0) ch.pad.forEach(n=>this.voice(n, t, beat*4, 'sine', 0.07, 0.25));
+    const m = this.melody[step];
     if(m) this.voice(m, t, 0.24, 'triangle', 0.17);
-    if(s%2===0) this.hat(t, s%8===4 ? 0.09 : 0.045);                                 // hi-hat / snare
+    if(s%2===0) this.hat(t, s%8===4 ? 0.09 : 0.045);
   },
   schedule(){
     const ctx = this.ensure(); if(!ctx || !this.playing) return;
@@ -564,7 +801,7 @@ const BGM = {
     this.playing = true; this.step = 0;
     this.nextTime = ctx.currentTime + 0.1;
     this.master.gain.setValueAtTime(0.0001, ctx.currentTime);
-    this.master.gain.linearRampToValueAtTime(0.55, ctx.currentTime+0.8); // fade in
+    this.master.gain.linearRampToValueAtTime(0.55, ctx.currentTime+0.8);
     this.timer = setInterval(()=>this.schedule(), 50);
   },
   stop(){
@@ -574,14 +811,14 @@ const BGM = {
     if(ctx && this.master){
       this.master.gain.cancelScheduledValues(ctx.currentTime);
       this.master.gain.setValueAtTime(this.master.gain.value, ctx.currentTime);
-      this.master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.5); // fade out
+      this.master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.5);
     }
   }
 };
 
-/* ============================================================
-   TOGGLE MUSIK & SFX
-   ============================================================ */
+/* ==========================================================
+   INISIALISASI TOMBOL MUSIK & SFX
+   ========================================================== */
 const musicBtn = document.getElementById('musicBtn');
 musicBtn.addEventListener('click', ()=>{
   SFX.click();
@@ -605,9 +842,9 @@ soundBtn.addEventListener('click', ()=>{
   if(SFX.on) SFX.click();
 });
 
-/* ============================================================
-   TICKER
-   ============================================================ */
+/* ==========================================================
+   TICKER RUNNING TEXT
+   ========================================================== */
 (function(){
   const items = ["PORTAL SOAL UTS 2026/2027","SMKS KESEHATAN SDM SUMEDANG","GOOD LUCK BESTIE ✨",
                  "TOKEN 6 DIGIT 🔑","JUJUR ITU KEREN 😤","NO NYONTEK-NO CRY 📝","SEMANGAT UJIAN! 🔥"];
@@ -615,9 +852,9 @@ soundBtn.addEventListener('click', ()=>{
   document.getElementById('tickerTrack').innerHTML = half + half;
 })();
 
-/* ============================================================
-   FILTER CHIPS + SEARCH + RENDER
-   ============================================================ */
+/* ==========================================================
+   CHIP KELAS & RENDER SOAL
+   ========================================================== */
 const kelasList = [...new Set(DB.map(d=>d.kelas))];
 let activeKelas = 'ALL', query = '';
 
@@ -665,9 +902,6 @@ document.getElementById('searchInput').addEventListener('input', e=>{
   query = e.target.value.trim().toLowerCase(); render();
 });
 
-/* ============================================================
-   STATS
-   ============================================================ */
 function countUp(el, target){
   let n=0; const step=Math.max(1, Math.round(target/40));
   const iv=setInterval(()=>{ n+=step; if(n>=target){n=target;clearInterval(iv);} el.textContent=n; }, 30);
@@ -675,9 +909,9 @@ function countUp(el, target){
 countUp(document.getElementById('statSoal'), DB.length);
 countUp(document.getElementById('statKelas'), kelasList.length);
 
-/* ============================================================
-   MODAL TOKEN (OTP 6 digit)
-   ============================================================ */
+/* ==========================================================
+   MODAL TOKEN
+   ========================================================== */
 const overlay=document.getElementById('overlay'), modal=document.getElementById('modal');
 const inputs=[...document.querySelectorAll('#otp input')];
 const mMsg=document.getElementById('mMsg');
@@ -691,14 +925,13 @@ function openModal(item){
   mMsg.textContent=''; mMsg.className='m-msg';
   inputs.forEach(i=>{i.value=''; i.classList.remove('filled');});
   document.getElementById('formPanel').style.display='block';
-  document.getElementById('successPanel').style.display='none';
   overlay.classList.add('show');
   setTimeout(()=>inputs[0].focus(),120);
 }
 function closeModal(){ overlay.classList.remove('show'); current=null; }
 document.getElementById('closeModal').addEventListener('click',()=>{ SFX.click(); closeModal(); });
 overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !document.getElementById('iframeOverlay').classList.contains('show') && !document.getElementById('confirmOverlay').classList.contains('show')) closeModal(); });
 
 inputs.forEach((inp,idx)=>{
   inp.addEventListener('input', ()=>{
@@ -726,13 +959,12 @@ function verify(){
   if(code.length<6){ mMsg.textContent='Token-nya masih kurang hurufnya 👀'; mMsg.className='m-msg err'; return; }
   if(code === current.token){
     SFX.success(); confetti();
-    mMsg.textContent='✅ Token benar!'; mMsg.className='m-msg ok';
-    document.getElementById('successText').textContent =
-      `Soal ${current.mapel} (${current.kelas}) siap dibuka. Semangat, bestie! ✨`;
+    mMsg.textContent='✅ Token benar! Memuat soal...'; mMsg.className='m-msg ok';
+    const itemToOpen = current;
     setTimeout(()=>{
-      document.getElementById('formPanel').style.display='none';
-      document.getElementById('successPanel').style.display='block';
-    }, 650);
+      closeModal();
+      openIframeModal(itemToOpen);
+    }, 700);
   } else {
     SFX.error();
     mMsg.textContent='❌ Token salah, cek lagi bestie!'; mMsg.className='m-msg err';
@@ -742,15 +974,396 @@ function verify(){
   }
 }
 document.getElementById('submitToken').addEventListener('click', ()=>{ SFX.click(); verify(); });
-document.getElementById('goSoal').addEventListener('click', ()=>{
+
+/* ==========================================================
+   IFRAME SOAL
+   ========================================================== */
+const iframeOverlay = document.getElementById('iframeOverlay');
+const soalFrame = document.getElementById('soalFrame');
+const iframeLoading = document.getElementById('iframeLoading');
+const iframeFallback = document.getElementById('iframeFallback');
+let currentIframeItem = null;
+let iframeLoadTimer = null;
+
+function openIframeModal(item){
+  currentIframeItem = item;
+  document.getElementById('ifEmoji').textContent = item.icon;
+  document.getElementById('ifTitle').textContent = item.mapel;
+  document.getElementById('ifSub').textContent = `${item.kelas} • ${item.nama}`;
+  iframeLoading.style.display = 'flex';
+  iframeFallback.classList.remove('show');
+  soalFrame.style.display = 'block';
+  const embedUrl = toEmbedUrl(item.link);
+  soalFrame.src = embedUrl;
+  clearTimeout(iframeLoadTimer);
+  iframeLoadTimer = setTimeout(()=>{
+    if(iframeLoading.style.display !== 'none'){
+      showFallback();
+    }
+  }, 7000);
+  iframeOverlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function showFallback(){
+  iframeLoading.style.display = 'none';
+  soalFrame.style.display = 'none';
+  iframeFallback.classList.add('show');
+}
+
+function showConfirmModal(){
+  document.getElementById('confirmOverlay').classList.add('show');
   SFX.click();
-  if(current) window.open(current.link, '_blank');
-  closeModal();
+}
+
+function hideConfirmModal(){
+  document.getElementById('confirmOverlay').classList.remove('show');
+}
+
+function closeIframeModal(){
+  iframeOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+  soalFrame.src = 'about:blank';
+  currentIframeItem = null;
+  clearTimeout(iframeLoadTimer);
+  SFX.click();
+}
+
+soalFrame.addEventListener('load', ()=>{
+  try{
+    const doc = soalFrame.contentDocument || soalFrame.contentWindow.document;
+    if(doc && doc.body && doc.body.innerHTML.length > 0){
+      iframeLoading.style.display = 'none';
+      clearTimeout(iframeLoadTimer);
+    }
+  } catch(e){
+    iframeLoading.style.display = 'none';
+    clearTimeout(iframeLoadTimer);
+  }
 });
 
-/* ============================================================
-   CONFETTI 🎉
-   ============================================================ */
+soalFrame.addEventListener('error', ()=> showFallback());
+
+document.getElementById('btnCloseIframe').addEventListener('click', ()=>{
+  showConfirmModal();
+});
+
+document.getElementById('btnConfirmNo').addEventListener('click', ()=>{
+  SFX.click();
+  hideConfirmModal();
+});
+
+document.getElementById('btnConfirmYes').addEventListener('click', ()=>{
+  SFX.click();
+  hideConfirmModal();
+  closeIframeModal();
+});
+
+document.getElementById('fallbackClose').addEventListener('click', closeIframeModal);
+
+/* ==========================================================
+   SISTEM ANTI NYONTEK (DIPERBAIKI)
+   - Tidak akan terpicu saat siswa aktif mengerjakan di iframe
+   - Hanya aktif saat siswa di portal, modal token, atau saat ujian idle
+   ========================================================== */
+const alarmOverlay = document.getElementById('alarmOverlay');
+let alarmTriggered = false;
+let violationCount = 0;
+
+// Variabel untuk sistem anti-throttle
+let vibrationWorker = null;
+let silentAudioCtx = null;
+let silentOsc = null;
+let silentGain = null;
+let wakeLockSentinel = null;
+let mainVibrationInterval = null;
+let fallbackTimeout = null;
+
+// Pattern vibrasi panjang
+const LONG_VIBRATION_PATTERN = [
+  500, 100, 500, 100, 500, 100, 500, 100, 500, 200,
+  500, 100, 500, 100, 500, 100, 500, 100, 500, 500,
+  700, 100, 700, 100, 700, 200,
+  500, 100, 500, 100, 500, 300
+];
+
+/* ==========================================================
+   HELPER: CEK APAKAH IFRAME SEDANG AKTIF
+   Saat iframe aktif, sistem anti-nyontek NONAKTIF karena
+   siswa memang sedang fokus di dalam iframe soal ujian.
+   ========================================================== */
+function isIframeActive(){
+  return iframeOverlay.classList.contains('show');
+}
+
+function createVibrationWorker(){
+  if(vibrationWorker) return;
+  try {
+    const workerCode = `
+      let interval = null;
+      self.onmessage = function(e) {
+        const cmd = e.data.command;
+        if (cmd === 'start') {
+          if (interval) clearInterval(interval);
+          interval = setInterval(() => {
+            self.postMessage({ action: 'vibrate' });
+          }, 8000);
+          self.postMessage({ action: 'vibrate' });
+        } else if (cmd === 'stop') {
+          if (interval) { clearInterval(interval); interval = null; }
+        }
+      };
+    `;
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    vibrationWorker = new Worker(URL.createObjectURL(blob));
+    vibrationWorker.onmessage = function(e) {
+      if (e.data.action === 'vibrate' && alarmTriggered) {
+        executeVibration();
+      }
+    };
+  } catch(e) {
+    console.warn('Web Worker tidak didukung, menggunakan fallback:', e);
+  }
+}
+
+function startSilentAudio(){
+  try {
+    const ctx = getCtx();
+    if(!ctx) return;
+    if(silentAudioCtx) stopSilentAudio();
+    
+    silentAudioCtx = ctx;
+    silentOsc = ctx.createOscillator();
+    silentGain = ctx.createGain();
+    
+    silentOsc.type = 'sine';
+    silentOsc.frequency.value = 1;
+    silentGain.gain.value = 0.0001;
+    
+    silentOsc.connect(silentGain);
+    silentGain.connect(ctx.destination);
+    silentOsc.start();
+  } catch(e) {
+    console.warn('Silent audio error:', e);
+  }
+}
+
+function stopSilentAudio(){
+  try {
+    if(silentOsc){
+      silentOsc.stop();
+      silentOsc.disconnect();
+      silentOsc = null;
+    }
+    if(silentGain){
+      silentGain.disconnect();
+      silentGain = null;
+    }
+  } catch(e) {}
+}
+
+async function requestWakeLock(){
+  try {
+    if('wakeLock' in navigator){
+      wakeLockSentinel = await navigator.wakeLock.request('screen');
+      wakeLockSentinel.addEventListener('release', () => {});
+    }
+  } catch(e) {}
+}
+
+function releaseWakeLock(){
+  try {
+    if(wakeLockSentinel){
+      wakeLockSentinel.release();
+      wakeLockSentinel = null;
+    }
+  } catch(e) {}
+}
+
+function executeVibration(){
+  if(!alarmTriggered) return;
+  try {
+    if('vibrate' in navigator){
+      const success = navigator.vibrate(LONG_VIBRATION_PATTERN);
+      if(!success){
+        navigator.vibrate([300, 100, 300, 100, 300]);
+      }
+    }
+  } catch(e) {}
+}
+
+function startMaximumVibration(){
+  if(!('vibrate' in navigator)) return;
+  
+  createVibrationWorker();
+  if(vibrationWorker){
+    vibrationWorker.postMessage({ command: 'start' });
+  }
+  
+  startSilentAudio();
+  requestWakeLock();
+  
+  if(mainVibrationInterval) clearInterval(mainVibrationInterval);
+  mainVibrationInterval = setInterval(() => {
+    if(alarmTriggered) executeVibration();
+  }, 9000);
+  
+  function scheduleNext(){
+    if(!alarmTriggered) return;
+    fallbackTimeout = setTimeout(() => {
+      executeVibration();
+      scheduleNext();
+    }, 11000);
+  }
+  scheduleNext();
+  
+  executeVibration();
+}
+
+function stopMaximumVibration(){
+  if(vibrationWorker){
+    vibrationWorker.postMessage({ command: 'stop' });
+  }
+  if(mainVibrationInterval){
+    clearInterval(mainVibrationInterval);
+    mainVibrationInterval = null;
+  }
+  if(fallbackTimeout){
+    clearTimeout(fallbackTimeout);
+    fallbackTimeout = null;
+  }
+  stopSilentAudio();
+  releaseWakeLock();
+  try {
+    if('vibrate' in navigator) navigator.vibrate(0);
+  } catch(e) {}
+}
+
+/* ==========================================================
+   TRIGGER ALARM — DIPERBAIKI
+   Tidak akan terpicu jika:
+   1. Siswa sedang di dalam iframe (sedang mengerjakan soal)
+   2. Dialog konfirmasi "Selesai" sedang tampil
+   3. Alarm sudah pernah terpicu sebelumnya
+   ========================================================== */
+function triggerAlarm(){
+  // JANGAN trigger alarm jika iframe sedang aktif (siswa lagi ngerjain soal)
+  if(isIframeActive()) return;
+  
+  // JANGAN trigger jika sudah pernah terpicu
+  if(alarmTriggered) return;
+  
+  // JANGAN trigger jika modal konfirmasi "Selesai" tampil
+  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
+  
+  alarmTriggered = true;
+  violationCount++;
+  
+  alarmOverlay.classList.add('show');
+  SFX.alarm();
+  startMaximumVibration();
+  
+  if(BGM.playing){
+    BGM.stop();
+    musicBtn.classList.remove('music-on');
+    musicBtn.innerHTML = '🎵 MUSIK';
+  }
+}
+
+function dismissAlarm(){
+  alarmOverlay.classList.remove('show');
+  SFX.stopAlarm();
+  stopMaximumVibration();
+  alarmTriggered = false;
+}
+
+/* ==========================================================
+   EVENT LISTENER ANTI-NYONTEK
+   Masing-masing listener sudah diperkuat dengan pengecekan
+   isIframeActive() agar tidak memicu alarm palsu saat siswa
+   sedang mengerjakan soal di dalam iframe.
+   ========================================================== */
+window.addEventListener('blur', ()=>{
+  // Jangan trigger saat di iframe — focus pindah ke iframe, itu wajar!
+  if(isIframeActive()) return;
+  // Jangan trigger saat modal konfirmasi tampil
+  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
+  triggerAlarm();
+});
+
+document.addEventListener('visibilitychange', ()=>{
+  // Jangan trigger saat di iframe
+  if(isIframeActive()) return;
+  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
+  
+  // Hanya trigger jika tab benar-benar disembunyikan (user pindah tab/aplikasi)
+  if(document.hidden) triggerAlarm();
+});
+
+document.addEventListener('mouseleave', (e)=>{
+  // Jangan trigger saat di iframe
+  if(isIframeActive()) return;
+  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
+  
+  // Hanya trigger jika mouse keluar viewport (ke atas layar biasanya)
+  if(e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight){
+    triggerAlarm();
+  }
+});
+
+document.getElementById('alarmDismiss').addEventListener('click', ()=>{
+  SFX.click();
+  dismissAlarm();
+});
+
+document.addEventListener('contextmenu', (e)=>{
+  if(e.target.closest('.iframe-wrap')) return; // biarkan klik kanan di iframe
+  if(isIframeActive()) return; // jangan ganggu siswa saat ngerjain
+  // Untuk area portal utama, boleh di-blok jika diinginkan
+  // e.preventDefault();
+  // alert('⚠️ Klik kanan dinonaktifkan selama ujian!');
+});
+
+document.addEventListener('keydown', (e)=>{
+  // Jangan ganggu siswa saat di iframe — biarkan mereka mengerjakan
+  if(isIframeActive()) return;
+  
+  if((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'p' || e.key === 's' || e.key === 'u')){
+    e.preventDefault();
+    alert('⚠️ Shortcut dinonaktifkan selama ujian!');
+  }
+  
+  if(e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))){
+    e.preventDefault();
+    alert('⚠️ Developer Tools dinonaktifkan selama ujian!');
+  }
+});
+
+// Re-akuisisi Wake Lock saat halaman kembali visible
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden){
+    requestWakeLock();
+  }
+});
+
+// Bersihkan saat tab ditutup
+window.addEventListener('beforeunload', ()=>{
+  stopMaximumVibration();
+});
+
+document.addEventListener('freeze', ()=>{
+  stopMaximumVibration();
+});
+
+if('onpagehide' in window){
+  window.addEventListener('pagehide', ()=>{
+    stopMaximumVibration();
+  });
+}
+
+/* ==========================================================
+   CONFETTI EFFECT
+   ========================================================== */
 function confetti(){
   const wrap=document.getElementById('confetti');
   const colors=['#FF6B9D','#FFD93D','#6BCB77','#4D96FF','#B983FF','#C6F432'];
@@ -767,7 +1380,9 @@ function confetti(){
   }
 }
 
-/* INIT */
+/* ==========================================================
+   INISIALISASI AWAL
+   ========================================================== */
 buildChips();
 render();
 </script>
