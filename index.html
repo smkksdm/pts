@@ -35,6 +35,46 @@
   }
   ::selection{background:var(--lime)}
 
+  /* ==========================================================
+     EXAM MODE - ANTI COPY/PASTE/SELECTION (Smartphone & Desktop)
+     Aktif saat siswa sedang mengerjakan soal di dalam portal
+     ========================================================== */
+  body.exam-mode{
+    -webkit-user-select: none !important;
+    -webkit-touch-callout: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  /* Izinkan selection hanya pada input yang diperlukan */
+  body.exam-mode input,
+  body.exam-mode textarea{
+    -webkit-user-select: text !important;
+    user-select: text !important;
+    -webkit-touch-callout: default !important;
+  }
+  
+  /* Blokir drag pada semua elemen saat exam */
+  body.exam-mode img,
+  body.exam-mode a,
+  body.exam-mode .card,
+  body.exam-mode .chip,
+  body.exam-mode .btn-open,
+  body.exam-mode .iframe-btn,
+  body.exam-mode .alarm-unlock-btn{
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    -khtml-user-drag: none !important;
+    pointer-events: auto;
+  }
+  
+  /* Disable long-press context menu pada semua text di smartphone */
+  body.exam-mode *{
+    -webkit-touch-callout: none !important;
+  }
+
   .ticker{background:var(--ink);color:var(--lime);overflow:hidden;white-space:nowrap;padding:8px 0;border-bottom:3px solid var(--ink)}
   .ticker-track{display:inline-block;animation:marquee 26s linear infinite;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase}
   .ticker-track span{margin:0 14px}
@@ -623,6 +663,27 @@
     animation:livePulse 1s infinite;flex:none;
   }
 
+  /* ====== TOAST NOTIFIKASI COPY/PASTE BLOCKED ====== */
+  .blocked-toast{
+    position:fixed;top:50%;left:50%;
+    transform:translate(-50%, -50%) scale(0.8);
+    background:var(--red);color:#fff;
+    border:3px solid var(--ink);
+    border-radius:16px;padding:18px 26px;
+    box-shadow:var(--shadow);
+    font-family:'Unbounded';font-weight:800;font-size:14px;
+    z-index:99998;opacity:0;pointer-events:none;
+    transition:all .25s cubic-bezier(.2,1.4,.4,1);
+    text-align:center;
+    max-width:90%;
+  }
+  .blocked-toast.show{
+    opacity:1;
+    transform:translate(-50%, -50%) scale(1);
+  }
+  .blocked-toast .toast-emoji{font-size:28px;display:block;margin-bottom:6px}
+  .blocked-toast .toast-text{font-family:'Space Grotesk';font-weight:600;font-size:13px;margin-top:4px;letter-spacing:0;line-height:1.4}
+
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:300;overflow:hidden}
   #confetti i{position:absolute;top:-24px;border-radius:3px;animation:fall linear forwards}
   @keyframes fall{to{transform:translateY(108vh) rotate(760deg)}}
@@ -659,6 +720,8 @@
     .reset-otp input{width:36px;height:44px;font-size:16px}
     .lockout-stat-value{font-size:22px}
     .exam-active-banner{top:68px;padding:8px 14px;font-size:10px}
+    .blocked-toast{padding:14px 18px;font-size:12px}
+    .blocked-toast .toast-text{font-size:11px}
   }
 </style>
 </head>
@@ -684,7 +747,7 @@
 <!-- Banner saat siswa sedang mengerjakan soal -->
 <div class="exam-active-banner" id="examActiveBanner">
   <span class="pulse-dot"></span>
-  <span>🔒 MODE UJIAN AKTIF — JANGAN KELUAR TAB!</span>
+  <span>🔒 MODE UJIAN — COPY/PASTE BLOKIR!</span>
 </div>
 
 <section class="hero">
@@ -728,7 +791,7 @@
   <div class="note-strip">
     <span class="dot"></span> Token dari pengawas saat ujian.
     <span class="dot"></span> Jangan share tokenmu! 🔐
-    <span class="dot"></span> Anti-nyontek <b>hanya aktif saat di dalam soal</b>.
+    <span class="dot"></span> Copy/paste/selection <b>diblokir otomatis saat ujian</b>.
   </div>
 </section>
 
@@ -894,6 +957,13 @@
   </div>
 </div>
 
+<!-- Toast Notifikasi untuk Copy/Paste/Selection Blocked -->
+<div class="blocked-toast" id="blockedToast">
+  <span class="toast-emoji">🚫</span>
+  <span id="toastTitle">COPY DIBLOKIR!</span>
+  <div class="toast-text" id="toastText">Tidak bisa copy saat ujian berlangsung</div>
+</div>
+
 <div id="confetti"></div>
 
 <footer>
@@ -982,100 +1052,60 @@ const majorOf = k => Object.keys(MAJOR_COLOR).find(m => k.includes(m)) || "";
 const labelOf = item => item.short || item.kelas;
 
 /* ==========================================================
-   EMBED URL RESOLVER - Anti Login Google & Tidak buka tab
-   Semua URL dikonversi ke format yang bisa di-EMBED di iframe
+   EMBED URL RESOLVER
    ========================================================== */
 function toEmbedUrl(url){
   if(!url) return url;
-  
   try {
     const u = new URL(url);
     const host = u.hostname.toLowerCase();
     const path = u.pathname;
     const params = u.searchParams;
     
-    // === GOOGLE FORMS ===
-    // forms.gle shortlink → tetap pakai domain forms.gle + embedded=true
     if(host === 'forms.gle' || host.endsWith('.forms.gle')){
       params.set('embedded', 'true');
       return u.toString();
     }
-    
-    // docs.google.com/forms/...
     if(host === 'docs.google.com' && path.startsWith('/forms/')){
-      // Pastikan path menggunakan /viewform bukan /edit (bentuk pengisian)
-      if(path.includes('/edit')){
-        u.pathname = path.replace('/edit', '/viewform');
-      }
-      // Kalau belum viewform dan belum embed, tambahkan /viewform
+      if(path.includes('/edit')) u.pathname = path.replace('/edit', '/viewform');
       if(!path.includes('/viewform') && !path.includes('/embedded')){
-        if(path.endsWith('/')){
-          u.pathname = path + 'viewform';
-        } else {
-          u.pathname = path + '/viewform';
-        }
+        u.pathname = path.endsWith('/') ? path + 'viewform' : path + '/viewform';
       }
       params.set('embedded', 'true');
       params.set('pli', '1');
       return u.toString();
     }
-    
-    // === GOOGLE DOCS ===
     if(host === 'docs.google.com' && path.startsWith('/document/')){
-      // /preview tidak memerlukan login untuk dokumen publik
-      if(path.includes('/edit')){
-        u.pathname = path.split('/edit')[0] + '/preview';
-      } else if(!path.includes('/preview')){
-        u.pathname = path.replace(/\/$/, '') + '/preview';
-      }
+      if(path.includes('/edit')) u.pathname = path.split('/edit')[0] + '/preview';
+      else if(!path.includes('/preview')) u.pathname = path.replace(/\/$/, '') + '/preview';
       u.search = '';
       return u.toString();
     }
-    
-    // === GOOGLE SHEETS ===
     if(host === 'docs.google.com' && path.startsWith('/spreadsheets/')){
-      if(path.includes('/edit')){
-        u.pathname = path.replace('/edit', '/pubhtml');
-      } else if(!path.includes('/pubhtml') && !path.includes('/preview')){
-        u.pathname = path.replace(/\/$/, '') + '/pubhtml';
-      }
+      if(path.includes('/edit')) u.pathname = path.replace('/edit', '/pubhtml');
+      else if(!path.includes('/pubhtml')) u.pathname = path.replace(/\/$/, '') + '/pubhtml';
       params.set('widget', 'true');
       params.set('headers', 'false');
       return u.toString();
     }
-    
-    // === GOOGLE SLIDES ===
     if(host === 'docs.google.com' && path.startsWith('/presentation/')){
-      if(path.includes('/edit')){
-        u.pathname = path.split('/edit')[0] + '/embed';
-      } else if(!path.includes('/embed') && !path.includes('/preview')){
-        u.pathname = path.replace(/\/$/, '') + '/embed';
-      }
+      if(path.includes('/edit')) u.pathname = path.split('/edit')[0] + '/embed';
+      else if(!path.includes('/embed')) u.pathname = path.replace(/\/$/, '') + '/embed';
       params.set('start', 'false');
       params.set('loop', 'false');
-      params.set('delayms', '3000');
       return u.toString();
     }
-    
-    // URL lain - return as-is
     return url;
   } catch(e) {
-    // Fallback jika URL parsing gagal
-    if(url.includes('forms.gle/')){
-      return url + (url.includes('?') ? '&' : '?') + 'embedded=true';
-    }
-    if(url.includes('docs.google.com/forms/') && url.includes('/edit')){
-      return url.replace('/edit', '/viewform') + (url.includes('?') ? '&' : '?') + 'embedded=true&pli=1';
-    }
-    if(url.includes('docs.google.com/document/') && url.includes('/edit')){
-      return url.split('/edit')[0] + '/preview';
-    }
+    if(url.includes('forms.gle/')) return url + (url.includes('?') ? '&' : '?') + 'embedded=true';
+    if(url.includes('docs.google.com/forms/') && url.includes('/edit')) return url.replace('/edit', '/viewform') + '?embedded=true&pli=1';
+    if(url.includes('docs.google.com/document/') && url.includes('/edit')) return url.split('/edit')[0] + '/preview';
     return url;
   }
 }
 
 /* ==========================================================
-   AUDIO ENGINE (SFX, BGM, ALARM_BGM, DOOM BGM)
+   AUDIO ENGINE
    ========================================================== */
 let audioCtx = null;
 function getCtx(){
@@ -1172,6 +1202,12 @@ const SFX = {
       clearInterval(this.alarmInterval);
       this.alarmInterval = null;
     }
+  },
+  // Suara blokir copy/paste
+  blocked(){
+    this.tone(200, 0.08, 'sawtooth', 0.18);
+    this.tone(140, 0.15, 'square', 0.15, 0.05);
+    this.tone(80, 0.2, 'sawtooth', 0.12, 0.15);
   }
 };
 document.addEventListener('pointerdown', ()=>getCtx());
@@ -1180,7 +1216,7 @@ document.addEventListener('mouseover', e=>{
 });
 
 /* ==========================================================
-   BGM NORMAL (Cheerful)
+   BGM NORMAL
    ========================================================== */
 const BGM = {
   playing:false, timer:null, step:0, nextTime:0, tempo:92,
@@ -1272,7 +1308,7 @@ const BGM = {
 };
 
 /* ==========================================================
-   ALARM BGM - Tense/Urgent (Diputar saat pelanggaran terdeteksi)
+   ALARM BGM
    ========================================================== */
 const ALARM_BGM = {
   playing:false, timer:null, step:0, nextTime:0, tempo:140,
@@ -1404,7 +1440,7 @@ const ALARM_BGM = {
 };
 
 /* ==========================================================
-   DOOM BGM (Diputar saat pelanggaran >= 10)
+   DOOM BGM
    ========================================================== */
 const DOOM_BGM = {
   playing:false, timer:null, step:0, nextTime:0, tempo:128,
@@ -1568,7 +1604,7 @@ const DOOM_BGM = {
 };
 
 /* ==========================================================
-   INISIALISASI TOMBOL MUSIK & SFX
+   TOMBOL MUSIK & SFX
    ========================================================== */
 const musicBtn = document.getElementById('musicBtn');
 musicBtn.addEventListener('click', ()=>{
@@ -1595,18 +1631,18 @@ soundBtn.addEventListener('click', ()=>{
 });
 
 /* ==========================================================
-   TICKER RUNNING TEXT
+   TICKER
    ========================================================== */
 (function(){
   const items = ["PORTAL SOAL UTS 2026/2027","SMKS KESEHATAN SDM SUMEDANG","GOOD LUCK BESTIE ✨",
                  "TOKEN 6 DIGIT 🔑","JUJUR ITU KEREN 😤","NO NYONTEK-NO CRY 📝","SEMANGAT UJIAN! 🔥",
-                 "⚠️ 10 PELANGGARAN = BLOKIR TOTAL ⚠️"];
+                 "⚠️ 10 PELANGGARAN = BLOKIR TOTAL ⚠️","📵 COPY/PASTE DIBLOKIR 📵"];
   const half = items.map(t=>`<span>★ ${t}</span>`).join('');
   document.getElementById('tickerTrack').innerHTML = half + half;
 })();
 
 /* ==========================================================
-   CHIP KELAS & RENDER SOAL
+   CHIP KELAS & RENDER
    ========================================================== */
 const kelasList = [...new Set(DB.map(d=>d.kelas))];
 let activeKelas = 'ALL', query = '';
@@ -1635,9 +1671,7 @@ function render(){
     (d.mapel+' '+d.nama+' '+d.kelas).toLowerCase().includes(query)
   );
   emptyState.style.display = list.length ? 'none':'block';
-  
   const isLocked = violationCount >= MAX_VIOLATIONS;
-  
   grid.innerHTML = list.map((d,i)=>{
     const c = MAJOR_COLOR[majorOf(d.kelas)] || 'var(--yellow)';
     const lockedClass = isLocked ? 'locked' : '';
@@ -1654,10 +1688,7 @@ function render(){
   }).join('');
   grid.querySelectorAll('.btn-open').forEach(b=>{
     b.addEventListener('click',()=>{
-      if(isLocked){
-        showLockout();
-        return;
-      }
+      if(isLocked){ showLockout(); return; }
       SFX.click();
       openModal(DB[+b.dataset.i]);
     });
@@ -1683,10 +1714,7 @@ const mMsg=document.getElementById('mMsg');
 let current=null;
 
 function openModal(item){
-  if(violationCount >= MAX_VIOLATIONS){
-    showLockout();
-    return;
-  }
+  if(violationCount >= MAX_VIOLATIONS){ showLockout(); return; }
   current=item;
   document.getElementById('mEmoji').textContent=item.icon;
   document.getElementById('mTitle').textContent=item.mapel;
@@ -1736,12 +1764,9 @@ function verify(){
   if(code.length<6){ mMsg.textContent='Token-nya masih kurang hurufnya 👀'; mMsg.className='m-msg err'; return; }
   if(code === current.token){
     SFX.success(); confetti();
-    mMsg.textContent='✅ Token benar! Memuat soal di dalam portal...'; mMsg.className='m-msg ok';
+    mMsg.textContent='✅ Token benar! Memuat soal...'; mMsg.className='m-msg ok';
     const itemToOpen = current;
-    setTimeout(()=>{
-      closeModal();
-      openIframeModal(itemToOpen);
-    }, 700);
+    setTimeout(()=>{ closeModal(); openIframeModal(itemToOpen); }, 700);
   } else {
     SFX.error();
     mMsg.textContent='❌ Token salah, cek lagi bestie!'; mMsg.className='m-msg err';
@@ -1753,7 +1778,7 @@ function verify(){
 document.getElementById('submitToken').addEventListener('click', ()=>{ SFX.click(); verify(); });
 
 /* ==========================================================
-   IFRAME SOAL (SALURAN TUNGGAL - tidak buka tab/window)
+   IFRAME SOAL
    ========================================================== */
 const iframeOverlay = document.getElementById('iframeOverlay');
 const soalFrame = document.getElementById('soalFrame');
@@ -1766,10 +1791,7 @@ let iframeInteractionGracePeriod = false;
 let iframeLoadedSuccessfully = false;
 
 function openIframeModal(item){
-  if(violationCount >= MAX_VIOLATIONS){
-    showLockout();
-    return;
-  }
+  if(violationCount >= MAX_VIOLATIONS){ showLockout(); return; }
   currentIframeItem = item;
   iframeLoadedSuccessfully = false;
   document.getElementById('ifEmoji').textContent = item.icon;
@@ -1781,28 +1803,22 @@ function openIframeModal(item){
   soalFrame.style.display = 'block';
   
   const embedUrl = toEmbedUrl(item.link);
-  console.log('📺 Membuka embed URL:', embedUrl);
   soalFrame.src = embedUrl;
   
-  // Timeout: jika iframe belum load dalam 10 detik, tampilkan fallback
   clearTimeout(iframeLoadTimer);
   iframeLoadTimer = setTimeout(()=>{
-    if(iframeLoading.style.display !== 'none' && !iframeLoadedSuccessfully){
-      showFallback();
-    }
+    if(iframeLoading.style.display !== 'none' && !iframeLoadedSuccessfully) showFallback();
   }, 10000);
   
   iframeOverlay.classList.add('show');
   document.body.style.overflow = 'hidden';
   
-  // ← BARU: Tampilkan banner "Mode Ujian Aktif"
+  // ← AKTIFKAN EXAM MODE: Disable copy/paste/selection
+  document.body.classList.add('exam-mode');
   examActiveBanner.classList.add('show');
   
-  // Grace period: 2 detik pertama jangan trigger alarm (untuk loading iframe)
   iframeInteractionGracePeriod = true;
-  setTimeout(() => {
-    iframeInteractionGracePeriod = false;
-  }, 2000);
+  setTimeout(() => { iframeInteractionGracePeriod = false; }, 2000);
 }
 
 function showFallback(){
@@ -1828,16 +1844,14 @@ function closeIframeModal(){
   clearTimeout(iframeLoadTimer);
   iframeLoadedSuccessfully = false;
   
-  // ← Sembunyikan banner "Mode Ujian Aktif"
+  // ← NONAKTIFKAN EXAM MODE
+  document.body.classList.remove('exam-mode');
   examActiveBanner.classList.remove('show');
   
-  // Stop ALARM_BGM jika masih main
   if(ALARM_BGM.playing) ALARM_BGM.stop();
-  
   SFX.click();
 }
 
-// Event: iframe berhasil load konten
 soalFrame.addEventListener('load', ()=>{
   try{
     const doc = soalFrame.contentDocument || soalFrame.contentWindow.document;
@@ -1845,49 +1859,24 @@ soalFrame.addEventListener('load', ()=>{
       iframeLoading.style.display = 'none';
       clearTimeout(iframeLoadTimer);
       iframeLoadedSuccessfully = true;
-      console.log('✅ Iframe berhasil dimuat');
     }
   } catch(e){
-    // CORS block - iframe load tapi kita tidak bisa akses kontennya
-    // Ini NORMAL untuk Google Forms/Docs (cross-origin)
-    // Anggap saja sukses karena iframe-nya sendiri sudah load
     iframeLoading.style.display = 'none';
     clearTimeout(iframeLoadTimer);
     iframeLoadedSuccessfully = true;
-    console.log('✅ Iframe loaded (cross-origin, CORS blocked - normal)');
   }
 });
 
-soalFrame.addEventListener('error', ()=> {
-  console.warn('⚠️ Iframe gagal load, menampilkan fallback');
-  showFallback();
-});
+soalFrame.addEventListener('error', ()=> showFallback());
 
-document.getElementById('btnCloseIframe').addEventListener('click', ()=>{
-  showConfirmModal();
-});
-
-document.getElementById('btnConfirmNo').addEventListener('click', ()=>{
-  SFX.click();
-  hideConfirmModal();
-});
-
+document.getElementById('btnCloseIframe').addEventListener('click', ()=> showConfirmModal());
+document.getElementById('btnConfirmNo').addEventListener('click', ()=>{ SFX.click(); hideConfirmModal(); });
 document.getElementById('btnConfirmYes').addEventListener('click', ()=>{
-  SFX.click();
-  hideConfirmModal();
-  closeIframeModal();
+  SFX.click(); hideConfirmModal(); closeIframeModal();
 });
-
-// Tombol fallback: Buka di tab baru (last resort)
 document.getElementById('fallbackOpenNew').addEventListener('click', ()=>{
-  if(currentIframeItem){
-    // Gunakan URL asli (bukan embed URL) untuk dibuka di tab baru
-    window.open(currentIframeItem.link, '_blank');
-    SFX.click();
-  }
+  if(currentIframeItem){ window.open(currentIframeItem.link, '_blank'); SFX.click(); }
 });
-
-// Tombol fallback: Retry
 document.getElementById('fallbackRetry').addEventListener('click', ()=>{
   if(currentIframeItem){
     iframeFallback.classList.remove('show');
@@ -1899,13 +1888,10 @@ document.getElementById('fallbackRetry').addEventListener('click', ()=>{
     SFX.click();
   }
 });
-
-document.getElementById('fallbackClose').addEventListener('click', ()=>{
-  closeIframeModal();
-});
+document.getElementById('fallbackClose').addEventListener('click', ()=> closeIframeModal());
 
 /* ==========================================================
-   SISTEM ANTI NYONTEK
+   ANTI NYONTEK
    ========================================================== */
 const MAX_VIOLATIONS = 10;
 const UNLOCK_TOKEN = 'SDMCBT';
@@ -1948,15 +1934,12 @@ const LONG_VIBRATION_PATTERN = [
 function isIframeActive(){
   return iframeOverlay.classList.contains('show');
 }
-
 function isConfirmModalActive(){
   return document.getElementById('confirmOverlay').classList.contains('show');
 }
-
 function isAlarmActive(){
   return alarmOverlay.classList.contains('show');
 }
-
 function isLockoutActive(){
   return lockoutOverlay.classList.contains('show');
 }
@@ -1970,9 +1953,7 @@ function createVibrationWorker(){
         const cmd = e.data.command;
         if (cmd === 'start') {
           if (interval) clearInterval(interval);
-          interval = setInterval(() => {
-            self.postMessage({ action: 'vibrate' });
-          }, 8000);
+          interval = setInterval(() => { self.postMessage({ action: 'vibrate' }); }, 8000);
           self.postMessage({ action: 'vibrate' });
         } else if (cmd === 'stop') {
           if (interval) { clearInterval(interval); interval = null; }
@@ -1982,9 +1963,7 @@ function createVibrationWorker(){
     const blob = new Blob([workerCode], { type: 'application/javascript' });
     vibrationWorker = new Worker(URL.createObjectURL(blob));
     vibrationWorker.onmessage = function(e) {
-      if (e.data.action === 'vibrate' && alarmTriggered) {
-        executeVibration();
-      }
+      if (e.data.action === 'vibrate' && alarmTriggered) executeVibration();
     };
   } catch(e) {}
 }
@@ -2062,13 +2041,8 @@ function stopMaximumVibration(){
   try { if('vibrate' in navigator) navigator.vibrate(0); } catch(e) {}
 }
 
-/* ==========================================================
-   TRIGGER ALARM - HANYA aktif saat DI DALAM SOAL (iframe)
-   ========================================================== */
 function triggerAlarm(reason = 'tidak diketahui'){
-  // ⚠️ GUARD UTAMA: Alarm HANYA aktif jika iframe soal sedang ditampilkan
   if(!isIframeActive()) return;
-  
   if(isAlarmActive()) return;
   if(isConfirmModalActive()) return;
   if(iframeInteractionGracePeriod) return;
@@ -2100,7 +2074,6 @@ function triggerAlarm(reason = 'tidak diketahui'){
   SFX.alarm();
   startMaximumVibration();
   
-  // Play ALARM_BGM saat pelanggaran
   if(BGM.playing){
     BGM.stop();
     musicBtn.classList.remove('music-on');
@@ -2109,12 +2082,9 @@ function triggerAlarm(reason = 'tidak diketahui'){
   ALARM_BGM.start();
   
   setTimeout(()=> unlockOtpInputs[0].focus(), 200);
-  console.warn(`🚨 PELANGGARAN #${violationCount}/${MAX_VIOLATIONS} | ${new Date().toLocaleString('id-ID')} | ${reason}`);
+  console.warn(`🚨 PELANGGARAN #${violationCount}/${MAX_VIOLATIONS} | ${reason}`);
 }
 
-/* ==========================================================
-   TRIGGER LOCKOUT (GAME OVER)
-   ========================================================== */
 function triggerLockout(){
   isLocked = true;
   lockoutCountEl.textContent = violationCount;
@@ -2141,6 +2111,9 @@ function triggerLockout(){
     soalFrame.src = 'about:blank';
     currentIframeItem = null;
     clearTimeout(iframeLoadTimer);
+    
+    // ← NONAKTIFKAN EXAM MODE
+    document.body.classList.remove('exam-mode');
     examActiveBanner.classList.remove('show');
   }
   
@@ -2153,13 +2126,8 @@ function triggerLockout(){
   SFX.doom();
   setTimeout(()=>{ DOOM_BGM.start(); }, 1500);
   render();
-  
-  console.error(`⛔ GAME OVER! ${MAX_VIOLATIONS} pelanggaran. Akses diblokir.`);
 }
 
-/* ==========================================================
-   RESET AKSES - Kembali ke Portal Awal
-   ========================================================== */
 function resetAccess(){
   isLocked = false;
   violationCount = 0;
@@ -2183,6 +2151,9 @@ function resetAccess(){
   
   document.body.style.overflow = '';
   
+  // ← NONAKTIFKAN EXAM MODE
+  document.body.classList.remove('exam-mode');
+  
   DOOM_BGM.stop();
   ALARM_BGM.stop();
   SFX.stopAlarm();
@@ -2197,8 +2168,6 @@ function resetAccess(){
   
   SFX.success();
   confetti();
-  
-  console.log(`✅ Akses direset oleh pengawas. Kembali ke portal awal.`);
   
   setTimeout(()=>{
     alert('✅ Akses berhasil direset oleh pengawas!\n\nKamu kembali ke portal soal dan bisa mengerjakan ujian lagi. Selamat mengerjakan! 💪');
@@ -2262,7 +2231,6 @@ function dismissAlarm(){
   ALARM_BGM.stop();
 }
 
-// Event listener untuk unlock OTP
 unlockOtpInputs.forEach((inp, idx)=>{
   inp.addEventListener('input', ()=>{
     inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
@@ -2314,60 +2282,43 @@ function showLockout(){
 
 /* ==========================================================
    EVENT LISTENER ANTI-NYONTEK
-   ⚠️ HANYA AKTIF SAAT SISWA BERADA DI DALAM SOAL (iframe)
+   HANYA aktif saat siswa di dalam soal (iframe)
    ========================================================== */
-
-// === BLUR EVENT ===
 window.addEventListener('blur', ()=>{
-  // ⚠️ Guard: Hanya trigger jika iframe soal sedang aktif
   if(!isIframeActive()) return;
-  
   if(isConfirmModalActive()) return;
   if(isAlarmActive()) return;
   if(isLockoutActive()) return;
-  
   if(document.activeElement === soalFrame) return;
   if(document.activeElement && document.activeElement.closest('.iframe-header')) return;
   if(iframeInteractionGracePeriod) return;
-  
-  triggerAlarm('blur - fokus keluar window saat ujian');
+  triggerAlarm('blur - fokus keluar window');
 });
 
-// === VISIBILITY CHANGE ===
 document.addEventListener('visibilitychange', ()=>{
-  // ⚠️ Guard: Hanya trigger jika iframe soal sedang aktif
   if(!isIframeActive()) return;
-  
   if(isConfirmModalActive()) return;
   if(isAlarmActive()) return;
   if(isLockoutActive()) return;
-  
   if(document.hidden){
     if(iframeInteractionGracePeriod) return;
-    triggerAlarm('tab disembunyikan saat ujian');
+    triggerAlarm('tab disembunyikan');
   }
 });
 
-// === MOUSE LEAVE ===
 document.addEventListener('mouseleave', (e)=>{
-  // ⚠️ Guard: Hanya trigger jika iframe soal sedang aktif
   if(!isIframeActive()) return;
-  
   if(isConfirmModalActive()) return;
   if(isAlarmActive()) return;
   if(isLockoutActive()) return;
   if(iframeInteractionGracePeriod) return;
-  
   if(e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight){
-    triggerAlarm('mouse keluar viewport saat ujian');
+    triggerAlarm('mouse keluar viewport');
   }
 });
 
-// === KEYDOWN (Shortcut blocking) ===
 document.addEventListener('keydown', (e)=>{
-  // Keydown blocking HANYA saat di dalam soal
   if(!isIframeActive()) return;
-  
   if(isAlarmActive()) return;
   if(isLockoutActive()){
     if(e.target.closest('#resetOtp')) return;
@@ -2379,19 +2330,165 @@ document.addEventListener('keydown', (e)=>{
     }
     return;
   }
-  
   if((e.ctrlKey || e.metaKey) && ['c','v','x','p','s','u','a'].includes(e.key.toLowerCase())){
-    if(e.key.toLowerCase() === 'a' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
     e.preventDefault();
-    alert('⚠️ Shortcut dinonaktifkan selama ujian!');
+    showBlockedToast('SHORTCUT DIBLOKIR!', 'Tidak bisa pakai shortcut saat ujian');
     return;
   }
   if(e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase()))){
     e.preventDefault();
-    alert('⚠️ Developer Tools dinonaktifkan selama ujian!');
+    showBlockedToast('DEV TOOLS DIBLOKIR!', 'Developer tools tidak diizinkan saat ujian');
+    return;
+  }
+  // Block Print Screen (desktop)
+  if(e.key === 'PrintScreen'){
+    e.preventDefault();
+    showBlockedToast('SCREENSHOT DIBLOKIR!', 'Screenshot tidak diizinkan selama ujian');
+    navigator.clipboard.writeText('').catch(()=>{});
     return;
   }
 });
+
+/* ==========================================================
+   🚫 ANTI COPY / PASTE / SELECT / CONTEXT MENU / DRAG
+   Khusus Smartphone & Desktop - Hanya aktif saat di dalam soal
+   ========================================================== */
+
+// Helper: cek apakah target adalah input yang diizinkan
+function isAllowedInput(target){
+  if(!target) return false;
+  return target.closest('.otp, .unlock-otp, .reset-otp, .search-wrap, input, textarea');
+}
+
+// Toast notifikasi ketika blokir terjadi
+const blockedToast = document.getElementById('blockedToast');
+const toastTitle = document.getElementById('toastTitle');
+const toastText = document.getElementById('toastText');
+let toastTimer = null;
+
+function showBlockedToast(title, text){
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTitle.textContent = title;
+  toastText.textContent = text;
+  blockedToast.classList.add('show');
+  SFX.blocked();
+  toastTimer = setTimeout(()=>{
+    blockedToast.classList.remove('show');
+  }, 1800);
+}
+
+// 1. BLOCK COPY - mencegah copy text/gambar saat ujian
+document.addEventListener('copy', (e)=>{
+  if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
+  e.preventDefault();
+  if(e.clipboardData){
+    e.clipboardData.setData('text/plain', '');
+  }
+  showBlockedToast('🚫 COPY DIBLOKIR!', 'Tidak bisa copy saat ujian berlangsung');
+});
+
+// 2. BLOCK CUT - mencegah cut text
+document.addEventListener('cut', (e)=>{
+  if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
+  e.preventDefault();
+  if(e.clipboardData){
+    e.clipboardData.setData('text/plain', '');
+  }
+  showBlockedToast('🚫 CUT DIBLOKIR!', 'Tidak bisa cut saat ujian berlangsung');
+});
+
+// 3. BLOCK PASTE (di luar OTP/Search input)
+document.addEventListener('paste', (e)=>{
+  if(!isIframeActive()) return;
+  // Izinkan paste hanya di OTP, unlock OTP, reset OTP, dan search
+  if(e.target.closest('.otp, .unlock-otp, .reset-otp, .search-wrap')) return;
+  e.preventDefault();
+  showBlockedToast('🚫 PASTE DIBLOKIR!', 'Tidak bisa paste ke soal ujian');
+});
+
+// 4. BLOCK SELECT TEXT - mencegah selection text dengan mouse/touch
+document.addEventListener('selectstart', (e)=>{
+  if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
+  e.preventDefault();
+});
+
+// 5. BLOCK CONTEXT MENU (long-press di Android/iOS)
+document.addEventListener('contextmenu', (e)=>{
+  if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
+  e.preventDefault();
+  showBlockedToast('🚫 MENU DIBLOKIR!', 'Long-press tidak diizinkan saat ujian');
+});
+
+// 6. BLOCK DRAG (mencegah drag text/gambar)
+document.addEventListener('dragstart', (e)=>{
+  if(!isIframeActive()) return;
+  e.preventDefault();
+  e.stopPropagation();
+  showBlockedToast('🚫 DRAG DIBLOKIR!', 'Tidak bisa drag saat ujian');
+});
+
+// 7. BLOCK DROP
+document.addEventListener('drop', (e)=>{
+  if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
+  e.preventDefault();
+  e.stopPropagation();
+});
+
+// 8. iOS Safari: Block callout (share/copy/define popup)
+document.addEventListener('touchstart', (e)=>{
+  if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
+  // Prevent iOS long-press callout on non-input elements
+  if(e.target.nodeType === 1 && !isAllowedInput(e.target)){
+    // Don't preventDefault on the touchstart because it would break scrolling
+    // CSS -webkit-touch-callout handles this
+  }
+}, {passive: true});
+
+// 9. Block double-tap to zoom (kadang dipakai untuk select)
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e)=>{
+  if(!isIframeActive()) return;
+  const now = Date.now();
+  if(now - lastTouchEnd <= 300){
+    if(!isAllowedInput(e.target)){
+      e.preventDefault();
+    }
+  }
+  lastTouchEnd = now;
+}, {passive: false});
+
+// 10. Block text selection via mouse/touch move
+document.addEventListener('mousemove', (e)=>{
+  if(!isIframeActive()) return;
+  // Prevent text selection via drag
+  if(window.getSelection){
+    const sel = window.getSelection();
+    if(sel.toString().length > 0 && !isAllowedInput(e.target)){
+      sel.removeAllRanges();
+    }
+  }
+});
+
+// 11. Block iOS text selection on touch hold
+document.addEventListener('touchmove', (e)=>{
+  if(!isIframeActive()) return;
+  if(window.getSelection){
+    const sel = window.getSelection();
+    if(sel.toString().length > 0){
+      // Only clear if not on allowed input
+      const active = document.activeElement;
+      if(!isAllowedInput(active)){
+        sel.removeAllRanges();
+      }
+    }
+  }
+}, {passive: true});
 
 document.addEventListener('visibilitychange', ()=>{
   if(!document.hidden) requestWakeLock();
@@ -2419,7 +2516,7 @@ if('onpagehide' in window){
 }
 
 /* ==========================================================
-   CONFETTI EFFECT
+   CONFETTI
    ========================================================== */
 function confetti(){
   const wrap=document.getElementById('confetti');
@@ -2438,7 +2535,7 @@ function confetti(){
 }
 
 /* ==========================================================
-   INISIALISASI AWAL
+   INISIALISASI
    ========================================================== */
 buildChips();
 render();
@@ -2451,7 +2548,8 @@ console.log('%c═════════════════════�
 console.log('%c🔑 Token Unlock Alarm: SDMCBT', 'color: #FFD93D; font-size: 12px;');
 console.log('%c⚡ Token Reset (Game Over): SDMRST', 'color: #4D96FF; font-size: 12px;');
 console.log('%c⛔ Batas Pelanggaran: 10x (Lockout)', 'color: #E63946; font-size: 12px;');
-console.log('%c📺 Semua soal di-EMBED di dalam portal (tidak buka tab!)', 'color: #B983FF; font-size: 12px;');
+console.log('%c🚫 Anti Copy/Paste/Selection: AKTIF saat ujian', 'color: #B983FF; font-size: 12px;');
+console.log('%c📱 Proteksi Smartphone: Long-press & callout diblokir', 'color: #C6F432; font-size: 12px;');
 console.log('%c🛡️ Anti-nyontek HANYA aktif saat di dalam soal', 'color: #C6F432; font-size: 12px;');
 console.log('%c═══════════════════════════════════════', 'color: #E63946; font-size: 14px;');
 </script>
