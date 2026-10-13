@@ -36,27 +36,25 @@
   ::selection{background:var(--lime)}
 
   /* ==========================================================
-     EXAM MODE - ANTI COPY/PASTE/SELECTION (Smartphone & Desktop)
-     Aktif saat siswa sedang mengerjakan soal di dalam portal
+     EXAM MODE - ANTI COPY/PASTE/SELECTION (REVISI)
+     Hanya berlaku untuk elemen DI LUAR iframe
      ========================================================== */
   body.exam-mode{
-    -webkit-user-select: none !important;
-    -webkit-touch-callout: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-    -webkit-tap-highlight-color: transparent !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
   
-  /* Izinkan selection hanya pada input yang diperlukan */
+  /* Izinkan selection pada input yang diperlukan */
   body.exam-mode input,
   body.exam-mode textarea{
-    -webkit-user-select: text !important;
-    user-select: text !important;
-    -webkit-touch-callout: default !important;
+    -webkit-user-select: text;
+    user-select: text;
   }
   
-  /* Blokir drag pada semua elemen saat exam */
+  /* Blokir drag pada semua elemen saat exam (kecuali iframe) */
   body.exam-mode img,
   body.exam-mode a,
   body.exam-mode .card,
@@ -64,15 +62,13 @@
   body.exam-mode .btn-open,
   body.exam-mode .iframe-btn,
   body.exam-mode .alarm-unlock-btn{
-    -webkit-user-drag: none !important;
-    user-drag: none !important;
-    -khtml-user-drag: none !important;
-    pointer-events: auto;
+    -webkit-user-drag: none;
+    user-drag: none;
   }
   
-  /* Disable long-press context menu pada semua text di smartphone */
-  body.exam-mode *{
-    -webkit-touch-callout: none !important;
+  /* Disable long-press context menu pada text di smartphone (kecuali input) */
+  body.exam-mode *:not(input):not(textarea){
+    -webkit-touch-callout: none;
   }
 
   .ticker{background:var(--ink);color:var(--lime);overflow:hidden;white-space:nowrap;padding:8px 0;border-bottom:3px solid var(--ink)}
@@ -836,7 +832,7 @@
       <div class="spinner"></div>
       <div>Memuat soal...</div>
     </div>
-    <iframe id="soalFrame" title="Soal UTS" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+    <iframe id="soalFrame" title="Soal UTS" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation allow-top-navigation-by-user-activation allow-modals allow-presentation" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
     <div class="iframe-fallback" id="iframeFallback">
       <div class="emoji-big">⚠️</div>
       <h4>Soal sulit dimuat di iframe</h4>
@@ -2281,7 +2277,7 @@ function showLockout(){
 }
 
 /* ==========================================================
-   EVENT LISTENER ANTI-NYONTEK
+   EVENT LISTENER ANTI-NYONTEK (REVISI - Skip if target is iframe)
    HANYA aktif saat siswa di dalam soal (iframe)
    ========================================================== */
 window.addEventListener('blur', ()=>{
@@ -2306,16 +2302,17 @@ document.addEventListener('visibilitychange', ()=>{
   }
 });
 
-document.addEventListener('mouseleave', (e)=>{
-  if(!isIframeActive()) return;
-  if(isConfirmModalActive()) return;
-  if(isAlarmActive()) return;
-  if(isLockoutActive()) return;
-  if(iframeInteractionGracePeriod) return;
-  if(e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight){
-    triggerAlarm('mouse keluar viewport');
-  }
-});
+// ← HAPUS mouseleave event karena terlalu sensitif dan sering false positive
+// document.addEventListener('mouseleave', (e)=>{
+//   if(!isIframeActive()) return;
+//   if(isConfirmModalActive()) return;
+//   if(isAlarmActive()) return;
+//   if(isLockoutActive()) return;
+//   if(iframeInteractionGracePeriod) return;
+//   if(e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight){
+//     triggerAlarm('mouse keluar viewport');
+//   }
+// });
 
 document.addEventListener('keydown', (e)=>{
   if(!isIframeActive()) return;
@@ -2352,11 +2349,14 @@ document.addEventListener('keydown', (e)=>{
 /* ==========================================================
    🚫 ANTI COPY / PASTE / SELECT / CONTEXT MENU / DRAG
    Khusus Smartphone & Desktop - Hanya aktif saat di dalam soal
+   (REVISI - Skip jika target adalah iframe)
    ========================================================== */
 
-// Helper: cek apakah target adalah input yang diizinkan
+// Helper: cek apakah target adalah input yang diizinkan atau iframe
 function isAllowedInput(target){
   if(!target) return false;
+  // ← TAMBAHAN: Skip jika target adalah iframe
+  if(target === soalFrame || target.closest('iframe')) return true;
   return target.closest('.otp, .unlock-otp, .reset-otp, .search-wrap, input, textarea');
 }
 
@@ -2399,9 +2399,11 @@ document.addEventListener('cut', (e)=>{
   showBlockedToast('🚫 CUT DIBLOKIR!', 'Tidak bisa cut saat ujian berlangsung');
 });
 
-// 3. BLOCK PASTE (di luar OTP/Search input)
+// 3. BLOCK PASTE (di luar OTP/Search input dan iframe)
 document.addEventListener('paste', (e)=>{
   if(!isIframeActive()) return;
+  // ← TAMBAHAN: Izinkan paste di iframe
+  if(e.target === soalFrame || e.target.closest('iframe')) return;
   // Izinkan paste hanya di OTP, unlock OTP, reset OTP, dan search
   if(e.target.closest('.otp, .unlock-otp, .reset-otp, .search-wrap')) return;
   e.preventDefault();
@@ -2426,6 +2428,7 @@ document.addEventListener('contextmenu', (e)=>{
 // 6. BLOCK DRAG (mencegah drag text/gambar)
 document.addEventListener('dragstart', (e)=>{
   if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
   e.preventDefault();
   e.stopPropagation();
   showBlockedToast('🚫 DRAG DIBLOKIR!', 'Tidak bisa drag saat ujian');
@@ -2466,10 +2469,11 @@ document.addEventListener('touchend', (e)=>{
 // 10. Block text selection via mouse/touch move
 document.addEventListener('mousemove', (e)=>{
   if(!isIframeActive()) return;
+  if(isAllowedInput(e.target)) return;
   // Prevent text selection via drag
   if(window.getSelection){
     const sel = window.getSelection();
-    if(sel.toString().length > 0 && !isAllowedInput(e.target)){
+    if(sel.toString().length > 0){
       sel.removeAllRanges();
     }
   }
@@ -2551,6 +2555,7 @@ console.log('%c⛔ Batas Pelanggaran: 10x (Lockout)', 'color: #E63946; font-size
 console.log('%c🚫 Anti Copy/Paste/Selection: AKTIF saat ujian', 'color: #B983FF; font-size: 12px;');
 console.log('%c📱 Proteksi Smartphone: Long-press & callout diblokir', 'color: #C6F432; font-size: 12px;');
 console.log('%c🛡️ Anti-nyontek HANYA aktif saat di dalam soal', 'color: #C6F432; font-size: 12px;');
+console.log('%c✅ REVISI: Iframe sekarang bisa submit form!', 'color: #6BCB77; font-size: 12px;');
 console.log('%c═══════════════════════════════════════', 'color: #E63946; font-size: 14px;');
 </script>
 </body>
