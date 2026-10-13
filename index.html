@@ -325,9 +325,10 @@
   .confirm-btn.no{background:var(--lime);color:var(--ink)}
 
   .alarm-overlay{
-    position:fixed;inset:0;background:rgba(224,53,107,.95);z-index:999;
+    position:fixed;inset:0;background:rgba(224,53,107,.95);z-index:9999;
     display:none;align-items:center;justify-content:center;
     animation:alarmFlash 0.5s infinite;
+    padding:16px;
   }
   .alarm-overlay.show{display:flex}
   @keyframes alarmFlash{
@@ -336,32 +337,69 @@
   }
   .alarm-content{
     background:#fff;border:4px solid var(--ink);border-radius:24px;
-    padding:40px 30px;text-align:center;box-shadow:10px 10px 0 var(--ink);
-    max-width:420px;animation:alarmShake 0.3s infinite;
+    padding:32px 26px;text-align:center;box-shadow:12px 12px 0 var(--ink);
+    max-width:460px;width:100%;animation:alarmShake 0.3s infinite;
   }
   @keyframes alarmShake{
     0%,100%{transform:rotate(-2deg)}
     50%{transform:rotate(2deg)}
   }
-  .alarm-emoji{font-size:64px;margin-bottom:16px;animation:alarmPulse 0.5s infinite}
+  .alarm-emoji{font-size:64px;margin-bottom:12px;animation:alarmPulse 0.5s infinite}
   @keyframes alarmPulse{
     0%,100%{transform:scale(1)}
     50%{transform:scale(1.2)}
   }
   .alarm-title{
-    font-family:'Unbounded';font-weight:900;font-size:28px;color:var(--ink);
-    margin-bottom:12px;letter-spacing:-1px;
+    font-family:'Unbounded';font-weight:900;font-size:26px;color:var(--ink);
+    margin-bottom:10px;letter-spacing:-1px;
   }
   .alarm-msg{
-    font-size:15px;font-weight:700;color:#575463;margin-bottom:24px;line-height:1.5;
+    font-size:14px;font-weight:600;color:#575463;margin-bottom:16px;line-height:1.55;
   }
-  .alarm-btn{
-    font-family:'Unbounded';font-weight:900;font-size:16px;cursor:pointer;
-    background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:14px;
-    padding:16px 36px;box-shadow:6px 6px 0 var(--ink);transition:all .12s;
+  .violation-badge{
+    display:inline-flex;align-items:center;gap:6px;font-family:'Unbounded';font-weight:900;
+    font-size:13px;background:var(--ink);color:var(--lime);
+    border:3px solid var(--ink);border-radius:999px;padding:6px 14px;
+    box-shadow:4px 4px 0 rgba(0,0,0,.3);margin-bottom:18px;letter-spacing:.5px;
   }
-  .alarm-btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
-  .alarm-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .violation-count{
+    background:var(--pink);color:#fff;border-radius:999px;
+    min-width:24px;height:24px;display:inline-grid;place-items:center;font-size:14px;
+  }
+  .alarm-instruction{
+    background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;
+    padding:12px;margin-bottom:18px;box-shadow:3px 3px 0 var(--ink);
+    font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.45;
+  }
+  .alarm-instruction b{font-family:'Unbounded';display:block;margin-bottom:2px;font-size:13px}
+  .unlock-label{
+    font-family:'Unbounded';font-weight:800;font-size:11px;
+    text-transform:uppercase;letter-spacing:1.2px;color:#6b6878;
+    margin-bottom:8px;display:block;
+  }
+  .unlock-otp{display:flex;gap:6px;justify-content:center;margin:8px 0 12px}
+  .unlock-otp input{
+    width:42px;height:50px;text-align:center;font-family:'Unbounded';font-weight:900;font-size:20px;
+    border:2.5px solid var(--ink);border-radius:10px;outline:none;text-transform:uppercase;
+    background:#fff;transition:all .12s;
+  }
+  .unlock-otp input:focus{border-color:var(--pink);box-shadow:3px 3px 0 var(--pink);transform:translateY(-2px)}
+  .unlock-otp input.filled{background:var(--yellow)}
+  .alarm-msg-status{
+    text-align:center;font-weight:700;font-size:13px;min-height:20px;margin-bottom:10px;
+  }
+  .alarm-msg-status.err{color:#e0356b}
+  .alarm-msg-status.ok{color:#1d9e4d}
+  .alarm-unlock-btn{
+    width:100%;font-family:'Unbounded';font-weight:900;font-size:14px;cursor:pointer;
+    background:var(--lime);color:var(--ink);border:3px solid var(--ink);border-radius:13px;
+    padding:13px;box-shadow:5px 5px 0 var(--ink);transition:all .12s;
+  }
+  .alarm-unlock-btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+  .alarm-unlock-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .alarm-note{
+    font-size:10.5px;font-weight:600;color:#8a8794;margin-top:12px;line-height:1.4;
+  }
 
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:300;overflow:hidden}
   #confetti i{position:absolute;top:-24px;border-radius:3px;animation:fall linear forwards}
@@ -387,8 +425,9 @@
     .iframe-title small{font-size:10px}
     .iframe-btn{padding:6px 10px;font-size:10.5px}
     .iframe-actions{width:100%;justify-content:flex-end}
-    .alarm-title{font-size:22px}
-    .alarm-content{padding:30px 20px;margin:16px}
+    .alarm-title{font-size:20px}
+    .alarm-content{padding:26px 18px}
+    .unlock-otp input{width:38px;height:46px;font-size:18px}
     .confirm-modal{padding:28px 20px;margin:16px}
     .confirm-modal h3{font-size:19px}
     .confirm-btn{padding:12px 22px;font-size:12.5px;min-width:110px}
@@ -527,8 +566,40 @@
   <div class="alarm-content">
     <div class="alarm-emoji">🚨</div>
     <h2 class="alarm-title">PELANGGARAN!</h2>
-    <p class="alarm-msg">Kamu keluar dari halaman ujian!<br>Kembali ke portal sekarang atau aktivitasmu akan tercatat.</p>
-    <button class="alarm-btn" id="alarmDismiss">KEMBALI KE UJIAN</button>
+
+    <div class="violation-badge">
+      <span>Total Pelanggaran:</span>
+      <span class="violation-count" id="violationCount">0</span>
+    </div>
+
+    <p class="alarm-msg">
+      Sistem mendeteksi kamu keluar dari halaman ujian.<br>
+      Alarm tidak dapat dimatikan secara otomatis.
+    </p>
+
+    <div class="alarm-instruction">
+      <b>👨‍🏫 HADAP PENGAWAS SEKARANG</b>
+      Minta <u>Token Unlock</u> kepada pengawas untuk melanjutkan ujianmu.
+    </div>
+
+    <label class="unlock-label">Masukkan Token Unlock Pengawas</label>
+    <div class="unlock-otp" id="unlockOtp">
+      <input maxlength="1" autocomplete="off" aria-label="unlock 1">
+      <input maxlength="1" autocomplete="off" aria-label="unlock 2">
+      <input maxlength="1" autocomplete="off" aria-label="unlock 3">
+      <input maxlength="1" autocomplete="off" aria-label="unlock 4">
+      <input maxlength="1" autocomplete="off" aria-label="unlock 5">
+      <input maxlength="1" autocomplete="off" aria-label="unlock 6">
+    </div>
+
+    <p class="alarm-msg-status" id="alarmStatus"></p>
+
+    <button class="alarm-unlock-btn" id="alarmUnlockBtn">🔓 UNLOCK</button>
+
+    <p class="alarm-note">
+      ⚠️ Token unlock hanya dimiliki pengawas. <br>
+      Percobaan salah berulang akan tercatat di sistem pelanggaran.
+    </p>
   </div>
 </div>
 
@@ -724,7 +795,7 @@ const SFX = {
 };
 document.addEventListener('pointerdown', ()=>getCtx());
 document.addEventListener('mouseover', e=>{
-  if(e.target.closest('.chip,.btn-open,.m-btn,.sound-btn,.card,.iframe-btn,.confirm-btn')) SFX.hover();
+  if(e.target.closest('.chip,.btn-open,.m-btn,.sound-btn,.card,.iframe-btn,.confirm-btn,.alarm-unlock-btn')) SFX.hover();
 });
 
 const BGM = {
@@ -931,7 +1002,14 @@ function openModal(item){
 function closeModal(){ overlay.classList.remove('show'); current=null; }
 document.getElementById('closeModal').addEventListener('click',()=>{ SFX.click(); closeModal(); });
 overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !document.getElementById('iframeOverlay').classList.contains('show') && !document.getElementById('confirmOverlay').classList.contains('show')) closeModal(); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' &&
+     !document.getElementById('iframeOverlay').classList.contains('show') &&
+     !document.getElementById('confirmOverlay').classList.contains('show') &&
+     !document.getElementById('alarmOverlay').classList.contains('show')){
+    closeModal();
+  }
+});
 
 inputs.forEach((inp,idx)=>{
   inp.addEventListener('input', ()=>{
@@ -984,6 +1062,7 @@ const iframeLoading = document.getElementById('iframeLoading');
 const iframeFallback = document.getElementById('iframeFallback');
 let currentIframeItem = null;
 let iframeLoadTimer = null;
+let iframeInteractionGracePeriod = false; // Grace period saat user berinteraksi dengan iframe
 
 function openIframeModal(item){
   currentIframeItem = item;
@@ -1003,6 +1082,12 @@ function openIframeModal(item){
   }, 7000);
   iframeOverlay.classList.add('show');
   document.body.style.overflow = 'hidden';
+  
+  // Grace period 1 detik setelah iframe terbuka untuk menghindari false positive
+  iframeInteractionGracePeriod = true;
+  setTimeout(() => {
+    iframeInteractionGracePeriod = false;
+  }, 1500);
 }
 
 function showFallback(){
@@ -1062,15 +1147,22 @@ document.getElementById('btnConfirmYes').addEventListener('click', ()=>{
 document.getElementById('fallbackClose').addEventListener('click', closeIframeModal);
 
 /* ==========================================================
-   SISTEM ANTI NYONTEK (DIPERBAIKI)
-   - Tidak akan terpicu saat siswa aktif mengerjakan di iframe
-   - Hanya aktif saat siswa di portal, modal token, atau saat ujian idle
+   SISTEM ANTI NYONTEK — FIXED VERSION
+   Sekarang aktif SELALU, bahkan saat siswa sedang mengerjakan
+   soal di dalam iframe (kecuali saat konfirmasi selesai).
    ========================================================== */
 const alarmOverlay = document.getElementById('alarmOverlay');
+const alarmStatus = document.getElementById('alarmStatus');
+const violationCountEl = document.getElementById('violationCount');
+const unlockOtpInputs = [...document.querySelectorAll('#unlockOtp input')];
+const alarmUnlockBtn = document.getElementById('alarmUnlockBtn');
+
+const UNLOCK_TOKEN = 'SDMCBT';
+
 let alarmTriggered = false;
 let violationCount = 0;
+let failedUnlockAttempts = 0;
 
-// Variabel untuk sistem anti-throttle
 let vibrationWorker = null;
 let silentAudioCtx = null;
 let silentOsc = null;
@@ -1079,7 +1171,6 @@ let wakeLockSentinel = null;
 let mainVibrationInterval = null;
 let fallbackTimeout = null;
 
-// Pattern vibrasi panjang
 const LONG_VIBRATION_PATTERN = [
   500, 100, 500, 100, 500, 100, 500, 100, 500, 200,
   500, 100, 500, 100, 500, 100, 500, 100, 500, 500,
@@ -1087,13 +1178,16 @@ const LONG_VIBRATION_PATTERN = [
   500, 100, 500, 100, 500, 300
 ];
 
-/* ==========================================================
-   HELPER: CEK APAKAH IFRAME SEDANG AKTIF
-   Saat iframe aktif, sistem anti-nyontek NONAKTIF karena
-   siswa memang sedang fokus di dalam iframe soal ujian.
-   ========================================================== */
 function isIframeActive(){
   return iframeOverlay.classList.contains('show');
+}
+
+function isConfirmModalActive(){
+  return document.getElementById('confirmOverlay').classList.contains('show');
+}
+
+function isAlarmActive(){
+  return alarmOverlay.classList.contains('show');
 }
 
 function createVibrationWorker(){
@@ -1239,25 +1333,20 @@ function stopMaximumVibration(){
   } catch(e) {}
 }
 
-/* ==========================================================
-   TRIGGER ALARM — DIPERBAIKI
-   Tidak akan terpicu jika:
-   1. Siswa sedang di dalam iframe (sedang mengerjakan soal)
-   2. Dialog konfirmasi "Selesai" sedang tampil
-   3. Alarm sudah pernah terpicu sebelumnya
-   ========================================================== */
-function triggerAlarm(){
-  // JANGAN trigger alarm jika iframe sedang aktif (siswa lagi ngerjain soal)
-  if(isIframeActive()) return;
-  
-  // JANGAN trigger jika sudah pernah terpicu
-  if(alarmTriggered) return;
-  
-  // JANGAN trigger jika modal konfirmasi "Selesai" tampil
-  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
+function triggerAlarm(reason = 'tidak diketahui'){
+  if(isAlarmActive()) return;
+  if(isConfirmModalActive()) return;
+  if(iframeInteractionGracePeriod) return;
   
   alarmTriggered = true;
   violationCount++;
+  
+  violationCountEl.textContent = violationCount;
+  
+  unlockOtpInputs.forEach(i=>{ i.value=''; i.classList.remove('filled'); });
+  alarmStatus.textContent = '';
+  alarmStatus.className = 'alarm-msg-status';
+  failedUnlockAttempts = 0;
   
   alarmOverlay.classList.add('show');
   SFX.alarm();
@@ -1268,6 +1357,47 @@ function triggerAlarm(){
     musicBtn.classList.remove('music-on');
     musicBtn.innerHTML = '🎵 MUSIK';
   }
+  
+  setTimeout(()=> unlockOtpInputs[0].focus(), 200);
+  
+  console.warn(`🚨 PELANGGARAN #${violationCount} tercatat pada: ${new Date().toLocaleString('id-ID')} | Alasan: ${reason} | iframe aktif: ${isIframeActive()}`);
+}
+
+function tryUnlockAlarm(){
+  const code = unlockOtpInputs.map(i=>i.value).join('').toUpperCase();
+  
+  if(code.length < 6){
+    SFX.error();
+    alarmStatus.textContent = '⚠️ Token unlock harus 6 huruf!';
+    alarmStatus.className = 'alarm-msg-status err';
+    return;
+  }
+  
+  if(code === UNLOCK_TOKEN){
+    SFX.success();
+    confetti();
+    alarmStatus.textContent = '✅ Berhasil! Alarm dimatikan.';
+    alarmStatus.className = 'alarm-msg-status ok';
+    
+    setTimeout(()=>{
+      dismissAlarm();
+    }, 900);
+  } else {
+    SFX.error();
+    failedUnlockAttempts++;
+    alarmStatus.textContent = `❌ Token salah! (Percobaan ${failedUnlockAttempts}) Minta ke pengawas!`;
+    alarmStatus.className = 'alarm-msg-status err';
+    
+    const content = document.querySelector('.alarm-content');
+    content.classList.remove('shake');
+    void content.offsetWidth;
+    content.classList.add('shake');
+    
+    unlockOtpInputs.forEach(i=>{ i.value=''; i.classList.remove('filled'); });
+    unlockOtpInputs[0].focus();
+    
+    console.warn(`❌ Percobaan unlock gagal #${failedUnlockAttempts} pada pelanggaran #${violationCount}`);
+  }
 }
 
 function dismissAlarm(){
@@ -1277,76 +1407,150 @@ function dismissAlarm(){
   alarmTriggered = false;
 }
 
+unlockOtpInputs.forEach((inp, idx)=>{
+  inp.addEventListener('input', ()=>{
+    inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
+    inp.classList.toggle('filled', !!inp.value);
+    if(inp.value){
+      SFX.type();
+      if(unlockOtpInputs[idx+1]) unlockOtpInputs[idx+1].focus();
+    }
+    if(idx === 5 && unlockOtpInputs.every(i => i.value)){
+      setTimeout(tryUnlockAlarm, 250);
+    }
+  });
+  
+  inp.addEventListener('keydown', e=>{
+    if(e.key==='Backspace' && !inp.value && unlockOtpInputs[idx-1]){
+      unlockOtpInputs[idx-1].focus();
+    }
+    if(e.key==='Enter'){
+      tryUnlockAlarm();
+    }
+  });
+  
+  inp.addEventListener('paste', e=>{
+    e.preventDefault();
+    const txt = (e.clipboardData.getData('text').toUpperCase().match(/[A-Z]/g)||[]).slice(0,6);
+    txt.forEach((ch,i)=>{
+      if(unlockOtpInputs[i]){
+        unlockOtpInputs[i].value = ch;
+        unlockOtpInputs[i].classList.add('filled');
+      }
+    });
+    if(unlockOtpInputs[Math.min(txt.length,5)]) unlockOtpInputs[Math.min(txt.length,5)].focus();
+    if(txt.length === 6) setTimeout(tryUnlockAlarm, 250);
+  });
+});
+
+alarmUnlockBtn.addEventListener('click', ()=>{
+  SFX.click();
+  tryUnlockAlarm();
+});
+
 /* ==========================================================
-   EVENT LISTENER ANTI-NYONTEK
-   Masing-masing listener sudah diperkuat dengan pengecekan
-   isIframeActive() agar tidak memicu alarm palsu saat siswa
-   sedang mengerjakan soal di dalam iframe.
+   EVENT LISTENER ANTI-NYONTEK — FIXED
+   - visibilitychange: SELALU aktif (deteksi tab tersembunyi)
+   - blur: cerdas membedakan fokus ke iframe vs mencontek
+   - mouseleave: aktif bahkan saat iframe (kursor keluar viewport)
+   - keydown: shortcut blocking aktif saat fokus di parent window
    ========================================================== */
+
+// === BLUR EVENT (Logika Cerdas) ===
 window.addEventListener('blur', ()=>{
-  // Jangan trigger saat di iframe — focus pindah ke iframe, itu wajar!
-  if(isIframeActive()) return;
-  // Jangan trigger saat modal konfirmasi tampil
-  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
-  triggerAlarm();
+  // Abaikan jika modal konfirmasi aktif
+  if(isConfirmModalActive()) return;
+  
+  // Abaikan jika alarm sudah aktif
+  if(isAlarmActive()) return;
+  
+  // Jika iframe aktif, cek apakah blur karena fokus pindah ke iframe (NORMAL)
+  // atau fokus pindah keluar window (MENCONTEK)
+  if(isIframeActive()){
+    // Jika activeElement adalah iframe, itu normal (user klik di soal)
+    if(document.activeElement === soalFrame){
+      // Grace period tambahan setelah user klik iframe
+      return;
+    }
+    // Jika fokus di tombol parent (seperti "✕ Selesai"), itu normal
+    if(document.activeElement && document.activeElement.closest('.iframe-header')){
+      return;
+    }
+    // Jika activeElement tidak ada atau di body luar, kemungkinan mencontek
+    // Tapi hati-hati: saat iframe dibuka pertama kali, fokus bisa pindah ke iframe
+    // Cek dengan grace period
+    if(iframeInteractionGracePeriod) return;
+    
+    // Trigger alarm! User keluar dari window
+    triggerAlarm('blur saat iframe aktif - fokus keluar window');
+    return;
+  }
+  
+  // Jika iframe tidak aktif, blur = mencontek (pindah window/tab)
+  triggerAlarm('blur di portal utama');
 });
 
+// === VISIBILITY CHANGE (Selalu aktif untuk deteksi pindah tab/minimize) ===
 document.addEventListener('visibilitychange', ()=>{
-  // Jangan trigger saat di iframe
-  if(isIframeActive()) return;
-  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
+  // Abaikan jika modal konfirmasi aktif
+  if(isConfirmModalActive()) return;
   
-  // Hanya trigger jika tab benar-benar disembunyikan (user pindah tab/aplikasi)
-  if(document.hidden) triggerAlarm();
-});
-
-document.addEventListener('mouseleave', (e)=>{
-  // Jangan trigger saat di iframe
-  if(isIframeActive()) return;
-  if(document.getElementById('confirmOverlay').classList.contains('show')) return;
+  // Abaikan jika alarm sudah aktif
+  if(isAlarmActive()) return;
   
-  // Hanya trigger jika mouse keluar viewport (ke atas layar biasanya)
-  if(e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight){
-    triggerAlarm();
+  // Jika tab benar-benar disembunyikan = MENCONTEK
+  // Aktif bahkan saat iframe aktif, karena tab disembunyikan jelas mencontek
+  if(document.hidden){
+    // Grace period saat iframe baru dibuka
+    if(iframeInteractionGracePeriod) return;
+    triggerAlarm('tab disembunyikan (visibilitychange)');
   }
 });
 
-document.getElementById('alarmDismiss').addEventListener('click', ()=>{
-  SFX.click();
-  dismissAlarm();
-});
-
-document.addEventListener('contextmenu', (e)=>{
-  if(e.target.closest('.iframe-wrap')) return; // biarkan klik kanan di iframe
-  if(isIframeActive()) return; // jangan ganggu siswa saat ngerjain
-  // Untuk area portal utama, boleh di-blok jika diinginkan
-  // e.preventDefault();
-  // alert('⚠️ Klik kanan dinonaktifkan selama ujian!');
-});
-
-document.addEventListener('keydown', (e)=>{
-  // Jangan ganggu siswa saat di iframe — biarkan mereka mengerjakan
-  if(isIframeActive()) return;
+// === MOUSE LEAVE (Aktif bahkan saat iframe aktif) ===
+document.addEventListener('mouseleave', (e)=>{
+  if(isConfirmModalActive()) return;
+  if(isAlarmActive()) return;
+  if(iframeInteractionGracePeriod) return;
   
-  if((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'p' || e.key === 's' || e.key === 'u')){
+  // Jika mouse keluar viewport, kemungkinan mencontek
+  if(e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight){
+    triggerAlarm('mouse keluar viewport');
+  }
+});
+
+// === KEYDOWN (Shortcut blocking) ===
+document.addEventListener('keydown', (e)=>{
+  if(isAlarmActive()) return;
+  
+  // Jika iframe aktif, shortcut di parent window tetap diblokir
+  // (Note: shortcut di dalam iframe tidak bisa dideteksi dari parent - ini batasan browser)
+  
+  // Block shortcut copy/paste/print/save
+  if((e.ctrlKey || e.metaKey) && ['c','v','x','p','s','u','a'].includes(e.key.toLowerCase())){
+    // Izinkan Ctrl+A (select all) karena bisa dipakai di input
+    if(e.key.toLowerCase() === 'a' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')){
+      return;
+    }
     e.preventDefault();
     alert('⚠️ Shortcut dinonaktifkan selama ujian!');
+    return;
   }
   
-  if(e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))){
+  // Block DevTools (F12, Ctrl+Shift+I/J/C)
+  if(e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase()))){
     e.preventDefault();
     alert('⚠️ Developer Tools dinonaktifkan selama ujian!');
+    return;
   }
 });
 
-// Re-akuisisi Wake Lock saat halaman kembali visible
 document.addEventListener('visibilitychange', ()=>{
   if(!document.hidden){
     requestWakeLock();
   }
 });
 
-// Bersihkan saat tab ditutup
 window.addEventListener('beforeunload', ()=>{
   stopMaximumVibration();
 });
@@ -1385,6 +1589,9 @@ function confetti(){
    ========================================================== */
 buildChips();
 render();
+
+// Request wake lock saat halaman pertama kali dimuat
+requestWakeLock();
 </script>
 </body>
 </html>
