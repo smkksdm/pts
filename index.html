@@ -17,6 +17,8 @@
     --blue:#4D96FF;
     --purple:#B983FF;
     --lime:#C6F432;
+    --red:#E63946;
+    --dark-red:#9D0208;
     --shadow:6px 6px 0 var(--ink);
     --shadow-sm:4px 4px 0 var(--ink);
   }
@@ -168,6 +170,7 @@
   }
   .btn-open:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
   .btn-open:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .btn-open.locked{background:#888;cursor:not-allowed;opacity:.6}
   .empty{
     text-align:center;padding:40px 16px;border:2.5px dashed var(--ink);border-radius:18px;
     background:#fff8;font-weight:600;font-size:15px;
@@ -400,6 +403,225 @@
   .alarm-note{
     font-size:10.5px;font-weight:600;color:#8a8794;margin-top:12px;line-height:1.4;
   }
+  .warning-strip{
+    background:var(--red);color:#fff;border:2.5px solid var(--ink);border-radius:10px;
+    padding:8px 12px;margin-top:10px;font-family:'Unbounded';font-weight:800;font-size:11px;
+    letter-spacing:.5px;box-shadow:3px 3px 0 rgba(0,0,0,.2);
+  }
+
+  /* ====== LOCKOUT OVERLAY (GAME OVER) ====== */
+  .lockout-overlay{
+    position:fixed;inset:0;
+    background:linear-gradient(135deg, #1a0000 0%, #4a0008 50%, #1a0000 100%);
+    z-index:99999;
+    display:none;align-items:center;justify-content:center;
+    padding:16px;
+    animation:lockoutFadeIn .6s;
+  }
+  .lockout-overlay.show{display:flex}
+  @keyframes lockoutFadeIn{
+    from{opacity:0}
+    to{opacity:1}
+  }
+  .lockout-content{
+    background:linear-gradient(180deg, #2d0005 0%, #0f0002 100%);
+    border:4px solid var(--red);
+    border-radius:24px;
+    box-shadow:0 0 60px rgba(230,57,70,.6), 0 0 120px rgba(157,2,8,.4);
+    max-width:480px;
+    width:100%;
+    padding:36px 28px;
+    text-align:center;
+    animation:lockoutPulse 2s infinite;
+    position:relative;
+    overflow:hidden;
+  }
+  @keyframes lockoutPulse{
+    0%,100%{box-shadow:0 0 60px rgba(230,57,70,.6), 0 0 120px rgba(157,2,8,.4)}
+    50%{box-shadow:0 0 80px rgba(230,57,70,.8), 0 0 160px rgba(157,2,8,.6)}
+  }
+  .lockout-content::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(230,57,70,.03) 10px,
+      rgba(230,57,70,.03) 20px
+    );
+    pointer-events:none;
+  }
+  .lockout-emoji{
+    font-size:84px;
+    margin-bottom:16px;
+    animation:lockoutSpin 3s ease-in-out infinite;
+    filter:drop-shadow(0 0 20px rgba(230,57,70,.8));
+  }
+  @keyframes lockoutSpin{
+    0%,100%{transform:rotate(-5deg) scale(1)}
+    50%{transform:rotate(5deg) scale(1.05)}
+  }
+  .lockout-title{
+    font-family:'Unbounded';
+    font-weight:900;
+    font-size:clamp(1.8rem, 6vw, 2.8rem);
+    color:var(--red);
+    margin-bottom:12px;
+    letter-spacing:-1px;
+    text-shadow:0 0 20px rgba(230,57,70,.6), 2px 2px 0 #000;
+    animation:lockoutGlow 1.5s infinite alternate;
+  }
+  @keyframes lockoutGlow{
+    from{text-shadow:0 0 20px rgba(230,57,70,.6), 2px 2px 0 #000}
+    to{text-shadow:0 0 30px rgba(230,57,70,1), 0 0 40px rgba(230,57,70,.5), 2px 2px 0 #000}
+  }
+  .lockout-subtitle{
+    font-family:'Unbounded';
+    font-weight:700;
+    font-size:14px;
+    color:#ffb3b3;
+    margin-bottom:18px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .lockout-msg{
+    font-size:14px;
+    font-weight:500;
+    color:#ffc9c9;
+    margin-bottom:20px;
+    line-height:1.6;
+    padding:0 8px;
+  }
+  .lockout-stats{
+    background:rgba(0,0,0,.5);
+    border:2px solid var(--red);
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .lockout-stat{
+    text-align:center;
+  }
+  .lockout-stat-label{
+    font-family:'Unbounded';
+    font-weight:700;
+    font-size:10px;
+    color:#ff8888;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:4px;
+  }
+  .lockout-stat-value{
+    font-family:'Unbounded';
+    font-weight:900;
+    font-size:28px;
+    color:var(--red);
+    text-shadow:0 0 10px rgba(230,57,70,.6);
+  }
+  .lockout-divider{
+    height:2px;
+    background:linear-gradient(90deg, transparent, var(--red), transparent);
+    margin:16px 0;
+  }
+  .lockout-reset-section{
+    background:rgba(255,255,255,.05);
+    border:2px dashed var(--red);
+    border-radius:14px;
+    padding:16px;
+    margin-top:16px;
+  }
+  .lockout-reset-label{
+    font-family:'Unbounded';
+    font-weight:800;
+    font-size:11px;
+    color:#ffaaaa;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    margin-bottom:10px;
+    display:block;
+  }
+  .lockout-reset-hint{
+    font-size:11px;
+    color:#ff9999;
+    margin-bottom:12px;
+    line-height:1.5;
+  }
+  .lockout-reset-hint b{color:var(--red);font-weight:900}
+  .reset-otp{display:flex;gap:6px;justify-content:center;margin:12px 0}
+  .reset-otp input{
+    width:40px;height:48px;text-align:center;
+    font-family:'Unbounded';font-weight:900;font-size:18px;
+    border:2.5px solid var(--red);border-radius:9px;outline:none;
+    text-transform:uppercase;
+    background:rgba(0,0,0,.5);color:#fff;
+    transition:all .12s;
+  }
+  .reset-otp input:focus{
+    border-color:#fff;
+    box-shadow:0 0 12px rgba(230,57,70,.8);
+    transform:translateY(-2px);
+  }
+  .reset-otp input.filled{background:var(--red);color:#fff}
+  .reset-msg{
+    text-align:center;
+    font-weight:700;
+    font-size:13px;
+    min-height:18px;
+    margin-bottom:8px;
+  }
+  .reset-msg.err{color:#ffaaaa}
+  .reset-msg.ok{color:var(--lime)}
+  .reset-btn{
+    width:100%;
+    font-family:'Unbounded';
+    font-weight:900;
+    font-size:13px;
+    cursor:pointer;
+    background:var(--red);
+    color:#fff;
+    border:3px solid #fff;
+    border-radius:12px;
+    padding:12px;
+    box-shadow:4px 4px 0 rgba(255,255,255,.3);
+    transition:all .12s;
+    letter-spacing:.5px;
+  }
+  .reset-btn:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:6px 6px 0 rgba(255,255,255,.3);
+    background:var(--dark-red);
+  }
+  .reset-btn:active{
+    transform:translate(2px,2px);
+    box-shadow:0 0 0 rgba(255,255,255,.3);
+  }
+  .lockout-footer{
+    font-size:10px;
+    color:#aa7777;
+    margin-top:16px;
+    line-height:1.4;
+  }
+
+  /* ====== ACTIVE EXAM BANNER ====== */
+  .exam-active-banner{
+    position:fixed;top:80px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:var(--lime);border:3px solid var(--lime);
+    border-radius:14px;padding:10px 18px;box-shadow:var(--shadow);
+    font-family:'Unbounded';font-weight:800;font-size:12px;letter-spacing:1px;
+    display:none;align-items:center;gap:10px;z-index:95;white-space:nowrap;
+    animation:slideDown .4s ease;
+  }
+  .exam-active-banner.show{display:flex}
+  @keyframes slideDown{from{transform:translateX(-50%) translateY(-30px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+  .exam-active-banner .pulse-dot{
+    width:10px;height:10px;border-radius:50%;background:var(--red);
+    animation:livePulse 1s infinite;flex:none;
+  }
 
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:300;overflow:hidden}
   #confetti i{position:absolute;top:-24px;border-radius:3px;animation:fall linear forwards}
@@ -431,6 +653,12 @@
     .confirm-modal{padding:28px 20px;margin:16px}
     .confirm-modal h3{font-size:19px}
     .confirm-btn{padding:12px 22px;font-size:12.5px;min-width:110px}
+    .lockout-emoji{font-size:64px}
+    .lockout-title{font-size:1.6rem}
+    .lockout-content{padding:28px 18px}
+    .reset-otp input{width:36px;height:44px;font-size:16px}
+    .lockout-stat-value{font-size:22px}
+    .exam-active-banner{top:68px;padding:8px 14px;font-size:10px}
   }
 </style>
 </head>
@@ -452,6 +680,12 @@
     <button class="sound-btn" id="soundBtn">🔊 SFX</button>
   </div>
 </header>
+
+<!-- Banner saat siswa sedang mengerjakan soal -->
+<div class="exam-active-banner" id="examActiveBanner">
+  <span class="pulse-dot"></span>
+  <span>🔒 MODE UJIAN AKTIF — JANGAN KELUAR TAB!</span>
+</div>
 
 <section class="hero">
   <span class="floaty" style="top:30px;left:4%">📚</span>
@@ -494,6 +728,7 @@
   <div class="note-strip">
     <span class="dot"></span> Token dari pengawas saat ujian.
     <span class="dot"></span> Jangan share tokenmu! 🔐
+    <span class="dot"></span> Anti-nyontek <b>hanya aktif saat di dalam soal</b>.
   </div>
 </section>
 
@@ -540,11 +775,13 @@
     </div>
     <iframe id="soalFrame" title="Soal UTS" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
     <div class="iframe-fallback" id="iframeFallback">
-      <div class="emoji-big">🔒</div>
-      <h4>Soal tidak bisa ditampilkan di sini</h4>
-      <p>Beberapa link Google Docs/Forms memiliki proteksi embed. Silakan hubungi pengawas untuk bantuan lebih lanjut.</p>
+      <div class="emoji-big">⚠️</div>
+      <h4>Soal sulit dimuat di iframe</h4>
+      <p>Beberapa Google Forms/Docs memerlukan izin embed. Silakan coba salah satu opsi di bawah:</p>
       <div class="btn-row">
-        <button class="iframe-btn primary" id="fallbackClose">↩ Kembali ke Portal</button>
+        <button class="iframe-btn alt" id="fallbackOpenNew">↗ Buka di Tab Baru</button>
+        <button class="iframe-btn" id="fallbackRetry">🔄 Coba Lagi</button>
+        <button class="iframe-btn primary" id="fallbackClose">✕ Tutup</button>
       </div>
     </div>
   </div>
@@ -596,9 +833,63 @@
 
     <button class="alarm-unlock-btn" id="alarmUnlockBtn">🔓 UNLOCK</button>
 
+    <div class="warning-strip" id="warningStrip" style="display:none">
+      ⚠️ PERINGATAN: <span id="warningRemaining"></span> pelanggaran lagi = BLOKIR TOTAL!
+    </div>
+
     <p class="alarm-note">
       ⚠️ Token unlock hanya dimiliki pengawas. <br>
       Percobaan salah berulang akan tercatat di sistem pelanggaran.
+    </p>
+  </div>
+</div>
+
+<!-- ====== LOCKOUT OVERLAY (GAME OVER - 10 PELANGGARAN) ====== -->
+<div class="lockout-overlay" id="lockoutOverlay">
+  <div class="lockout-content">
+    <div class="lockout-emoji">⛔</div>
+    <h2 class="lockout-title">AKSES DIBLOKIR!</h2>
+    <p class="lockout-subtitle">GAME OVER - UJIAN DIHENTIKAN</p>
+    <p class="lockout-msg">
+      Sistem mendeteksi <b style="color:#ff4444">10 pelanggaran</b> selama ujian.<br>
+      Akses untuk mengerjakan soal telah <b>dicabut permanen</b>.<br>
+      Segera hadap <b>Pengawas Ujian</b> untuk verifikasi.
+    </p>
+    
+    <div class="lockout-stats">
+      <div class="lockout-stat">
+        <div class="lockout-stat-label">Total Pelanggaran</div>
+        <div class="lockout-stat-value" id="lockoutCount">10</div>
+      </div>
+      <div class="lockout-stat">
+        <div class="lockout-stat-label">Status</div>
+        <div class="lockout-stat-value" style="font-size:18px;color:#ff4444">BLOKIR</div>
+      </div>
+    </div>
+    
+    <div class="lockout-divider"></div>
+    
+    <div class="lockout-reset-section">
+      <label class="lockout-reset-label">🔐 Reset Pengawas</label>
+      <p class="lockout-reset-hint">
+        Hanya <b>pengawas ujian</b> yang dapat mereset akses.<br>
+        Masukkan 6 huruf token reset dari pengawas.
+      </p>
+      <div class="reset-otp" id="resetOtp">
+        <input maxlength="1" autocomplete="off" aria-label="reset 1">
+        <input maxlength="1" autocomplete="off" aria-label="reset 2">
+        <input maxlength="1" autocomplete="off" aria-label="reset 3">
+        <input maxlength="1" autocomplete="off" aria-label="reset 4">
+        <input maxlength="1" autocomplete="off" aria-label="reset 5">
+        <input maxlength="1" autocomplete="off" aria-label="reset 6">
+      </div>
+      <p class="reset-msg" id="resetMsg"></p>
+      <button class="reset-btn" id="resetBtn">⚡ RESET AKSES</button>
+    </div>
+    
+    <p class="lockout-footer">
+      🎵 DOOM BGM sedang diputar. BGM akan berhenti setelah reset berhasil.<br>
+      © 2027 SMKS Kesehatan SDM Sumedang
     </p>
   </div>
 </div>
@@ -690,33 +981,101 @@ const MAJOR_COLOR = {
 const majorOf = k => Object.keys(MAJOR_COLOR).find(m => k.includes(m)) || "";
 const labelOf = item => item.short || item.kelas;
 
+/* ==========================================================
+   EMBED URL RESOLVER - Anti Login Google & Tidak buka tab
+   Semua URL dikonversi ke format yang bisa di-EMBED di iframe
+   ========================================================== */
 function toEmbedUrl(url){
   if(!url) return url;
-  if(url.includes('forms.gle/')){
-    return url + (url.includes('?') ? '&' : '?') + 'embedded=true';
-  }
-  if(url.includes('docs.google.com/forms/')){
-    return url + (url.includes('?') ? '&' : '?') + 'embedded=true';
-  }
-  if(url.includes('docs.google.com/document/')){
-    if(url.includes('/edit')){
-      const baseUrl = url.split('/edit')[0];
-      return baseUrl + '/preview';
+  
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    const path = u.pathname;
+    const params = u.searchParams;
+    
+    // === GOOGLE FORMS ===
+    // forms.gle shortlink → tetap pakai domain forms.gle + embedded=true
+    if(host === 'forms.gle' || host.endsWith('.forms.gle')){
+      params.set('embedded', 'true');
+      return u.toString();
     }
-    if(!url.includes('/preview')){
-      return url.replace(/\/$/, '') + '/preview';
+    
+    // docs.google.com/forms/...
+    if(host === 'docs.google.com' && path.startsWith('/forms/')){
+      // Pastikan path menggunakan /viewform bukan /edit (bentuk pengisian)
+      if(path.includes('/edit')){
+        u.pathname = path.replace('/edit', '/viewform');
+      }
+      // Kalau belum viewform dan belum embed, tambahkan /viewform
+      if(!path.includes('/viewform') && !path.includes('/embedded')){
+        if(path.endsWith('/')){
+          u.pathname = path + 'viewform';
+        } else {
+          u.pathname = path + '/viewform';
+        }
+      }
+      params.set('embedded', 'true');
+      params.set('pli', '1');
+      return u.toString();
     }
-  }
-  if(url.includes('docs.google.com/spreadsheets/')){
-    if(url.includes('/edit')){
-      return url.replace('/edit', '/htmlview');
+    
+    // === GOOGLE DOCS ===
+    if(host === 'docs.google.com' && path.startsWith('/document/')){
+      // /preview tidak memerlukan login untuk dokumen publik
+      if(path.includes('/edit')){
+        u.pathname = path.split('/edit')[0] + '/preview';
+      } else if(!path.includes('/preview')){
+        u.pathname = path.replace(/\/$/, '') + '/preview';
+      }
+      u.search = '';
+      return u.toString();
     }
+    
+    // === GOOGLE SHEETS ===
+    if(host === 'docs.google.com' && path.startsWith('/spreadsheets/')){
+      if(path.includes('/edit')){
+        u.pathname = path.replace('/edit', '/pubhtml');
+      } else if(!path.includes('/pubhtml') && !path.includes('/preview')){
+        u.pathname = path.replace(/\/$/, '') + '/pubhtml';
+      }
+      params.set('widget', 'true');
+      params.set('headers', 'false');
+      return u.toString();
+    }
+    
+    // === GOOGLE SLIDES ===
+    if(host === 'docs.google.com' && path.startsWith('/presentation/')){
+      if(path.includes('/edit')){
+        u.pathname = path.split('/edit')[0] + '/embed';
+      } else if(!path.includes('/embed') && !path.includes('/preview')){
+        u.pathname = path.replace(/\/$/, '') + '/embed';
+      }
+      params.set('start', 'false');
+      params.set('loop', 'false');
+      params.set('delayms', '3000');
+      return u.toString();
+    }
+    
+    // URL lain - return as-is
+    return url;
+  } catch(e) {
+    // Fallback jika URL parsing gagal
+    if(url.includes('forms.gle/')){
+      return url + (url.includes('?') ? '&' : '?') + 'embedded=true';
+    }
+    if(url.includes('docs.google.com/forms/') && url.includes('/edit')){
+      return url.replace('/edit', '/viewform') + (url.includes('?') ? '&' : '?') + 'embedded=true&pli=1';
+    }
+    if(url.includes('docs.google.com/document/') && url.includes('/edit')){
+      return url.split('/edit')[0] + '/preview';
+    }
+    return url;
   }
-  return url;
 }
 
 /* ==========================================================
-   AUDIO ENGINE (SFX & BGM)
+   AUDIO ENGINE (SFX, BGM, ALARM_BGM, DOOM BGM)
    ========================================================== */
 let audioCtx = null;
 function getCtx(){
@@ -744,6 +1103,28 @@ const SFX = {
   type(){ this.tone(760 + Math.random()*120, 0.04, 'triangle', 0.08); },
   success(){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>this.tone(f,0.18,'triangle',0.13,i*0.09)); },
   error(){ this.tone(170,0.22,'sawtooth',0.13); this.tone(120,0.3,'sawtooth',0.13,0.12); },
+  doom(){
+    const ctx = getCtx();
+    if(!ctx) return;
+    const t = ctx.currentTime;
+    const o1 = ctx.createOscillator(), g1 = ctx.createGain();
+    o1.type = 'sawtooth';
+    o1.frequency.setValueAtTime(200, t);
+    o1.frequency.exponentialRampToValueAtTime(40, t + 1.5);
+    g1.gain.setValueAtTime(0.4, t);
+    g1.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
+    o1.connect(g1); g1.connect(ctx.destination);
+    o1.start(t); o1.stop(t + 1.5);
+    for(let i=0;i<6;i++){
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'square';
+      o.frequency.setValueAtTime(800 + (i%2)*400, t + i*0.15);
+      g.gain.setValueAtTime(0.15, t + i*0.15);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + i*0.15 + 0.14);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t + i*0.15); o.stop(t + i*0.15 + 0.14);
+    }
+  },
   alarm(){
     const ctx = getCtx();
     if(!ctx) return;
@@ -795,9 +1176,12 @@ const SFX = {
 };
 document.addEventListener('pointerdown', ()=>getCtx());
 document.addEventListener('mouseover', e=>{
-  if(e.target.closest('.chip,.btn-open,.m-btn,.sound-btn,.card,.iframe-btn,.confirm-btn,.alarm-unlock-btn')) SFX.hover();
+  if(e.target.closest('.chip,.btn-open,.m-btn,.sound-btn,.card,.iframe-btn,.confirm-btn,.alarm-unlock-btn,.reset-btn')) SFX.hover();
 });
 
+/* ==========================================================
+   BGM NORMAL (Cheerful)
+   ========================================================== */
 const BGM = {
   playing:false, timer:null, step:0, nextTime:0, tempo:92,
   master:null, noiseBuf:null,
@@ -888,11 +1272,308 @@ const BGM = {
 };
 
 /* ==========================================================
+   ALARM BGM - Tense/Urgent (Diputar saat pelanggaran terdeteksi)
+   ========================================================== */
+const ALARM_BGM = {
+  playing:false, timer:null, step:0, nextTime:0, tempo:140,
+  master:null, noiseBuf:null,
+  chords:[
+    {bass:50, pad:[50,53,57,62]},
+    {bass:45, pad:[45,48,52,57]},
+    {bass:46, pad:[46,50,53,58]},
+    {bass:43, pad:[43,47,50,55]}
+  ],
+  melody:[
+    74,0,77,0, 81,0,79,0, 77,0,74,0, 72,0,69,0,
+    74,0,77,81, 84,0,81,79, 77,0,74,72, 69,0,0,0,
+    74,0,77,0, 81,84,0,81, 79,0,77,0, 74,72,0,69,
+    74,77,0,81, 84,86,0,84, 81,0,79,77, 74,0,0,0
+  ],
+  ensure(){
+    const ctx = getCtx(); if(!ctx) return null;
+    if(!this.master){
+      this.master = ctx.createGain();
+      const lp = ctx.createBiquadFilter();
+      lp.type='lowpass'; lp.frequency.value=3200;
+      const comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -20;
+      comp.ratio.value = 6;
+      this.master.connect(comp); comp.connect(lp); lp.connect(ctx.destination);
+    }
+    if(!this.noiseBuf){
+      const b = ctx.createBuffer(1, ctx.sampleRate*0.2, ctx.sampleRate);
+      const d = b.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+      this.noiseBuf = b;
+    }
+    return ctx;
+  },
+  voice(midi, t, dur, type, vol, attack=0.01){
+    const ctx = this.ensure(); if(!ctx) return;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.value = midiHz(midi);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t+attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t+dur+0.04);
+  },
+  kick(t){
+    const ctx = this.ensure(); if(!ctx) return;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(160, t);
+    o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+    g.gain.setValueAtTime(0.55, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t + 0.18);
+  },
+  hat(t, vol=0.1){
+    const ctx = this.ensure(); if(!ctx || !this.noiseBuf) return;
+    const s = ctx.createBufferSource(); s.buffer = this.noiseBuf;
+    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=7500;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+0.035);
+    s.connect(hp); hp.connect(g); g.connect(this.master);
+    s.start(t); s.stop(t+0.04);
+  },
+  bell(t){
+    const ctx = this.ensure(); if(!ctx) return;
+    const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+    o1.type = 'sine'; o1.frequency.value = 2093;
+    o2.type = 'sine'; o2.frequency.value = 2794;
+    g.gain.setValueAtTime(0.2, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+    o1.connect(g); o2.connect(g); g.connect(this.master);
+    o1.start(t); o2.start(t);
+    o1.stop(t + 0.4); o2.stop(t + 0.4);
+  },
+  stab(midi, t){
+    const ctx = this.ensure(); if(!ctx) return;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.value = midiHz(midi);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(0.12, t + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t + 0.18);
+  },
+  playStep(step, t){
+    const bar = Math.floor(step/16), s = step%16, ch = this.chords[bar];
+    const beat = 60/this.tempo;
+    if(s%2===0) this.voice(ch.bass, t, beat*0.4, 'triangle', 0.32);
+    if(s===0) ch.pad.forEach(n=>this.voice(n, t, beat*4, 'sawtooth', 0.06, 0.3));
+    const m = this.melody[step];
+    if(m) this.voice(m, t, 0.18, 'square', 0.13);
+    if(s%4===0) this.kick(t);
+    this.hat(t, s%2===0 ? 0.08 : 0.04);
+    if(s===2 || s===6 || s===10 || s===14) this.stab(ch.pad[0] + 12, t);
+    if(s===0 && bar%2===0) this.bell(t);
+    if(s===15) this.voice(ch.bass + 12, t, 0.1, 'square', 0.2);
+  },
+  schedule(){
+    const ctx = this.ensure(); if(!ctx || !this.playing) return;
+    while(this.nextTime < ctx.currentTime + 0.25){
+      this.playStep(this.step, this.nextTime);
+      this.nextTime += (60/this.tempo)/4;
+      this.step = (this.step+1)%64;
+    }
+  },
+  start(){
+    const ctx = this.ensure(); if(!ctx || this.playing) return;
+    ctx.resume();
+    this.playing = true; this.step = 0;
+    this.nextTime = ctx.currentTime + 0.05;
+    this.master.gain.setValueAtTime(0.0001, ctx.currentTime);
+    this.master.gain.linearRampToValueAtTime(0.65, ctx.currentTime+0.4);
+    this.timer = setInterval(()=>this.schedule(), 40);
+  },
+  stop(){
+    if(!this.playing) return;
+    this.playing = false; clearInterval(this.timer);
+    const ctx = getCtx();
+    if(ctx && this.master){
+      this.master.gain.cancelScheduledValues(ctx.currentTime);
+      this.master.gain.setValueAtTime(this.master.gain.value, ctx.currentTime);
+      this.master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.3);
+    }
+  }
+};
+
+/* ==========================================================
+   DOOM BGM (Diputar saat pelanggaran >= 10)
+   ========================================================== */
+const DOOM_BGM = {
+  playing:false, timer:null, step:0, nextTime:0, tempo:128,
+  master:null, noiseBuf:null, subOsc:null, subGain:null,
+  chords:[
+    {bass:33, pad:[33, 36, 40, 43]},
+    {bass:29, pad:[29, 33, 36, 40]},
+    {bass:31, pad:[31, 35, 38, 42]},
+    {bass:28, pad:[28, 31, 35, 38]}
+  ],
+  melody:[
+    69,0,72,0, 76,0,74,0, 72,0,69,0, 67,0,0,0,
+    65,0,69,0, 72,0,74,0, 76,0,74,0, 72,0,69,0,
+    71,0,74,0, 78,0,76,0, 74,0,71,0, 69,0,0,0,
+    67,0,71,0, 74,0,72,0, 71,0,69,0, 67,0,64,0
+  ],
+  ensure(){
+    const ctx = getCtx(); if(!ctx) return null;
+    if(!this.master){
+      this.master = ctx.createGain();
+      const lp = ctx.createBiquadFilter();
+      lp.type='lowpass'; lp.frequency.value=2000;
+      const distortion = ctx.createWaveShaper();
+      distortion.curve = this.makeDistortionCurve(20);
+      this.master.connect(distortion);
+      distortion.connect(lp);
+      lp.connect(ctx.destination);
+    }
+    if(!this.noiseBuf){
+      const b = ctx.createBuffer(1, ctx.sampleRate*0.2, ctx.sampleRate);
+      const d = b.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+      this.noiseBuf = b;
+    }
+    return ctx;
+  },
+  makeDistortionCurve(amount){
+    const k = typeof amount === 'number' ? amount : 50;
+    const samples = 44100;
+    const curve = new Float32Array(samples);
+    const deg = Math.PI / 180;
+    for(let i=0;i<samples;i++){
+      const x = i * 2 / samples - 1;
+      curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+    }
+    return curve;
+  },
+  voice(midi, t, dur, type, vol, attack=0.02){
+    const ctx = this.ensure(); if(!ctx) return;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.value = midiHz(midi);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t+attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t+dur+0.06);
+  },
+  kick(t){
+    const ctx = this.ensure(); if(!ctx) return;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t);
+    o.frequency.exponentialRampToValueAtTime(40, t + 0.15);
+    g.gain.setValueAtTime(0.6, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t + 0.2);
+  },
+  snare(t){
+    const ctx = this.ensure(); if(!ctx || !this.noiseBuf) return;
+    const s = ctx.createBufferSource(); s.buffer = this.noiseBuf;
+    const bp = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=3000;
+    const g1 = ctx.createGain();
+    g1.gain.setValueAtTime(0.4, t);
+    g1.gain.exponentialRampToValueAtTime(0.0001, t+0.15);
+    s.connect(bp); bp.connect(g1); g1.connect(this.master);
+    s.start(t); s.stop(t+0.15);
+    const o = ctx.createOscillator(), g2 = ctx.createGain();
+    o.type = 'triangle'; o.frequency.value = 200;
+    g2.gain.setValueAtTime(0.3, t);
+    g2.gain.exponentialRampToValueAtTime(0.0001, t+0.08);
+    o.connect(g2); g2.connect(this.master);
+    o.start(t); o.stop(t+0.08);
+  },
+  hat(t, vol=0.12){
+    const ctx = this.ensure(); if(!ctx || !this.noiseBuf) return;
+    const s = ctx.createBufferSource(); s.buffer = this.noiseBuf;
+    const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=7000;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+0.04);
+    s.connect(hp); hp.connect(g); g.connect(this.master);
+    s.start(t); s.stop(t+0.05);
+  },
+  startSubBass(){
+    const ctx = this.ensure(); if(!ctx) return;
+    if(this.subOsc) return;
+    this.subOsc = ctx.createOscillator();
+    this.subGain = ctx.createGain();
+    this.subOsc.type = 'sine';
+    this.subOsc.frequency.value = 27.5;
+    this.subGain.gain.value = 0.25;
+    this.subOsc.connect(this.subGain);
+    this.subGain.connect(ctx.destination);
+    this.subOsc.start();
+  },
+  stopSubBass(){
+    if(this.subOsc){
+      this.subGain.gain.exponentialRampToValueAtTime(0.0001, getCtx().currentTime + 0.3);
+      setTimeout(()=>{
+        if(this.subOsc){
+          this.subOsc.stop();
+          this.subOsc.disconnect();
+          this.subOsc = null;
+          this.subGain = null;
+        }
+      }, 400);
+    }
+  },
+  playStep(step, t){
+    const bar = Math.floor(step/16), s = step%16, ch = this.chords[bar];
+    const beat = 60/this.tempo;
+    if(s%4===0) this.voice(ch.bass, t, beat*0.8, 'sawtooth', 0.45);
+    if(s===0) ch.pad.forEach(n=>this.voice(n, t, beat*4, 'sawtooth', 0.1, 0.4));
+    const m = this.melody[step];
+    if(m) this.voice(m, t, 0.2, 'square', 0.15);
+    if(s===0 || s===8) this.kick(t);
+    if(s===4 || s===12) this.snare(t);
+    this.hat(t, s%2===0 ? 0.1 : 0.06);
+    if(s===10) this.voice(ch.bass + 12, t, 0.15, 'square', 0.3);
+  },
+  schedule(){
+    const ctx = this.ensure(); if(!ctx || !this.playing) return;
+    while(this.nextTime < ctx.currentTime + 0.25){
+      this.playStep(this.step, this.nextTime);
+      this.nextTime += (60/this.tempo)/4;
+      this.step = (this.step+1)%64;
+    }
+  },
+  start(){
+    const ctx = this.ensure(); if(!ctx || this.playing) return;
+    ctx.resume();
+    this.playing = true; this.step = 0;
+    this.nextTime = ctx.currentTime + 0.1;
+    this.master.gain.setValueAtTime(0.0001, ctx.currentTime);
+    this.master.gain.linearRampToValueAtTime(0.7, ctx.currentTime+1.0);
+    this.timer = setInterval(()=>this.schedule(), 50);
+    this.startSubBass();
+  },
+  stop(){
+    if(!this.playing) return;
+    this.playing = false; clearInterval(this.timer);
+    const ctx = getCtx();
+    if(ctx && this.master){
+      this.master.gain.cancelScheduledValues(ctx.currentTime);
+      this.master.gain.setValueAtTime(this.master.gain.value, ctx.currentTime);
+      this.master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.5);
+    }
+    this.stopSubBass();
+  }
+};
+
+/* ==========================================================
    INISIALISASI TOMBOL MUSIK & SFX
    ========================================================== */
 const musicBtn = document.getElementById('musicBtn');
 musicBtn.addEventListener('click', ()=>{
   SFX.click();
+  if(DOOM_BGM.playing || ALARM_BGM.playing) return;
   if(BGM.playing){
     BGM.stop();
     musicBtn.classList.remove('music-on');
@@ -918,7 +1599,8 @@ soundBtn.addEventListener('click', ()=>{
    ========================================================== */
 (function(){
   const items = ["PORTAL SOAL UTS 2026/2027","SMKS KESEHATAN SDM SUMEDANG","GOOD LUCK BESTIE ✨",
-                 "TOKEN 6 DIGIT 🔑","JUJUR ITU KEREN 😤","NO NYONTEK-NO CRY 📝","SEMANGAT UJIAN! 🔥"];
+                 "TOKEN 6 DIGIT 🔑","JUJUR ITU KEREN 😤","NO NYONTEK-NO CRY 📝","SEMANGAT UJIAN! 🔥",
+                 "⚠️ 10 PELANGGARAN = BLOKIR TOTAL ⚠️"];
   const half = items.map(t=>`<span>★ ${t}</span>`).join('');
   document.getElementById('tickerTrack').innerHTML = half + half;
 })();
@@ -953,20 +1635,32 @@ function render(){
     (d.mapel+' '+d.nama+' '+d.kelas).toLowerCase().includes(query)
   );
   emptyState.style.display = list.length ? 'none':'block';
+  
+  const isLocked = violationCount >= MAX_VIOLATIONS;
+  
   grid.innerHTML = list.map((d,i)=>{
     const c = MAJOR_COLOR[majorOf(d.kelas)] || 'var(--yellow)';
-    return `<article class="card" style="--c:${c};animation-delay:${i*0.04}s">
+    const lockedClass = isLocked ? 'locked' : '';
+    const btnText = isLocked ? '🔒 TERBLOKIR' : '🔒 BUKA SOAL';
+    return `<article class="card" style="--c:${c};animation-delay:${i*0.04}s;${isLocked?'opacity:.5':''}">
       <div class="card-top">
         <span class="tag">${labelOf(d)}</span><span class="ico">${d.icon}</span>
       </div>
       <h3 class="code">${d.mapel}</h3>
       <p class="full">${d.nama}</p>
       <div class="dash"></div>
-      <button class="btn-open" data-i="${DB.indexOf(d)}">🔒 BUKA SOAL</button>
+      <button class="btn-open ${lockedClass}" data-i="${DB.indexOf(d)}">${btnText}</button>
     </article>`;
   }).join('');
   grid.querySelectorAll('.btn-open').forEach(b=>{
-    b.addEventListener('click',()=>{ SFX.click(); openModal(DB[+b.dataset.i]); });
+    b.addEventListener('click',()=>{
+      if(isLocked){
+        showLockout();
+        return;
+      }
+      SFX.click();
+      openModal(DB[+b.dataset.i]);
+    });
   });
 }
 document.getElementById('searchInput').addEventListener('input', e=>{
@@ -989,6 +1683,10 @@ const mMsg=document.getElementById('mMsg');
 let current=null;
 
 function openModal(item){
+  if(violationCount >= MAX_VIOLATIONS){
+    showLockout();
+    return;
+  }
   current=item;
   document.getElementById('mEmoji').textContent=item.icon;
   document.getElementById('mTitle').textContent=item.mapel;
@@ -1006,7 +1704,8 @@ document.addEventListener('keydown', e=>{
   if(e.key==='Escape' &&
      !document.getElementById('iframeOverlay').classList.contains('show') &&
      !document.getElementById('confirmOverlay').classList.contains('show') &&
-     !document.getElementById('alarmOverlay').classList.contains('show')){
+     !document.getElementById('alarmOverlay').classList.contains('show') &&
+     !document.getElementById('lockoutOverlay').classList.contains('show')){
     closeModal();
   }
 });
@@ -1037,7 +1736,7 @@ function verify(){
   if(code.length<6){ mMsg.textContent='Token-nya masih kurang hurufnya 👀'; mMsg.className='m-msg err'; return; }
   if(code === current.token){
     SFX.success(); confetti();
-    mMsg.textContent='✅ Token benar! Memuat soal...'; mMsg.className='m-msg ok';
+    mMsg.textContent='✅ Token benar! Memuat soal di dalam portal...'; mMsg.className='m-msg ok';
     const itemToOpen = current;
     setTimeout(()=>{
       closeModal();
@@ -1054,40 +1753,56 @@ function verify(){
 document.getElementById('submitToken').addEventListener('click', ()=>{ SFX.click(); verify(); });
 
 /* ==========================================================
-   IFRAME SOAL
+   IFRAME SOAL (SALURAN TUNGGAL - tidak buka tab/window)
    ========================================================== */
 const iframeOverlay = document.getElementById('iframeOverlay');
 const soalFrame = document.getElementById('soalFrame');
 const iframeLoading = document.getElementById('iframeLoading');
 const iframeFallback = document.getElementById('iframeFallback');
+const examActiveBanner = document.getElementById('examActiveBanner');
 let currentIframeItem = null;
 let iframeLoadTimer = null;
-let iframeInteractionGracePeriod = false; // Grace period saat user berinteraksi dengan iframe
+let iframeInteractionGracePeriod = false;
+let iframeLoadedSuccessfully = false;
 
 function openIframeModal(item){
+  if(violationCount >= MAX_VIOLATIONS){
+    showLockout();
+    return;
+  }
   currentIframeItem = item;
+  iframeLoadedSuccessfully = false;
   document.getElementById('ifEmoji').textContent = item.icon;
   document.getElementById('ifTitle').textContent = item.mapel;
   document.getElementById('ifSub').textContent = `${item.kelas} • ${item.nama}`;
+  
   iframeLoading.style.display = 'flex';
   iframeFallback.classList.remove('show');
   soalFrame.style.display = 'block';
+  
   const embedUrl = toEmbedUrl(item.link);
+  console.log('📺 Membuka embed URL:', embedUrl);
   soalFrame.src = embedUrl;
+  
+  // Timeout: jika iframe belum load dalam 10 detik, tampilkan fallback
   clearTimeout(iframeLoadTimer);
   iframeLoadTimer = setTimeout(()=>{
-    if(iframeLoading.style.display !== 'none'){
+    if(iframeLoading.style.display !== 'none' && !iframeLoadedSuccessfully){
       showFallback();
     }
-  }, 7000);
+  }, 10000);
+  
   iframeOverlay.classList.add('show');
   document.body.style.overflow = 'hidden';
   
-  // Grace period 1 detik setelah iframe terbuka untuk menghindari false positive
+  // ← BARU: Tampilkan banner "Mode Ujian Aktif"
+  examActiveBanner.classList.add('show');
+  
+  // Grace period: 2 detik pertama jangan trigger alarm (untuk loading iframe)
   iframeInteractionGracePeriod = true;
   setTimeout(() => {
     iframeInteractionGracePeriod = false;
-  }, 1500);
+  }, 2000);
 }
 
 function showFallback(){
@@ -1111,23 +1826,42 @@ function closeIframeModal(){
   soalFrame.src = 'about:blank';
   currentIframeItem = null;
   clearTimeout(iframeLoadTimer);
+  iframeLoadedSuccessfully = false;
+  
+  // ← Sembunyikan banner "Mode Ujian Aktif"
+  examActiveBanner.classList.remove('show');
+  
+  // Stop ALARM_BGM jika masih main
+  if(ALARM_BGM.playing) ALARM_BGM.stop();
+  
   SFX.click();
 }
 
+// Event: iframe berhasil load konten
 soalFrame.addEventListener('load', ()=>{
   try{
     const doc = soalFrame.contentDocument || soalFrame.contentWindow.document;
     if(doc && doc.body && doc.body.innerHTML.length > 0){
       iframeLoading.style.display = 'none';
       clearTimeout(iframeLoadTimer);
+      iframeLoadedSuccessfully = true;
+      console.log('✅ Iframe berhasil dimuat');
     }
   } catch(e){
+    // CORS block - iframe load tapi kita tidak bisa akses kontennya
+    // Ini NORMAL untuk Google Forms/Docs (cross-origin)
+    // Anggap saja sukses karena iframe-nya sendiri sudah load
     iframeLoading.style.display = 'none';
     clearTimeout(iframeLoadTimer);
+    iframeLoadedSuccessfully = true;
+    console.log('✅ Iframe loaded (cross-origin, CORS blocked - normal)');
   }
 });
 
-soalFrame.addEventListener('error', ()=> showFallback());
+soalFrame.addEventListener('error', ()=> {
+  console.warn('⚠️ Iframe gagal load, menampilkan fallback');
+  showFallback();
+});
 
 document.getElementById('btnCloseIframe').addEventListener('click', ()=>{
   showConfirmModal();
@@ -1144,24 +1878,57 @@ document.getElementById('btnConfirmYes').addEventListener('click', ()=>{
   closeIframeModal();
 });
 
-document.getElementById('fallbackClose').addEventListener('click', closeIframeModal);
+// Tombol fallback: Buka di tab baru (last resort)
+document.getElementById('fallbackOpenNew').addEventListener('click', ()=>{
+  if(currentIframeItem){
+    // Gunakan URL asli (bukan embed URL) untuk dibuka di tab baru
+    window.open(currentIframeItem.link, '_blank');
+    SFX.click();
+  }
+});
+
+// Tombol fallback: Retry
+document.getElementById('fallbackRetry').addEventListener('click', ()=>{
+  if(currentIframeItem){
+    iframeFallback.classList.remove('show');
+    iframeLoading.style.display = 'flex';
+    soalFrame.style.display = 'block';
+    const embedUrl = toEmbedUrl(currentIframeItem.link);
+    soalFrame.src = 'about:blank';
+    setTimeout(()=>{ soalFrame.src = embedUrl; }, 100);
+    SFX.click();
+  }
+});
+
+document.getElementById('fallbackClose').addEventListener('click', ()=>{
+  closeIframeModal();
+});
 
 /* ==========================================================
-   SISTEM ANTI NYONTEK — FIXED VERSION
-   Sekarang aktif SELALU, bahkan saat siswa sedang mengerjakan
-   soal di dalam iframe (kecuali saat konfirmasi selesai).
+   SISTEM ANTI NYONTEK
    ========================================================== */
+const MAX_VIOLATIONS = 10;
+const UNLOCK_TOKEN = 'SDMCBT';
+const RESET_TOKEN = 'SDMRST';
+
 const alarmOverlay = document.getElementById('alarmOverlay');
 const alarmStatus = document.getElementById('alarmStatus');
 const violationCountEl = document.getElementById('violationCount');
 const unlockOtpInputs = [...document.querySelectorAll('#unlockOtp input')];
 const alarmUnlockBtn = document.getElementById('alarmUnlockBtn');
+const warningStrip = document.getElementById('warningStrip');
+const warningRemaining = document.getElementById('warningRemaining');
 
-const UNLOCK_TOKEN = 'SDMCBT';
+const lockoutOverlay = document.getElementById('lockoutOverlay');
+const lockoutCountEl = document.getElementById('lockoutCount');
+const resetOtpInputs = [...document.querySelectorAll('#resetOtp input')];
+const resetMsg = document.getElementById('resetMsg');
+const resetBtn = document.getElementById('resetBtn');
 
 let alarmTriggered = false;
 let violationCount = 0;
 let failedUnlockAttempts = 0;
+let isLocked = false;
 
 let vibrationWorker = null;
 let silentAudioCtx = null;
@@ -1190,6 +1957,10 @@ function isAlarmActive(){
   return alarmOverlay.classList.contains('show');
 }
 
+function isLockoutActive(){
+  return lockoutOverlay.classList.contains('show');
+}
+
 function createVibrationWorker(){
   if(vibrationWorker) return;
   try {
@@ -1215,9 +1986,7 @@ function createVibrationWorker(){
         executeVibration();
       }
     };
-  } catch(e) {
-    console.warn('Web Worker tidak didukung, menggunakan fallback:', e);
-  }
+  } catch(e) {}
 }
 
 function startSilentAudio(){
@@ -1225,34 +1994,22 @@ function startSilentAudio(){
     const ctx = getCtx();
     if(!ctx) return;
     if(silentAudioCtx) stopSilentAudio();
-    
     silentAudioCtx = ctx;
     silentOsc = ctx.createOscillator();
     silentGain = ctx.createGain();
-    
     silentOsc.type = 'sine';
     silentOsc.frequency.value = 1;
     silentGain.gain.value = 0.0001;
-    
     silentOsc.connect(silentGain);
     silentGain.connect(ctx.destination);
     silentOsc.start();
-  } catch(e) {
-    console.warn('Silent audio error:', e);
-  }
+  } catch(e) {}
 }
 
 function stopSilentAudio(){
   try {
-    if(silentOsc){
-      silentOsc.stop();
-      silentOsc.disconnect();
-      silentOsc = null;
-    }
-    if(silentGain){
-      silentGain.disconnect();
-      silentGain = null;
-    }
+    if(silentOsc){ silentOsc.stop(); silentOsc.disconnect(); silentOsc = null; }
+    if(silentGain){ silentGain.disconnect(); silentGain = null; }
   } catch(e) {}
 }
 
@@ -1260,17 +2017,13 @@ async function requestWakeLock(){
   try {
     if('wakeLock' in navigator){
       wakeLockSentinel = await navigator.wakeLock.request('screen');
-      wakeLockSentinel.addEventListener('release', () => {});
     }
   } catch(e) {}
 }
 
 function releaseWakeLock(){
   try {
-    if(wakeLockSentinel){
-      wakeLockSentinel.release();
-      wakeLockSentinel = null;
-    }
+    if(wakeLockSentinel){ wakeLockSentinel.release(); wakeLockSentinel = null; }
   } catch(e) {}
 }
 
@@ -1279,68 +2032,50 @@ function executeVibration(){
   try {
     if('vibrate' in navigator){
       const success = navigator.vibrate(LONG_VIBRATION_PATTERN);
-      if(!success){
-        navigator.vibrate([300, 100, 300, 100, 300]);
-      }
+      if(!success) navigator.vibrate([300, 100, 300, 100, 300]);
     }
   } catch(e) {}
 }
 
 function startMaximumVibration(){
   if(!('vibrate' in navigator)) return;
-  
   createVibrationWorker();
-  if(vibrationWorker){
-    vibrationWorker.postMessage({ command: 'start' });
-  }
-  
+  if(vibrationWorker) vibrationWorker.postMessage({ command: 'start' });
   startSilentAudio();
   requestWakeLock();
-  
   if(mainVibrationInterval) clearInterval(mainVibrationInterval);
-  mainVibrationInterval = setInterval(() => {
-    if(alarmTriggered) executeVibration();
-  }, 9000);
-  
+  mainVibrationInterval = setInterval(() => { if(alarmTriggered) executeVibration(); }, 9000);
   function scheduleNext(){
     if(!alarmTriggered) return;
-    fallbackTimeout = setTimeout(() => {
-      executeVibration();
-      scheduleNext();
-    }, 11000);
+    fallbackTimeout = setTimeout(() => { executeVibration(); scheduleNext(); }, 11000);
   }
   scheduleNext();
-  
   executeVibration();
 }
 
 function stopMaximumVibration(){
-  if(vibrationWorker){
-    vibrationWorker.postMessage({ command: 'stop' });
-  }
-  if(mainVibrationInterval){
-    clearInterval(mainVibrationInterval);
-    mainVibrationInterval = null;
-  }
-  if(fallbackTimeout){
-    clearTimeout(fallbackTimeout);
-    fallbackTimeout = null;
-  }
+  if(vibrationWorker) vibrationWorker.postMessage({ command: 'stop' });
+  if(mainVibrationInterval){ clearInterval(mainVibrationInterval); mainVibrationInterval = null; }
+  if(fallbackTimeout){ clearTimeout(fallbackTimeout); fallbackTimeout = null; }
   stopSilentAudio();
   releaseWakeLock();
-  try {
-    if('vibrate' in navigator) navigator.vibrate(0);
-  } catch(e) {}
+  try { if('vibrate' in navigator) navigator.vibrate(0); } catch(e) {}
 }
 
+/* ==========================================================
+   TRIGGER ALARM - HANYA aktif saat DI DALAM SOAL (iframe)
+   ========================================================== */
 function triggerAlarm(reason = 'tidak diketahui'){
+  // ⚠️ GUARD UTAMA: Alarm HANYA aktif jika iframe soal sedang ditampilkan
+  if(!isIframeActive()) return;
+  
   if(isAlarmActive()) return;
   if(isConfirmModalActive()) return;
   if(iframeInteractionGracePeriod) return;
+  if(isLockoutActive()) return;
   
   alarmTriggered = true;
   violationCount++;
-  
   violationCountEl.textContent = violationCount;
   
   unlockOtpInputs.forEach(i=>{ i.value=''; i.classList.remove('filled'); });
@@ -1348,9 +2083,51 @@ function triggerAlarm(reason = 'tidak diketahui'){
   alarmStatus.className = 'alarm-msg-status';
   failedUnlockAttempts = 0;
   
+  const remaining = MAX_VIOLATIONS - violationCount;
+  if(remaining > 0 && remaining <= 3){
+    warningStrip.style.display = 'block';
+    warningRemaining.textContent = remaining;
+  } else {
+    warningStrip.style.display = 'none';
+  }
+  
+  if(violationCount >= MAX_VIOLATIONS){
+    triggerLockout();
+    return;
+  }
+  
   alarmOverlay.classList.add('show');
   SFX.alarm();
   startMaximumVibration();
+  
+  // Play ALARM_BGM saat pelanggaran
+  if(BGM.playing){
+    BGM.stop();
+    musicBtn.classList.remove('music-on');
+    musicBtn.innerHTML = '🎵 MUSIK';
+  }
+  ALARM_BGM.start();
+  
+  setTimeout(()=> unlockOtpInputs[0].focus(), 200);
+  console.warn(`🚨 PELANGGARAN #${violationCount}/${MAX_VIOLATIONS} | ${new Date().toLocaleString('id-ID')} | ${reason}`);
+}
+
+/* ==========================================================
+   TRIGGER LOCKOUT (GAME OVER)
+   ========================================================== */
+function triggerLockout(){
+  isLocked = true;
+  lockoutCountEl.textContent = violationCount;
+  resetOtpInputs.forEach(i=>{ i.value=''; i.classList.remove('filled'); });
+  resetMsg.textContent = '';
+  resetMsg.className = 'reset-msg';
+  
+  alarmOverlay.classList.remove('show');
+  SFX.stopAlarm();
+  stopMaximumVibration();
+  alarmTriggered = false;
+  
+  ALARM_BGM.stop();
   
   if(BGM.playing){
     BGM.stop();
@@ -1358,45 +2135,122 @@ function triggerAlarm(reason = 'tidak diketahui'){
     musicBtn.innerHTML = '🎵 MUSIK';
   }
   
-  setTimeout(()=> unlockOtpInputs[0].focus(), 200);
+  if(iframeOverlay.classList.contains('show')){
+    iframeOverlay.classList.remove('show');
+    document.body.style.overflow = '';
+    soalFrame.src = 'about:blank';
+    currentIframeItem = null;
+    clearTimeout(iframeLoadTimer);
+    examActiveBanner.classList.remove('show');
+  }
   
-  console.warn(`🚨 PELANGGARAN #${violationCount} tercatat pada: ${new Date().toLocaleString('id-ID')} | Alasan: ${reason} | iframe aktif: ${isIframeActive()}`);
+  if(overlay.classList.contains('show')){
+    overlay.classList.remove('show');
+    current = null;
+  }
+  
+  lockoutOverlay.classList.add('show');
+  SFX.doom();
+  setTimeout(()=>{ DOOM_BGM.start(); }, 1500);
+  render();
+  
+  console.error(`⛔ GAME OVER! ${MAX_VIOLATIONS} pelanggaran. Akses diblokir.`);
+}
+
+/* ==========================================================
+   RESET AKSES - Kembali ke Portal Awal
+   ========================================================== */
+function resetAccess(){
+  isLocked = false;
+  violationCount = 0;
+  failedUnlockAttempts = 0;
+  
+  violationCountEl.textContent = violationCount;
+  warningStrip.style.display = 'none';
+  
+  lockoutOverlay.classList.remove('show');
+  alarmOverlay.classList.remove('show');
+  iframeOverlay.classList.remove('show');
+  document.getElementById('confirmOverlay').classList.remove('show');
+  overlay.classList.remove('show');
+  examActiveBanner.classList.remove('show');
+  
+  soalFrame.src = 'about:blank';
+  currentIframeItem = null;
+  current = null;
+  clearTimeout(iframeLoadTimer);
+  iframeLoadedSuccessfully = false;
+  
+  document.body.style.overflow = '';
+  
+  DOOM_BGM.stop();
+  ALARM_BGM.stop();
+  SFX.stopAlarm();
+  stopMaximumVibration();
+  
+  alarmTriggered = false;
+  iframeInteractionGracePeriod = false;
+  
+  render();
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  SFX.success();
+  confetti();
+  
+  console.log(`✅ Akses direset oleh pengawas. Kembali ke portal awal.`);
+  
+  setTimeout(()=>{
+    alert('✅ Akses berhasil direset oleh pengawas!\n\nKamu kembali ke portal soal dan bisa mengerjakan ujian lagi. Selamat mengerjakan! 💪');
+  }, 300);
 }
 
 function tryUnlockAlarm(){
   const code = unlockOtpInputs.map(i=>i.value).join('').toUpperCase();
-  
   if(code.length < 6){
     SFX.error();
     alarmStatus.textContent = '⚠️ Token unlock harus 6 huruf!';
     alarmStatus.className = 'alarm-msg-status err';
     return;
   }
-  
   if(code === UNLOCK_TOKEN){
     SFX.success();
     confetti();
     alarmStatus.textContent = '✅ Berhasil! Alarm dimatikan.';
     alarmStatus.className = 'alarm-msg-status ok';
-    
-    setTimeout(()=>{
-      dismissAlarm();
-    }, 900);
+    setTimeout(()=>{ dismissAlarm(); }, 900);
   } else {
     SFX.error();
     failedUnlockAttempts++;
     alarmStatus.textContent = `❌ Token salah! (Percobaan ${failedUnlockAttempts}) Minta ke pengawas!`;
     alarmStatus.className = 'alarm-msg-status err';
-    
     const content = document.querySelector('.alarm-content');
-    content.classList.remove('shake');
-    void content.offsetWidth;
-    content.classList.add('shake');
-    
+    content.classList.remove('shake'); void content.offsetWidth; content.classList.add('shake');
     unlockOtpInputs.forEach(i=>{ i.value=''; i.classList.remove('filled'); });
     unlockOtpInputs[0].focus();
-    
-    console.warn(`❌ Percobaan unlock gagal #${failedUnlockAttempts} pada pelanggaran #${violationCount}`);
+  }
+}
+
+function tryResetAccess(){
+  const code = resetOtpInputs.map(i=>i.value).join('').toUpperCase();
+  if(code.length < 6){
+    SFX.error();
+    resetMsg.textContent = '⚠️ Token reset harus 6 huruf!';
+    resetMsg.className = 'reset-msg err';
+    return;
+  }
+  if(code === RESET_TOKEN){
+    SFX.success();
+    confetti();
+    resetMsg.textContent = '✅ Berhasil! Akses akan direset...';
+    resetMsg.className = 'reset-msg ok';
+    setTimeout(()=>{ resetAccess(); }, 1000);
+  } else {
+    SFX.error();
+    resetMsg.textContent = '❌ Token salah! Hanya pengawas yang tahu token ini.';
+    resetMsg.className = 'reset-msg err';
+    resetOtpInputs.forEach(i=>{ i.value=''; i.classList.remove('filled'); });
+    resetOtpInputs[0].focus();
   }
 }
 
@@ -1405,139 +2259,133 @@ function dismissAlarm(){
   SFX.stopAlarm();
   stopMaximumVibration();
   alarmTriggered = false;
+  ALARM_BGM.stop();
 }
 
+// Event listener untuk unlock OTP
 unlockOtpInputs.forEach((inp, idx)=>{
   inp.addEventListener('input', ()=>{
     inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
     inp.classList.toggle('filled', !!inp.value);
-    if(inp.value){
-      SFX.type();
-      if(unlockOtpInputs[idx+1]) unlockOtpInputs[idx+1].focus();
-    }
-    if(idx === 5 && unlockOtpInputs.every(i => i.value)){
-      setTimeout(tryUnlockAlarm, 250);
-    }
+    if(inp.value){ SFX.type(); if(unlockOtpInputs[idx+1]) unlockOtpInputs[idx+1].focus(); }
+    if(idx === 5 && unlockOtpInputs.every(i => i.value)) setTimeout(tryUnlockAlarm, 250);
   });
-  
   inp.addEventListener('keydown', e=>{
-    if(e.key==='Backspace' && !inp.value && unlockOtpInputs[idx-1]){
-      unlockOtpInputs[idx-1].focus();
-    }
-    if(e.key==='Enter'){
-      tryUnlockAlarm();
-    }
+    if(e.key==='Backspace' && !inp.value && unlockOtpInputs[idx-1]) unlockOtpInputs[idx-1].focus();
+    if(e.key==='Enter') tryUnlockAlarm();
   });
-  
   inp.addEventListener('paste', e=>{
     e.preventDefault();
     const txt = (e.clipboardData.getData('text').toUpperCase().match(/[A-Z]/g)||[]).slice(0,6);
-    txt.forEach((ch,i)=>{
-      if(unlockOtpInputs[i]){
-        unlockOtpInputs[i].value = ch;
-        unlockOtpInputs[i].classList.add('filled');
-      }
-    });
+    txt.forEach((ch,i)=>{ if(unlockOtpInputs[i]){ unlockOtpInputs[i].value = ch; unlockOtpInputs[i].classList.add('filled'); }});
     if(unlockOtpInputs[Math.min(txt.length,5)]) unlockOtpInputs[Math.min(txt.length,5)].focus();
     if(txt.length === 6) setTimeout(tryUnlockAlarm, 250);
   });
 });
 
-alarmUnlockBtn.addEventListener('click', ()=>{
-  SFX.click();
-  tryUnlockAlarm();
+alarmUnlockBtn.addEventListener('click', ()=>{ SFX.click(); tryUnlockAlarm(); });
+
+resetOtpInputs.forEach((inp, idx)=>{
+  inp.addEventListener('input', ()=>{
+    inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
+    inp.classList.toggle('filled', !!inp.value);
+    if(inp.value){ SFX.type(); if(resetOtpInputs[idx+1]) resetOtpInputs[idx+1].focus(); }
+    if(idx === 5 && resetOtpInputs.every(i => i.value)) setTimeout(tryResetAccess, 250);
+  });
+  inp.addEventListener('keydown', e=>{
+    if(e.key==='Backspace' && !inp.value && resetOtpInputs[idx-1]) resetOtpInputs[idx-1].focus();
+    if(e.key==='Enter') tryResetAccess();
+  });
+  inp.addEventListener('paste', e=>{
+    e.preventDefault();
+    const txt = (e.clipboardData.getData('text').toUpperCase().match(/[A-Z]/g)||[]).slice(0,6);
+    txt.forEach((ch,i)=>{ if(resetOtpInputs[i]){ resetOtpInputs[i].value = ch; resetOtpInputs[i].classList.add('filled'); }});
+    if(resetOtpInputs[Math.min(txt.length,5)]) resetOtpInputs[Math.min(txt.length,5)].focus();
+    if(txt.length === 6) setTimeout(tryResetAccess, 250);
+  });
 });
+
+resetBtn.addEventListener('click', ()=>{ SFX.click(); tryResetAccess(); });
+
+function showLockout(){
+  if(!isLocked){ triggerLockout(); }
+  else { lockoutOverlay.classList.add('show'); setTimeout(()=> resetOtpInputs[0].focus(), 200); }
+}
 
 /* ==========================================================
-   EVENT LISTENER ANTI-NYONTEK — FIXED
-   - visibilitychange: SELALU aktif (deteksi tab tersembunyi)
-   - blur: cerdas membedakan fokus ke iframe vs mencontek
-   - mouseleave: aktif bahkan saat iframe (kursor keluar viewport)
-   - keydown: shortcut blocking aktif saat fokus di parent window
+   EVENT LISTENER ANTI-NYONTEK
+   ⚠️ HANYA AKTIF SAAT SISWA BERADA DI DALAM SOAL (iframe)
    ========================================================== */
 
-// === BLUR EVENT (Logika Cerdas) ===
+// === BLUR EVENT ===
 window.addEventListener('blur', ()=>{
-  // Abaikan jika modal konfirmasi aktif
-  if(isConfirmModalActive()) return;
+  // ⚠️ Guard: Hanya trigger jika iframe soal sedang aktif
+  if(!isIframeActive()) return;
   
-  // Abaikan jika alarm sudah aktif
-  if(isAlarmActive()) return;
-  
-  // Jika iframe aktif, cek apakah blur karena fokus pindah ke iframe (NORMAL)
-  // atau fokus pindah keluar window (MENCONTEK)
-  if(isIframeActive()){
-    // Jika activeElement adalah iframe, itu normal (user klik di soal)
-    if(document.activeElement === soalFrame){
-      // Grace period tambahan setelah user klik iframe
-      return;
-    }
-    // Jika fokus di tombol parent (seperti "✕ Selesai"), itu normal
-    if(document.activeElement && document.activeElement.closest('.iframe-header')){
-      return;
-    }
-    // Jika activeElement tidak ada atau di body luar, kemungkinan mencontek
-    // Tapi hati-hati: saat iframe dibuka pertama kali, fokus bisa pindah ke iframe
-    // Cek dengan grace period
-    if(iframeInteractionGracePeriod) return;
-    
-    // Trigger alarm! User keluar dari window
-    triggerAlarm('blur saat iframe aktif - fokus keluar window');
-    return;
-  }
-  
-  // Jika iframe tidak aktif, blur = mencontek (pindah window/tab)
-  triggerAlarm('blur di portal utama');
-});
-
-// === VISIBILITY CHANGE (Selalu aktif untuk deteksi pindah tab/minimize) ===
-document.addEventListener('visibilitychange', ()=>{
-  // Abaikan jika modal konfirmasi aktif
-  if(isConfirmModalActive()) return;
-  
-  // Abaikan jika alarm sudah aktif
-  if(isAlarmActive()) return;
-  
-  // Jika tab benar-benar disembunyikan = MENCONTEK
-  // Aktif bahkan saat iframe aktif, karena tab disembunyikan jelas mencontek
-  if(document.hidden){
-    // Grace period saat iframe baru dibuka
-    if(iframeInteractionGracePeriod) return;
-    triggerAlarm('tab disembunyikan (visibilitychange)');
-  }
-});
-
-// === MOUSE LEAVE (Aktif bahkan saat iframe aktif) ===
-document.addEventListener('mouseleave', (e)=>{
   if(isConfirmModalActive()) return;
   if(isAlarmActive()) return;
+  if(isLockoutActive()) return;
+  
+  if(document.activeElement === soalFrame) return;
+  if(document.activeElement && document.activeElement.closest('.iframe-header')) return;
   if(iframeInteractionGracePeriod) return;
   
-  // Jika mouse keluar viewport, kemungkinan mencontek
+  triggerAlarm('blur - fokus keluar window saat ujian');
+});
+
+// === VISIBILITY CHANGE ===
+document.addEventListener('visibilitychange', ()=>{
+  // ⚠️ Guard: Hanya trigger jika iframe soal sedang aktif
+  if(!isIframeActive()) return;
+  
+  if(isConfirmModalActive()) return;
+  if(isAlarmActive()) return;
+  if(isLockoutActive()) return;
+  
+  if(document.hidden){
+    if(iframeInteractionGracePeriod) return;
+    triggerAlarm('tab disembunyikan saat ujian');
+  }
+});
+
+// === MOUSE LEAVE ===
+document.addEventListener('mouseleave', (e)=>{
+  // ⚠️ Guard: Hanya trigger jika iframe soal sedang aktif
+  if(!isIframeActive()) return;
+  
+  if(isConfirmModalActive()) return;
+  if(isAlarmActive()) return;
+  if(isLockoutActive()) return;
+  if(iframeInteractionGracePeriod) return;
+  
   if(e.clientY <= 0 || e.clientX <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight){
-    triggerAlarm('mouse keluar viewport');
+    triggerAlarm('mouse keluar viewport saat ujian');
   }
 });
 
 // === KEYDOWN (Shortcut blocking) ===
 document.addEventListener('keydown', (e)=>{
+  // Keydown blocking HANYA saat di dalam soal
+  if(!isIframeActive()) return;
+  
   if(isAlarmActive()) return;
-  
-  // Jika iframe aktif, shortcut di parent window tetap diblokir
-  // (Note: shortcut di dalam iframe tidak bisa dideteksi dari parent - ini batasan browser)
-  
-  // Block shortcut copy/paste/print/save
-  if((e.ctrlKey || e.metaKey) && ['c','v','x','p','s','u','a'].includes(e.key.toLowerCase())){
-    // Izinkan Ctrl+A (select all) karena bisa dipakai di input
-    if(e.key.toLowerCase() === 'a' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')){
-      return;
+  if(isLockoutActive()){
+    if(e.target.closest('#resetOtp')) return;
+    if((e.ctrlKey || e.metaKey) && ['c','v','x','p','s','u','a','f','w','t'].includes(e.key.toLowerCase())){
+      e.preventDefault(); return;
     }
+    if(e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase()))){
+      e.preventDefault(); return;
+    }
+    return;
+  }
+  
+  if((e.ctrlKey || e.metaKey) && ['c','v','x','p','s','u','a'].includes(e.key.toLowerCase())){
+    if(e.key.toLowerCase() === 'a' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
     e.preventDefault();
     alert('⚠️ Shortcut dinonaktifkan selama ujian!');
     return;
   }
-  
-  // Block DevTools (F12, Ctrl+Shift+I/J/C)
   if(e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase()))){
     e.preventDefault();
     alert('⚠️ Developer Tools dinonaktifkan selama ujian!');
@@ -1546,22 +2394,27 @@ document.addEventListener('keydown', (e)=>{
 });
 
 document.addEventListener('visibilitychange', ()=>{
-  if(!document.hidden){
-    requestWakeLock();
-  }
+  if(!document.hidden) requestWakeLock();
 });
 
 window.addEventListener('beforeunload', ()=>{
   stopMaximumVibration();
+  DOOM_BGM.stop();
+  ALARM_BGM.stop();
+  BGM.stop();
 });
 
 document.addEventListener('freeze', ()=>{
   stopMaximumVibration();
+  DOOM_BGM.stop();
+  ALARM_BGM.stop();
 });
 
 if('onpagehide' in window){
   window.addEventListener('pagehide', ()=>{
     stopMaximumVibration();
+    DOOM_BGM.stop();
+    ALARM_BGM.stop();
   });
 }
 
@@ -1589,9 +2442,18 @@ function confetti(){
    ========================================================== */
 buildChips();
 render();
-
-// Request wake lock saat halaman pertama kali dimuat
 requestWakeLock();
+
+console.log('%c═══════════════════════════════════════', 'color: #E63946; font-size: 14px;');
+console.log('%c🩺 SMKS KESEHATAN SDM SUMEDANG', 'color: #FF6B9D; font-size: 18px; font-weight: bold;');
+console.log('%cPortal Soal UTS 2026/2027', 'color: #6BCB77; font-size: 12px;');
+console.log('%c═══════════════════════════════════════', 'color: #E63946; font-size: 14px;');
+console.log('%c🔑 Token Unlock Alarm: SDMCBT', 'color: #FFD93D; font-size: 12px;');
+console.log('%c⚡ Token Reset (Game Over): SDMRST', 'color: #4D96FF; font-size: 12px;');
+console.log('%c⛔ Batas Pelanggaran: 10x (Lockout)', 'color: #E63946; font-size: 12px;');
+console.log('%c📺 Semua soal di-EMBED di dalam portal (tidak buka tab!)', 'color: #B983FF; font-size: 12px;');
+console.log('%c🛡️ Anti-nyontek HANYA aktif saat di dalam soal', 'color: #C6F432; font-size: 12px;');
+console.log('%c═══════════════════════════════════════', 'color: #E63946; font-size: 14px;');
 </script>
 </body>
 </html>
